@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:background="@drawable/fruit"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:gravity="center"
+            android:text="Go4Lunch"
+            android:layout_marginTop="@dimen/default_large_margin"
+            android:paddingLeft="@dimen/default_margin"
+            android:textSize="32sp" />
+
+
+
+
+        <!-- PROFILE IMAGE -->
+        <ImageView
+            android:id="@+id/profile_activity_imageview_profile2"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_margin="@dimen/default_large_margin"
+            app:srcCompat="@drawable/ic_anon_user_48dp" />
+
+
+        <!-- PROFILE USERNAME -->
+        <TextView
+            android:id="@+id/profile_activity_edit_text_username2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFFFFF"
+            android:layout_margin="@dimen/default_margin"
+            android:text="@string/text_input_username"
+            android:textSize="15sp" />
+
+        <!-- PROFILE EMAIL CONTAINER -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/text_view_email"
+                android:textColor="#FFFFFF"
+                android:textSize="15sp"
+                android:textStyle="bold" />
+
+            <!-- PROFILE EMAIL -->
+            <TextView
+                android:id="@+id/profile_activity_text_view_email2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:paddingLeft="@dimen/default_margin"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.ConstraintLayout>

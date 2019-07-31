@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_activity_coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity">
+
+    <!-- MAIN CONTAINER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/signbackground"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+    <!-- IMAGE VIEW FIREBASE OC -->
+
+        <!-- TITLE FIREBASE OC -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        android:textSize="@dimen/default_title_size"
+        android:textStyle="bold"
+        android:layout_margin="@dimen/default_margin"/>
+
+    <!-- DESCRIPTION FIREBASE OC -->
+
+        <!-- BUTTONS CONTAINER -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical"
+        android:layout_margin="@dimen/default_large_margin">
+
+        <!-- BUTTON LOGIN -->
+        <Button
+            android:id="@+id/main_activity_button_login"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="77dp"
+            android:layout_margin="5dp"
+            android:background="@drawable/button_radius_primary_color"
+            android:padding="@dimen/default_large_margin"
+            android:text="@string/login"
+            android:textColor="#fff"
+            android:textSize="@dimen/default_text_size" />
+
+        <!-- BUTTON CHAT -->
+        <Button
+            android:id="@+id/main_activity_button_chat"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/default_large_margin"
+            android:background="@drawable/button_radius_accent_color"
+            android:padding="@dimen/default_large_margin"
+            android:text="@string/chat_with_mentor"
+            android:textColor="#fff"
+            android:textSize="@dimen/default_text_size" />
+
+    </LinearLayout>
+
+
+    </LinearLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
