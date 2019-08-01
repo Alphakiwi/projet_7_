@@ -12,12 +12,15 @@ import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.alphakiwi.projet_7.api.UserHelper;
 import com.alphakiwi.projet_7.base.BaseActivity;
 import com.alphakiwi.projet_7.fragment.FirstFragment;
+import com.alphakiwi.projet_7.fragment.SecondFragment;
+import com.alphakiwi.projet_7.fragment.ThirdFragment;
 import com.alphakiwi.projet_7.model.User;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -27,10 +30,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import butterknife.BindView;
+
 public class HungryActivity extends  BaseActivity  implements NavigationView.OnNavigationItemSelectedListener{
 
     private TextView mTextMessage;
     ImageView imageViewProfile;
+
+    @BindView(R.id.content_frame)
+    FrameLayout frame ;
 
     //FOR DESIGN
 
@@ -42,20 +50,22 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
+
             switch (item.getItemId()) {
                 case R.id.navigation_mapView:
-                    FragmentManager fragmentManager = getSupportFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.content_frame
-                                    , new FirstFragment())
-                            .commit();
+                    mTextMessage.setText(R.string.title_mapView);
+                    frame.setVisibility(View.VISIBLE);
                     return true;
                 case R.id.navigation_listView:
                     mTextMessage.setText(R.string.title_listView);
+                    frame.setVisibility(View.GONE);
+
                     return true;
                 case R.id.navigation_workmates:
                     mTextMessage.setText(R.string.title_workmates);
-                    return true;
+                    frame.setVisibility(View.GONE);
+
             }
             return false;
         }
@@ -91,6 +101,13 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
         imageViewProfile = (ImageView) header.findViewById(R.id.profile_activity_imageview_profile2);
         textUsername = (TextView) header.findViewById(R.id.profile_activity_edit_text_username2);
         textViewEmail = (TextView) header.findViewById(R.id.profile_activity_text_view_email2);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.content_frame
+                        , new FirstFragment())
+                .commit();
+
 
 
         updateUIWhenCreating();

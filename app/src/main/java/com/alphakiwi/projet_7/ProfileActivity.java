@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.appcompat.app.AlertDialog;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -16,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.material.textfield.TextInputEditText;
+//import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 
@@ -33,7 +34,7 @@ public class ProfileActivity extends BaseActivity {
     @BindView(R.id.profile_activity_imageview_profile)
     ImageView imageViewProfile;
     @BindView(R.id.profile_activity_edit_text_username)
-    TextInputEditText textInputEditTextUsername;
+    EditText textInputEditTextUsername;
     @BindView(R.id.profile_activity_text_view_email)
     TextView textViewEmail;
     @BindView(R.id.profile_activity_progress_bar)

@@ -37,11 +37,11 @@ public abstract class BaseActivity extends AppCompatActivity {
         ButterKnife.bind(this); //Configure Butterknife
     }
 
-    @Override
+   /* @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
         MultiDex.install(this);
-    }
+    }*/
 
 
     public abstract int getFragmentLayout();

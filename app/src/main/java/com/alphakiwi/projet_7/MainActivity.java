@@ -16,7 +16,7 @@ import java.util.Arrays;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-class MainActivity extends BaseActivity {
+public class MainActivity extends BaseActivity {
 
     //FOR DESIGN
     @BindView(R.id.main_activity_coordinator_layout)
@@ -91,13 +91,14 @@ class MainActivity extends BaseActivity {
                         .createSignInIntentBuilder()
                         .setTheme(R.style.LoginTheme)
                         .setAvailableProviders(
-                                Arrays.asList(new AuthUI.IdpConfig.Builder(AuthUI.EMAIL_PROVIDER).build(), //EMAIL
-                                        new AuthUI.IdpConfig.Builder(AuthUI.GOOGLE_PROVIDER).build(), //GOOGLE
-                                        new AuthUI.IdpConfig.Builder(AuthUI.FACEBOOK_PROVIDER).build())) // FACEBOOK
+                                Arrays.asList(new AuthUI.IdpConfig.EmailBuilder().build(), //EMAIL
+                                        new AuthUI.IdpConfig.GoogleBuilder().build(), //GOOGLE
+                                        new AuthUI.IdpConfig.FacebookBuilder().build())) // FACEBOOK
                         .setIsSmartLockEnabled(false, true)
                         .setLogo(R.drawable.logo)
                         .build(),
                 RC_SIGN_IN);
+
     }
 
 
@@ -136,7 +137,7 @@ class MainActivity extends BaseActivity {
             if (resultCode == RESULT_OK) { // SUCCESS
                 this.createUserInFirestore();
                 showSnackBar(this.coordinatorLayout, getString(R.string.connection_succeed));
-            } else { // ERRORS
+            } /*else { // ERRORS
                 if (response == null) {
                     showSnackBar(this.coordinatorLayout, getString(R.string.error_authentication_canceled));
                 } else if (response.getErrorCode() == ErrorCodes.NO_NETWORK) {
@@ -144,7 +145,7 @@ class MainActivity extends BaseActivity {
                 } else if (response.getErrorCode() == ErrorCodes.UNKNOWN_ERROR) {
                     showSnackBar(this.coordinatorLayout, getString(R.string.error_unknown_error));
                 }
-            }
+            }*/
         }
     }
 }
