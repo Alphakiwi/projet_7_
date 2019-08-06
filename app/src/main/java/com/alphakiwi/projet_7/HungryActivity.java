@@ -32,6 +32,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 
 import butterknife.BindView;
 
+import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
+import static com.alphakiwi.projet_7.api.UserHelper.getUsersCollection;
+
 public class HungryActivity extends  BaseActivity  implements NavigationView.OnNavigationItemSelectedListener{
 
     private TextView mTextMessage;
@@ -51,20 +54,36 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+
 
             switch (item.getItemId()) {
                 case R.id.navigation_mapView:
                     mTextMessage.setText(R.string.title_mapView);
-                    frame.setVisibility(View.VISIBLE);
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame
+                                    , new FirstFragment())
+                            .addToBackStack(null)
+                            .commit();
                     return true;
                 case R.id.navigation_listView:
                     mTextMessage.setText(R.string.title_listView);
-                    frame.setVisibility(View.GONE);
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame
+                                    , new SecondFragment())
+                            .addToBackStack(null)
+                            .commit();
 
                     return true;
                 case R.id.navigation_workmates:
                     mTextMessage.setText(R.string.title_workmates);
-                    frame.setVisibility(View.GONE);
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.content_frame
+                                    , new ThirdFragment())
+                            .addToBackStack(null)
+                            .commit();
+                    return true;
 
             }
             return false;
@@ -105,7 +124,7 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame
-                        , new FirstFragment())
+                        , new ThirdFragment())
                 .commit();
 
 

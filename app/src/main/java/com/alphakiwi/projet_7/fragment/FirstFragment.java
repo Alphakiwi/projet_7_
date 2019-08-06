@@ -16,6 +16,11 @@ public class FirstFragment extends Fragment {
 
     View myView;
 
+    public static FirstFragment newInstance() {
+        FirstFragment fragment = new FirstFragment();
+        return fragment;
+    }
+
 
 
     @Nullable

@@ -1,10 +1,20 @@
 package com.alphakiwi.projet_7.api;
 
+import android.content.Context;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+
 import com.alphakiwi.projet_7.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
 
 /**
  * Created by Philippe on 30/01/2018.
@@ -12,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 public class  UserHelper {
 
-    private static final String COLLECTION_NAME = "users";
+    public static final String COLLECTION_NAME = "users";
 
     // --- COLLECTION REFERENCE ---
 
@@ -22,9 +32,9 @@ public class  UserHelper {
 
     // --- CREATE ---
 
-    public static Task<Void> createUser(String uid, String username, String urlPicture) {
+    public static Task<Void> createUser(String uid, String username, String urlPicture, String resto, boolean notification) {
         // 1 - Create Obj
-        User userToCreate = new User(uid, username, urlPicture);
+        User userToCreate = new User(uid, username, urlPicture, resto, notification);
 
         return UserHelper.getUsersCollection().document(uid).set(userToCreate);
     }
@@ -45,7 +55,36 @@ public class  UserHelper {
     // --- DELETE ---
 
     public static Task<Void> deleteUser(String uid) {
+
         return UserHelper.getUsersCollection().document(uid).delete();
     }
 
+
+    public static ArrayList<User> getAllUser() {
+
+        ArrayList<User> userList = new ArrayList<User>();
+
+
+        FirebaseFirestore.getInstance().collection(COLLECTION_NAME)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+
+                               // Toast.makeText(context,  document.getId() + " => " + document.getData(), Toast.LENGTH_LONG).show();
+                                userList.add (document.toObject(User.class));
+
+                            }
+                        }
+                    }
+                });
+        return userList;
+    }
+
+
 }
+
+

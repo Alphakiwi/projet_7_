@@ -6,6 +6,7 @@ import android.widget.Button;
 
 import com.alphakiwi.projet_7.api.UserHelper;
 import com.alphakiwi.projet_7.base.BaseActivity;
+import com.alphakiwi.projet_7.fragment.ThirdFragment;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
@@ -77,7 +78,12 @@ public class MainActivity extends BaseActivity {
             String username = this.getCurrentUser().getDisplayName();
             String uid = this.getCurrentUser().getUid();
 
-            UserHelper.createUser(uid, username, urlPicture).addOnFailureListener(this.onFailureListener());
+            String resto = " n'a pas encore choisit";
+            boolean notification = true;
+
+
+            UserHelper.createUser( uid, username, urlPicture, resto , notification).addOnFailureListener(this.onFailureListener());
+
         }
     }
 
@@ -108,8 +114,10 @@ public class MainActivity extends BaseActivity {
         startActivity(intent);
     }
 
+
+
     private void startHungryActivity(){
-        Intent intent = new Intent(this, HungryActivity.class);
+        Intent intent = new Intent(this,HungryActivity.class);
         startActivity(intent);
     }
 
