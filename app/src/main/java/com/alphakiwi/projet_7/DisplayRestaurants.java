@@ -46,7 +46,7 @@ public class DisplayRestaurants extends AppCompatActivity {
 
         Double lng = Double.parseDouble(longitude);
         Double lat = Double.parseDouble(latitude);
-        int radius = 10000;
+        int radius = 1000;
 
         ArrayList<Place> list = search(lat, lng, radius);
 
@@ -104,6 +104,7 @@ public class DisplayRestaurants extends AppCompatActivity {
                 place.reference = predsJsonArray.getJSONObject(i).getString("reference");
                 place.name = predsJsonArray.getJSONObject(i).getString("name");
                 resultList.add(place);
+
             }
         } catch (JSONException e) {
             Log.e(LOG_TAG, "Error processing JSON results", e);

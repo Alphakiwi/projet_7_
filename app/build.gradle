@@ -46,10 +46,11 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
 
     // Firebase
-    implementation "com.google.firebase:firebase-core:17.0.1"
+    implementation "com.google.firebase:firebase-core:12.0.1"
     implementation 'com.google.firebase:firebase-database:18.0.1'
     implementation 'com.google.firebase:firebase-storage:18.1.1'
     implementation 'com.google.firebase:firebase-auth:18.1.0'
+    implementation 'com.google.firebase:firebase-firestore:20.2.0'
 
     // FirebaseUI
     implementation 'com.firebaseui:firebase-ui-storage:3.3.1'
@@ -61,7 +62,7 @@ dependencies {
     implementation 'com.facebook.android:facebook-android-sdk:4.42.0'
 
 
-    implementation "com.google.android.material:material:1.1.0-alpha08"
+    implementation "com.google.android.material:material:1.1.0-alpha09"
     implementation 'androidx.multidex:multidex:2.0.1'
     implementation 'com.google.android.gms:play-services-auth:17.0.0'
     implementation "androidx.drawerlayout:drawerlayout:1.0.0"
@@ -71,9 +72,10 @@ dependencies {
     implementation 'pub.devrel:easypermissions:1.1.1'
 
 
+    implementation 'com.google.android.gms:play-services:17.0.0'
+    implementation 'com.google.android.gms:play-services-maps:17.0.0'
+    implementation 'com.google.android.gms:play-services-location:17.0.0'
     //implementation 'com.google.android.libraries.places:places:2.0.0'
-
-    implementation 'com.google.android.gms:play-services:12.0.1'
 
 
 }

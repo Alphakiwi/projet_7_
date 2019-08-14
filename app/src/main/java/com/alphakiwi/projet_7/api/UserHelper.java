@@ -5,9 +5,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
+import com.alphakiwi.projet_7.MainActivity;
 import com.alphakiwi.projet_7.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,6 +26,7 @@ import java.util.ArrayList;
 public class  UserHelper {
 
     public static final String COLLECTION_NAME = "users";
+    static ArrayList<User> userList = new ArrayList<User>();
 
     // --- COLLECTION REFERENCE ---
 
@@ -62,7 +66,6 @@ public class  UserHelper {
 
     public static ArrayList<User> getAllUser() {
 
-        ArrayList<User> userList = new ArrayList<User>();
 
 
         FirebaseFirestore.getInstance().collection(COLLECTION_NAME)
@@ -71,11 +74,14 @@ public class  UserHelper {
 
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                        userList = new ArrayList<>();
+
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-                               // Toast.makeText(context,  document.getId() + " => " + document.getData(), Toast.LENGTH_LONG).show();
-                                userList.add (document.toObject(User.class));
+                                userList.add(document.toObject(User.class));
+
 
                             }
                         }

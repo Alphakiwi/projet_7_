@@ -32,21 +32,17 @@ public class Restaurant {
     // Workmates coming to this restaurant
     public ArrayList workmates;
 
-    // True if opened
-    public boolean open;
 
     // Opening hour
     public int openingHour;
 
-    // Closing hour
-    public int closingHour;
 
 
 
 
     public Restaurant() { }
 
-    public Restaurant(String id, String name, String urlPicture, String address, int rating, String phone, String website, float distance, ArrayList workmates, boolean open, int openingHour, int closingHour ) {
+    public Restaurant(String id, String name, String urlPicture, String address, int rating, String phone, String website, float distance, ArrayList workmates, int openingHour ) {
         this.id = id;
         this.name = name;
         this.urlPicture = urlPicture;
@@ -56,9 +52,7 @@ public class Restaurant {
         this.website = website;
         this.distance =distance ;
         this.workmates = workmates ;
-        this.open = open ;
         this.openingHour = openingHour ;
-        this.closingHour = closingHour;
 
 
     }
@@ -73,9 +67,7 @@ public class Restaurant {
     public String getWebsite() { return website ; }
     public float getDistance() { return distance ; }
     public ArrayList getWorkmates() { return workmates ; }
-    public boolean getOpen() { return open; }
     public int getOpeningHour() { return openingHour; }
-    public int getClosingHour() { return  closingHour; }
 
 
     // --- SETTERS ---
@@ -88,8 +80,6 @@ public class Restaurant {
     public void setWebsite(String website) { this.website = website; }
     public void setDistance(float distance) { this.distance =distance ; }
     public void setWorkmates(ArrayList workmates ) { this.workmates = workmates; }
-    public void setOpen(boolean open) { this.open =open ; }
     public void setOpeningHour(int openingHour) { this.openingHour = openingHour; }
-    public void setClosingHour(int closingHour) { this.closingHour =closingHour ; }
 
 }

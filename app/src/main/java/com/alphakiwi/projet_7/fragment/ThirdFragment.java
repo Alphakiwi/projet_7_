@@ -13,15 +13,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alphakiwi.projet_7.HungryActivity;
 import com.alphakiwi.projet_7.MyAdapter;
 import com.alphakiwi.projet_7.R;
 
 import com.alphakiwi.projet_7.model.User;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
 
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
-import static com.google.android.gms.internal.zzfsh.logger;
 
 
 public class ThirdFragment extends Fragment {
@@ -29,6 +30,7 @@ public class ThirdFragment extends Fragment {
 
     View myView;
     MyAdapter adapter;
+    ArrayList<User> listUser;
 
     public static ThirdFragment newInstance() {
         ThirdFragment fragment = new ThirdFragment();
@@ -38,6 +40,7 @@ public class ThirdFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
 
@@ -51,8 +54,8 @@ public class ThirdFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        ArrayList<User> listUser =  getAllUser() ;
 
+        listUser =  getAllUser() ;
         adapter = new MyAdapter(getContext(), listUser);
 
         //recyclerView.setItemAnimator(new DefaultItemAnimator());

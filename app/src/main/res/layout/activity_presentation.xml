@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="#EEE"
+    android:layout_height="match_parent"
+    tools:context=".PresentationActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/back"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="15dp"/>
+
+
+        <ImageView
+            android:id="@+id/imageAvatar"
+            android:layout_width="400dp"
+            android:layout_height="300dp"
+            android:text="Denis"/>
+
+
+
+
+        <TextView
+            android:id="@+id/text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="225dp"
+            android:layout_marginLeft="20dp"
+
+            android:fontFamily="monospace"
+            android:gravity="left"
+            android:text="Denis"
+            android:textColor="#FFF"
+            android:textSize="35dp" />
+
+
+    </RelativeLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="300dp"
+        android:layout_marginTop="270dp"
+        android:background="#FFFFFF"
+        android:backgroundTint="#FFFFFF"
+        android:clickable="true"
+        app:elevation="4dp"
+        app:layout_anchor="@+id/fab"
+        app:layout_anchorGravity="right|center" />
+
+    <TextView
+        android:id="@+id/lieuTel"
+        android:layout_width="match_parent"
+        android:layout_height="130dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="310dp"
+        android:background="@drawable/border"
+
+        android:gravity="left"
+        android:padding="5dp"
+        android:text="Denis"
+        android:textColor="#000"
+        android:textSize="20dp" />
+
+
+    <TextView
+        android:id="@+id/loca"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="350dp"
+
+        android:gravity="left"
+        android:paddingLeft="35dp"
+        android:text="localisation"
+        android:textColor="#444"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/tel"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="380dp"
+
+        android:paddingLeft="35dp"
+        android:gravity="left"
+        android:text="+33 * ** ** ** ** "
+        android:textColor="#444"
+        android:textSize="15dp" />
+
+
+    <TextView
+        android:id="@+id/facebook"
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="410dp"
+
+        android:paddingLeft="35dp"
+        android:gravity="left"
+        android:text="www/facebook.fr/denis"
+        android:textColor="#444"
+        android:textSize="15dp" />
+
+
+    <TextView
+        android:id="@+id/Apropos"
+        android:layout_width="match_parent"
+        android:layout_height="35dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="450dp"
+        android:padding="5dp"
+        android:gravity="left"
+        android:text="COWORKERS :"
+        android:textColor="#000"
+        android:background="@drawable/border"
+        android:textSize="20dp" />
+
+
+
+    <TextView
+        android:id="@+id/description"
+        android:scrollbars = "vertical"
+        android:fadeScrollbars="false"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="485dp"
+        android:padding="5dp"
+
+
+        android:gravity="left"
+        android:text="Je suis Denis"
+        android:textColor="#444"
+        android:background="@drawable/border"
+        android:textSize="13dp" />
+
+
+
+
+
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

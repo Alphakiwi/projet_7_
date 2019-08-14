@@ -28,6 +28,7 @@ import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import butterknife.BindView;
@@ -64,7 +65,6 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
                                     , new FirstFragment())
-                            .addToBackStack(null)
                             .commit();
                     return true;
                 case R.id.navigation_listView:
@@ -72,7 +72,6 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
                                     , new SecondFragment())
-                            .addToBackStack(null)
                             .commit();
 
                     return true;
@@ -81,7 +80,6 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
                                     , new ThirdFragment())
-                            .addToBackStack(null)
                             .commit();
                     return true;
 
@@ -93,6 +91,8 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        getAllUser();
 
 
 
@@ -124,7 +124,7 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame
-                        , new ThirdFragment())
+                        , new FirstFragment())
                 .commit();
 
 

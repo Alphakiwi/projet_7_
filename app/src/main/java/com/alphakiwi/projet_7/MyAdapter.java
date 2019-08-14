@@ -35,6 +35,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.name.setText(profiles.get(position).getUsername());
+
         holder.descript.setText(profiles.get(position).getResto());
         Glide.with(holder.avatar.getContext())
                 .load(profiles.get(position).getUrlPicture())
@@ -53,6 +54,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
     class MyViewHolder extends RecyclerView.ViewHolder {
         TextView name, descript ;
         ImageView avatar;
+
 
         public MyViewHolder(@NonNull View itemView) {
             super(itemView);

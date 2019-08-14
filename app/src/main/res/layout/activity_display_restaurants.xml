@@ -7,9 +7,15 @@
     android:background="#000"
     tools:context=".DisplayRestaurants">
 
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/appbar_scrolling_view_behavior"
+        android:background="#FFF"/>
+
     <ListView
         android:id="@+id/listView"
-        style="@style/AppThemeNavigation"
+        app:popupTheme="@style/AppThemeNavigation"
         android:layout_width="344dp"
         android:layout_height="495dp"
         android:layout_marginStart="8dp"
