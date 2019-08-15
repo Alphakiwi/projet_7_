@@ -15,12 +15,14 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alphakiwi.projet_7.api.UserHelper;
 import com.alphakiwi.projet_7.base.BaseActivity;
 import com.alphakiwi.projet_7.fragment.FirstFragment;
 import com.alphakiwi.projet_7.fragment.SecondFragment;
 import com.alphakiwi.projet_7.fragment.ThirdFragment;
+import com.alphakiwi.projet_7.model.Restaurant;
 import com.alphakiwi.projet_7.model.User;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
@@ -34,6 +36,9 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import butterknife.BindView;
 
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
+import static com.alphakiwi.projet_7.api.UserHelper.getAllUserListResto;
+import static com.alphakiwi.projet_7.api.UserHelper.getAllUserWithoutMyself;
+import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 import static com.alphakiwi.projet_7.api.UserHelper.getUsersCollection;
 
 public class HungryActivity extends  BaseActivity  implements NavigationView.OnNavigationItemSelectedListener{
@@ -93,6 +98,8 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
         super.onCreate(savedInstanceState);
 
         getAllUser();
+        getAllUserListResto();
+        getAllUserWithoutMyself();
 
 
 
@@ -179,14 +186,28 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
         FragmentManager fragmentManager = getSupportFragmentManager();
 
         if (id == R.id.nav_first_layout) {
-            fragmentManager.beginTransaction()
-                    .replace(R.id.content_frame
-                            , new FirstFragment())
-                    .commit();
+
+
+            int comp = getUserCurrent().getResto().getName().compareTo("Pas encore choisit");
+
+            if (comp== 0) {
+
+                Toast.makeText(this, "Vous n'avez pas encore choisit de restaurant.", Toast.LENGTH_SHORT).show();;
+
+            }else {
+                Intent i = new Intent(this, PresentationActivity.class);
+
+                i.putExtra("resto", getUserCurrent().getResto());
+
+                startActivity(i);
+
+            }
         } else if (id == R.id.nav_second_layout) {
             Intent newPage = new Intent(this
                     , ProfileActivity.class);
             startActivity(newPage);
+
+            this.finish();
         } else if (id == R.id.nav_third_layout) {
             AuthUI.getInstance()
                     .signOut(this)

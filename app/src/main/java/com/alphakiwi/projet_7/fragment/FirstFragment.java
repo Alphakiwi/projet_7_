@@ -21,6 +21,7 @@ import com.alphakiwi.projet_7.HungryActivity;
 import com.alphakiwi.projet_7.PresentationActivity;
 import com.alphakiwi.projet_7.R;
 import com.alphakiwi.projet_7.ToLauchRestaurant;
+import com.alphakiwi.projet_7.model.Restaurant;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -35,10 +36,12 @@ import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import butterknife.OnClick;
 
 import static androidx.core.content.ContextCompat.startActivity;
+import static com.alphakiwi.projet_7.api.UserHelper.getAllUserListResto;
 
 public class FirstFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
@@ -70,7 +73,7 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.first_layout, container, false);
-        Button button = (Button) view.findViewById(R.id.recentrer);
+        FloatingActionButton button = (FloatingActionButton ) view.findViewById(R.id.recentrer);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -80,18 +83,10 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
                 }
                 Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                 LatLng here = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+
+
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(here, 14));
 
-                double latitude = mLastLocation.getLatitude();
-                double longitude = mLastLocation.getLongitude();
-                String Restaurant = "restaurant";
-
-                String url = getUrl(latitude, longitude, Restaurant);
-                Object[] DataTransfer = new Object[2];
-                DataTransfer[0] = mMap;
-                DataTransfer[1] = url;
-                GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
-                getNearbyPlacesData.execute(DataTransfer);
 
 
             }
@@ -150,6 +145,7 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
                 String lieu = marker.getSnippet();
                 String nom = marker.getTitle();
+                Restaurant resto = new Restaurant(nom,lieu);
 
                /* String actionId = markerMap.get(marker.getId());
 
@@ -160,12 +156,17 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
                     Intent i = new Intent(MainActivity.this, ActivityTwo.class);
                     startActivity(i);
                 }
-            */
-                Intent i = new Intent(getActivity(), PresentationActivity.class);
-                i.putExtra("lieu",lieu);
-                i.putExtra("nom",nom);
 
-                startActivity(i);
+            */
+
+               int comp = nom.compareTo("YOU ARE HERE");
+
+               if (comp != 0) {
+                   Intent i = new Intent(getActivity(), PresentationActivity.class);
+                   i.putExtra("resto", resto);
+
+                   startActivity(i);
+               }
 
             }
         });
@@ -192,7 +193,7 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         LatLng here = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(here).title("YOU ARE HERE").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN)));
+        mMap.addMarker(new MarkerOptions().position(here).title("YOU ARE HERE").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(here, 14));
 
         double latitude = mLastLocation.getLatitude();
@@ -203,7 +204,7 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
         Object[] DataTransfer = new Object[2];
         DataTransfer[0] = mMap;
         DataTransfer[1] = url;
-        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData();
+        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData( getAllUserListResto());
         getNearbyPlacesData.execute(DataTransfer);
 
 

@@ -1,21 +1,32 @@
 package com.alphakiwi.projet_7;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.widget.Button;
 
 import com.alphakiwi.projet_7.api.UserHelper;
 import com.alphakiwi.projet_7.base.BaseActivity;
 import com.alphakiwi.projet_7.fragment.ThirdFragment;
+import com.alphakiwi.projet_7.model.Restaurant;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+
+import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
+import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 
 public class MainActivity extends BaseActivity {
 
@@ -74,15 +85,18 @@ public class MainActivity extends BaseActivity {
 
         if (this.getCurrentUser() != null){
 
-            String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
-            String username = this.getCurrentUser().getDisplayName();
-            String uid = this.getCurrentUser().getUid();
+            if (!getAllUser().contains(getUserCurrent())) {
 
-            String resto = " n'a pas encore choisit";
-            boolean notification = true;
+                String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+                String username = this.getCurrentUser().getDisplayName();
+                String uid = this.getCurrentUser().getUid();
+
+                Restaurant resto = new Restaurant("Pas encore choisit", "?");
+                boolean notification = true;
 
 
-            UserHelper.createUser( uid, username, urlPicture, resto , notification).addOnFailureListener(this.onFailureListener());
+                UserHelper.createUser(uid, username, urlPicture, resto, notification).addOnFailureListener(this.onFailureListener());
+            }
 
         }
     }
@@ -154,6 +168,27 @@ public class MainActivity extends BaseActivity {
                     showSnackBar(this.coordinatorLayout, getString(R.string.error_unknown_error));
                 }
             }*/
+        }
+    }
+
+    public void sharedpref(){
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!prefs.getBoolean("FirstTime", false)) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY,22);
+            calendar.set(Calendar.MINUTE,00);
+            if (calendar.getTime().compareTo(new Date()) < 0) calendar.add(Calendar.DAY_OF_MONTH, 1);
+            Intent intent = new Intent(getApplicationContext(),NotificationReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+            if (alarmManager != null) {
+                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
+            }
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("FirstTime", true);
+            editor.apply();
         }
     }
 }

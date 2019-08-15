@@ -25,6 +25,13 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     String googlePlacesData;
     GoogleMap mMap;
     String url;
+    List<String> name;
+
+    public GetNearbyPlacesData ( List<String> name ) {
+        this.name = name;
+
+
+    }
 
     @Override
     protected String doInBackground(Object... params) {
@@ -69,8 +76,18 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             markerOptions.snippet(vicinity);
             markerOptions.title(placeName);
 
+
+
+            if (name.contains(placeName)) {
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            }else{
+                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+            }
+
             mMap.addMarker(markerOptions);
-            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+
+
             //move map camera
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(11));

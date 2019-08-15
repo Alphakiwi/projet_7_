@@ -14,12 +14,12 @@ public class User {
     private String urlPicture;
 
     @Nullable
-    private String resto ;
+    private Restaurant resto ;
 
 
     public User() { }
 
-    public User(String uid, String username, String urlPicture,String resto ,boolean notification) {
+    public User(String uid, String username, String urlPicture,Restaurant resto ,boolean notification) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
@@ -32,7 +32,7 @@ public class User {
     public String getUid() { return uid; }
     public String getUsername() { return username; }
     public String getUrlPicture() { return urlPicture; }
-    public String getResto() { return resto; }
+    public Restaurant getResto() { return resto; }
     public boolean getNotification() { return notification; }
 
 
@@ -40,7 +40,7 @@ public class User {
     public void setUsername(String username) { this.username = username; }
     public void setUid(String uid) { this.uid = uid; }
     public void setUrlPicture(String urlPicture) { this.urlPicture = urlPicture; }
-    public void setResto(String resto) { this.resto = resto; }
+    public void setResto(Restaurant resto) { this.resto = resto; }
     public void setNotification(boolean notification) { this.notification = notification; }
 
 }

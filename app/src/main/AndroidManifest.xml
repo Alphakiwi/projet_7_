@@ -54,6 +54,21 @@
         <activity
             android:name=".PresentationActivity"
             android:label="@string/title_activity_hungry" />
+
+        <!-- NOTIFICATION SERVICE -->
+        <service
+            android:name=".NotificationsService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+
+        <receiver android:name=".NotificationReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+        </receiver>
+
     </application>
 
 </manifest>

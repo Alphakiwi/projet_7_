@@ -23,6 +23,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import java.util.ArrayList;
 
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
+import static com.alphakiwi.projet_7.api.UserHelper.getAllUserWithoutMyself;
+import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 
 
 public class ThirdFragment extends Fragment {
@@ -54,9 +56,7 @@ public class ThirdFragment extends Fragment {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-
-        listUser =  getAllUser() ;
-        adapter = new MyAdapter(getContext(), listUser);
+        adapter = new MyAdapter(getContext(), getAllUserWithoutMyself(), getUserCurrent(), true);
 
         //recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);

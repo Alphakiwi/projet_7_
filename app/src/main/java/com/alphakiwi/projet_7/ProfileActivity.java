@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.alphakiwi.projet_7.api.UserHelper;
 import com.alphakiwi.projet_7.base.BaseActivity;
@@ -158,8 +159,10 @@ public class ProfileActivity extends BaseActivity {
                 switch (origin){
                     case UPDATE_USERNAME:
                         progressBar.setVisibility(View.INVISIBLE);
+                        Toast.makeText(ProfileActivity.this, "Vous avez bien été renommé", Toast.LENGTH_SHORT).show();
                         break;
                     case SIGN_OUT_TASK:
+                        finish();
                         finish();
                         break;
                     case DELETE_USER_TASK:

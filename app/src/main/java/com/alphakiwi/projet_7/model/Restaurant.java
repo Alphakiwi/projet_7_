@@ -2,13 +2,14 @@ package com.alphakiwi.projet_7.model;
 
 import androidx.annotation.Nullable;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Restaurant {
+public class Restaurant implements Serializable {
 
 
     private String id;
-    private String name;
+    public String name;
 
     @Nullable
     private String urlPicture;
@@ -53,6 +54,13 @@ public class Restaurant {
         this.distance =distance ;
         this.workmates = workmates ;
         this.openingHour = openingHour ;
+
+
+    }
+
+    public Restaurant( String name, String address ) {
+        this.name = name;
+        this.address = address;
 
 
     }
