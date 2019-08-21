@@ -143,15 +143,27 @@ public class MentorChatActivity extends BaseActivity implements MentorChatAdapte
         StorageReference mImageRef = FirebaseStorage.getInstance().getReference(uuid);
         mImageRef.putFile(this.uriImageSelected)
                 .addOnSuccessListener(this, new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                    @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                        String pathImageSavedInFirebase = taskSnapshot.getMetadata().getDownloadUrl().toString();
+                        mImageRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                final Uri downloadUrl = uri;
+                                MessageHelper.createMessageWithImageForChat(downloadUrl.toString(), message, currentChatName, modelCurrentUser).addOnFailureListener(onFailureListener());
+
+
+
+                            }
+                        });
+                       // String pathImageSavedInFirebase = taskSnapshot.getMetadata().getDownloadUrl().toString();
                         // B - SAVE MESSAGE IN FIRESTORE
-                        MessageHelper.createMessageWithImageForChat(pathImageSavedInFirebase, message, currentChatName, modelCurrentUser).addOnFailureListener(onFailureListener());
+                      //  MessageHelper.createMessageWithImageForChat(pathImageSavedInFirebase, message, currentChatName, modelCurrentUser).addOnFailureListener(onFailureListener());
                     }
                 })
                 .addOnFailureListener(this.onFailureListener());
     }
+
+
+
 
     // --------------------
     // FILE MANAGEMENT

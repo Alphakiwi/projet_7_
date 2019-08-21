@@ -32,7 +32,11 @@ import com.alphakiwi.projet_7.model.User;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,6 +46,7 @@ import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -148,7 +153,7 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
         updateUIWhenCreating();
 
 
-       /* // Initialize the AutocompleteSupportFragment.
+        // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
@@ -160,15 +165,15 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+               // Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
             }
 
             @Override
             public void onError(Status status) {
                 // TODO: Handle the error.
-                Log.i(TAG, "An error occurred: " + status);
+               // Log.i(TAG, "An error occurred: " + status);
             }
-        });*/
+        });
 
 
     }
