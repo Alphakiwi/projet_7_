@@ -1,6 +1,9 @@
 package com.alphakiwi.projet_7;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentManager;
@@ -8,6 +11,8 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
+
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,8 +38,16 @@ import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+
+
+import java.util.Calendar;
+import java.util.Date;
+
 import butterknife.BindView;
 
+import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUserListResto;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUserWithoutMyself;
@@ -43,7 +56,6 @@ import static com.alphakiwi.projet_7.api.UserHelper.getUsersCollection;
 
 public class HungryActivity extends  BaseActivity  implements NavigationView.OnNavigationItemSelectedListener{
 
-    private TextView mTextMessage;
     ImageView imageViewProfile;
 
     @BindView(R.id.content_frame)
@@ -66,14 +78,12 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
 
             switch (item.getItemId()) {
                 case R.id.navigation_mapView:
-                    mTextMessage.setText(R.string.title_mapView);
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
                                     , new FirstFragment())
                             .commit();
                     return true;
                 case R.id.navigation_listView:
-                    mTextMessage.setText(R.string.title_listView);
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
                                     , new SecondFragment())
@@ -81,7 +91,6 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
 
                     return true;
                 case R.id.navigation_workmates:
-                    mTextMessage.setText(R.string.title_workmates);
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
                                     , new ThirdFragment())
@@ -101,9 +110,9 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
         getAllUserListResto();
         getAllUserWithoutMyself();
 
+        sharedpref();
 
 
-        mTextMessage = (TextView) findViewById(R.id.message);
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
@@ -137,6 +146,30 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
 
 
         updateUIWhenCreating();
+
+
+       /* // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+// Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+
+// Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                // TODO: Get info about the selected place.
+                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+            }
+
+            @Override
+            public void onError(Status status) {
+                // TODO: Handle the error.
+                Log.i(TAG, "An error occurred: " + status);
+            }
+        });*/
+
 
     }
 
@@ -260,6 +293,30 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
                    textUsername.setText(username);
                 }
             });
+        }
+    }
+
+
+    public void sharedpref(){
+
+
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        if (!prefs.getBoolean("FirstTime", false)) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY,16);
+            calendar.set(Calendar.MINUTE,50);
+            if (calendar.getTime().compareTo(new Date()) < 0) calendar.add(Calendar.DAY_OF_MONTH, 1);
+            Intent intent = new Intent(getApplicationContext(),NotificationReceiver.class);
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
+            AlarmManager alarmManager = (AlarmManager)getSystemService(this.ALARM_SERVICE);
+            if (alarmManager != null) {
+                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(), INTERVAL_FIFTEEN_MINUTES,pendingIntent);
+            }
+
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putBoolean("FirstTime", true);
+            editor.apply();
         }
     }
 

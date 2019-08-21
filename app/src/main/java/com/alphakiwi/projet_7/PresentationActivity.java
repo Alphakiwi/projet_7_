@@ -3,6 +3,7 @@ package com.alphakiwi.projet_7;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -47,9 +48,13 @@ public class PresentationActivity extends BaseActivity {
     private TextView facebook = null;
     private ImageView image = null;
     private Button back = null;
+    private Button like = null;
+
     private FloatingActionButton fab;
     private static final int UPDATE_RESTO = 40;
     private static final int UPDATE_RESTO2 = 50;
+    private static final int UPDATE_RESTO_LIKE = 60;
+    private static final int UPDATE_RESTO_LIKE2 = 70;
 
 
     Restaurant resto = new Restaurant();
@@ -71,22 +76,12 @@ public class PresentationActivity extends BaseActivity {
         resto = (Restaurant) i.getSerializableExtra("resto");
 
 
-
-
-
-
-
-
         text.setText(resto.getName());
         lieuTel.setText(resto.getName());
         loca.setText(resto.getAddress());
 
         telephone.setText("");
         facebook.setText("");
-
-
-
-
 
 
 
@@ -169,7 +164,7 @@ public class PresentationActivity extends BaseActivity {
 
 */
         configureFab();
-
+        configureLike();
         configureBack();
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listCoworkers);
@@ -218,6 +213,51 @@ public class PresentationActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+    }
+
+    private void configureLike() {
+        like = findViewById(R.id.like);
+
+
+        if(getUserCurrent().getRestoLike().contains(resto.getName())){
+            like.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_baseline_star_24px, 0, 0);
+        }
+
+
+        like.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                ArrayList<String> newRestoLike = getUserCurrent().getRestoLike();
+
+                if(getUserCurrent().getRestoLike().contains(resto.getName())){
+
+                    like.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_baseline_star_border_24px,0,0);
+                    newRestoLike.remove(resto.getName());
+                    Map<String, Object> updateMap = new HashMap();
+                    updateMap.put("restoLike", newRestoLike);
+
+                    if (getCurrentUser() != null) {
+                        UserHelper.updateRestoLike(newRestoLike, getCurrentUser().getUid()).addOnFailureListener(onFailureListener()).addOnSuccessListener(updateUIAfterRESTRequestsCompleted(UPDATE_RESTO_LIKE2));
+                    }
+
+                }else {
+
+
+                    like.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_baseline_star_24px, 0, 0);
+                    newRestoLike.add(resto.getName());
+                    Map<String, Object> updateMap = new HashMap();
+                    updateMap.put("restoLike", newRestoLike);
+
+                    if (getCurrentUser() != null) {
+                        UserHelper.updateRestoLike(newRestoLike, getCurrentUser().getUid()).addOnFailureListener(onFailureListener()).addOnSuccessListener(updateUIAfterRESTRequestsCompleted(UPDATE_RESTO_LIKE));
+                    }
+
+                }
+
             }
         });
 
@@ -285,6 +325,12 @@ public class PresentationActivity extends BaseActivity {
                         break;
                     case UPDATE_RESTO2:
                         Toast.makeText(PresentationActivity.this, "Vous avez choisi de ne plus manger à : " + resto.getName(), Toast.LENGTH_SHORT).show();
+                        break;
+                    case UPDATE_RESTO_LIKE:
+                        Toast.makeText(PresentationActivity.this, "Vous aimez " + resto.getName(), Toast.LENGTH_SHORT).show();
+                        break;
+                    case UPDATE_RESTO_LIKE2:
+                        Toast.makeText(PresentationActivity.this, "Vous n'aimez plus " + resto.getName(), Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;

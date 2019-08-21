@@ -1,5 +1,6 @@
 package com.alphakiwi.projet_7.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -15,9 +16,12 @@ import android.view.ViewGroup;
 
 import com.alphakiwi.projet_7.HungryActivity;
 import com.alphakiwi.projet_7.MyAdapter;
+import com.alphakiwi.projet_7.PresentationActivity;
 import com.alphakiwi.projet_7.R;
 
+import com.alphakiwi.projet_7.mentor_chat.MentorChatActivity;
 import com.alphakiwi.projet_7.model.User;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
@@ -50,6 +54,19 @@ public class ThirdFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.user_recycler, container, false);
+
+        FloatingActionButton button = (FloatingActionButton ) myView.findViewById(R.id.fab);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent i = new Intent(getActivity(), MentorChatActivity.class);
+
+                startActivity(i);
+
+
+            }
+        });
 
 
         RecyclerView  recyclerView = (RecyclerView) myView.findViewById(R.id.list);

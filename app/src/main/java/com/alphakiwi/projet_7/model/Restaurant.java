@@ -43,7 +43,7 @@ public class Restaurant implements Serializable {
 
     public Restaurant() { }
 
-    public Restaurant(String id, String name, String urlPicture, String address, int rating, String phone, String website, float distance, ArrayList workmates, int openingHour ) {
+    public Restaurant(String id, String name, String urlPicture, String address, int rating, String phone, String website, float distance, int openingHour ) {
         this.id = id;
         this.name = name;
         this.urlPicture = urlPicture;
@@ -52,7 +52,6 @@ public class Restaurant implements Serializable {
         this.phone = phone;
         this.website = website;
         this.distance =distance ;
-        this.workmates = workmates ;
         this.openingHour = openingHour ;
 
 
@@ -74,7 +73,6 @@ public class Restaurant implements Serializable {
     public String getPhone() { return phone; }
     public String getWebsite() { return website ; }
     public float getDistance() { return distance ; }
-    public ArrayList getWorkmates() { return workmates ; }
     public int getOpeningHour() { return openingHour; }
 
 
@@ -87,7 +85,6 @@ public class Restaurant implements Serializable {
     public void setPhone(String phone) { this.phone = phone; }
     public void setWebsite(String website) { this.website = website; }
     public void setDistance(float distance) { this.distance =distance ; }
-    public void setWorkmates(ArrayList workmates ) { this.workmates = workmates; }
     public void setOpeningHour(int openingHour) { this.openingHour = openingHour; }
 
 }

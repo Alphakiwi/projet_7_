@@ -2,6 +2,7 @@ package com.alphakiwi.projet_7.model;
 
 import androidx.annotation.Nullable;
 
+import java.util.ArrayList;
 
 
 public class User {
@@ -17,14 +18,18 @@ public class User {
     private Restaurant resto ;
 
 
+    private ArrayList<String> restoLike;
+
+
     public User() { }
 
-    public User(String uid, String username, String urlPicture,Restaurant resto ,boolean notification) {
+    public User(String uid, String username, String urlPicture,Restaurant resto ,boolean notification, ArrayList<String> restoLike) {
         this.uid = uid;
         this.username = username;
         this.urlPicture = urlPicture;
         this.resto = resto;
         this.notification= notification;
+        this.restoLike = restoLike;
 
     }
 
@@ -34,6 +39,7 @@ public class User {
     public String getUrlPicture() { return urlPicture; }
     public Restaurant getResto() { return resto; }
     public boolean getNotification() { return notification; }
+    public ArrayList<String> getRestoLike () {return restoLike;}
 
 
     // --- SETTERS ---

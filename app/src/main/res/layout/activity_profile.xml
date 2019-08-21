@@ -126,11 +126,12 @@
         android:orientation="vertical">
 
         <Switch
-            android:id="@+id/switch2"
+            android:id="@+id/switch_notif"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/default_large_margin"
             android:text="Notification"
+            android:checked="true"
             android:textColor="#FFFFFF"/>
 
         <!-- BUTTON UPDATE USERNAME -->

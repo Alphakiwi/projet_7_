@@ -6,6 +6,7 @@ import android.content.Intent;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.widget.Button;
 
@@ -13,11 +14,17 @@ import com.alphakiwi.projet_7.api.UserHelper;
 import com.alphakiwi.projet_7.base.BaseActivity;
 import com.alphakiwi.projet_7.fragment.ThirdFragment;
 import com.alphakiwi.projet_7.model.Restaurant;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
@@ -36,6 +43,8 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.main_activity_button_login)
     Button buttonLogin;
 
+    //CallbackManager callbackManager;
+
     //FOR DATA
     private static final int RC_SIGN_IN = 123;
 
@@ -45,6 +54,8 @@ public class MainActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+       // callbackManager.onActivityResult(requestCode, resultCode, data);
+
         this.handleResponseAfterSignIn(requestCode, resultCode, data);
     }
 
@@ -85,7 +96,7 @@ public class MainActivity extends BaseActivity {
 
         if (this.getCurrentUser() != null){
 
-            if (!getAllUser().contains(getUserCurrent())) {
+            //if (!getAllUser().contains(getUserCurrent())) {
 
                 String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
                 String username = this.getCurrentUser().getDisplayName();
@@ -94,9 +105,11 @@ public class MainActivity extends BaseActivity {
                 Restaurant resto = new Restaurant("Pas encore choisit", "?");
                 boolean notification = true;
 
+                ArrayList<String> restoLike = new ArrayList<String>();
 
-                UserHelper.createUser(uid, username, urlPicture, resto, notification).addOnFailureListener(this.onFailureListener());
-            }
+
+                UserHelper.createUser(uid, username, urlPicture, resto, notification, restoLike ).addOnFailureListener(this.onFailureListener());
+         //   }
 
         }
     }
@@ -119,7 +132,41 @@ public class MainActivity extends BaseActivity {
                         .build(),
                 RC_SIGN_IN);
 
+
+
     }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        /*callbackManager = CallbackManager.Factory.create();
+
+        LoginManager.getInstance().registerCallback(callbackManager,
+                new FacebookCallback<LoginResult>() {
+                    @Override
+                    public void onSuccess(LoginResult loginResult) {
+                        createUserInFirestore();
+                        showSnackBar(coordinatorLayout, getString(R.string.connection_succeed));
+                        updateUIWhenResuming();
+                    }
+
+                    @Override
+                    public void onCancel() {
+                        // App code
+                    }
+
+                    @Override
+                    public void onError(FacebookException exception) {
+                        // App code
+                    }
+                });*/
+
+
+
+    }
+
+
 
 
 
@@ -171,24 +218,4 @@ public class MainActivity extends BaseActivity {
         }
     }
 
-    public void sharedpref(){
-
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean("FirstTime", false)) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY,22);
-            calendar.set(Calendar.MINUTE,00);
-            if (calendar.getTime().compareTo(new Date()) < 0) calendar.add(Calendar.DAY_OF_MONTH, 1);
-            Intent intent = new Intent(getApplicationContext(),NotificationReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
-            AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-            if (alarmManager != null) {
-                alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY,pendingIntent);
-            }
-
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("FirstTime", true);
-            editor.apply();
-        }
-    }
 }

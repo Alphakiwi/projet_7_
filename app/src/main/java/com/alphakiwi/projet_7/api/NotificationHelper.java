@@ -12,18 +12,66 @@ import androidx.core.app.NotificationCompat;
 
 import com.alphakiwi.projet_7.MainActivity;
 import com.alphakiwi.projet_7.R;
+import com.alphakiwi.projet_7.model.User;
+
+import java.util.ArrayList;
+
+import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
+import static com.alphakiwi.projet_7.api.UserHelper.getAllUserWithoutMyself;
+import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 
 public class NotificationHelper {
 
     private Context mContext;
+
     private static final String NOTIFICATION_CHANNEL_ID = "10001";
 
     public NotificationHelper(Context context) {
         mContext = context;
+
     }
 
     public void createNotification()
     {
+        String restoName = getUserCurrent().getResto().getName();
+
+        ArrayList<User> listUser = new ArrayList<User>();
+
+        for(int j = 0; j < getAllUserWithoutMyself().size(); j++){
+
+            String restoUser = getAllUserWithoutMyself().get(j).getResto().getName();
+
+
+            int comparaison = restoUser.compareTo(restoName);
+
+
+
+            if (comparaison == 0){
+
+                listUser.add(getAllUserWithoutMyself().get(j));
+            }
+
+        }
+
+        String coworkers = "Personne d'autre n'y mange.";
+
+        if (listUser.size()>0) {
+            coworkers = "Vous mangez avec : ";
+        }
+
+        for(int j = 0; j < listUser.size(); j++){
+
+            if (j!= 0){
+                coworkers += ", ";
+            }
+            coworkers += listUser.get(j).getUsername();
+
+        }
+
+
+
+
+
 
         Intent intent = new Intent(mContext , MainActivity.class);
 
@@ -36,9 +84,9 @@ public class NotificationHelper {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
-        mBuilder.setContentTitle("Title")
-                .setContentText("Content")
-                .setAutoCancel(false)
+        mBuilder.setContentTitle("Vous avez choisi de manger à " + restoName)
+                .setContentText(coworkers)
+                .setAutoCancel(true)
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)
                 .setContentIntent(resultPendingIntent);
 

@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import static androidx.core.content.ContextCompat.startActivity;
+import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 
 /**
  * Created by navneet on 23/7/16.
@@ -78,10 +79,18 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
 
 
+
             if (name.contains(placeName)) {
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             }else{
-                markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+                if (getUserCurrent().getRestoLike().contains(placeName)){
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
+
+                 }else {
+                    markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+
+                }
             }
 
             mMap.addMarker(markerOptions);

@@ -36,9 +36,9 @@ public class  UserHelper {
 
     // --- CREATE ---
 
-    public static Task<Void> createUser(String uid, String username, String urlPicture, Restaurant resto, boolean notification) {
+    public static Task<Void> createUser(String uid, String username, String urlPicture, Restaurant resto, boolean notification, ArrayList<String> restoLike) {
         // 1 - Create Obj
-        User userToCreate = new User(uid, username, urlPicture, resto, notification);
+        User userToCreate = new User(uid, username, urlPicture, resto, notification, restoLike);
 
         return UserHelper.getUsersCollection().document(uid).set(userToCreate);
     }
@@ -57,6 +57,14 @@ public class  UserHelper {
 
     public static Task<Void> updateResto(Map<String, Object> resto, String uid) {
         return UserHelper.getUsersCollection().document(uid).update("resto", resto);
+    }
+
+    public static Task<Void> updateNotif(boolean bool, String uid) {
+        return UserHelper.getUsersCollection().document(uid).update("notification", bool);
+    }
+
+    public static Task<Void> updateRestoLike(ArrayList<String> restoLike, String uid) {
+        return UserHelper.getUsersCollection().document(uid).update("restoLike", restoLike);
     }
 
 
@@ -178,6 +186,8 @@ public class  UserHelper {
                     }
                 });
         return restoList;
+
+
     }
 
 

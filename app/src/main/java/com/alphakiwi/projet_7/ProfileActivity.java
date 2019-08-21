@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,6 +26,8 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import butterknife.BindView;
 import butterknife.OnClick;
 
+import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
+
 /**
  * Created by Philippe on 25/01/2018.
  */
@@ -41,8 +44,15 @@ public class ProfileActivity extends BaseActivity {
     @BindView(R.id.profile_activity_progress_bar)
     ProgressBar progressBar;
 
+    @BindView(R.id.profile_activity_resto)
+    TextView resto;
+    @BindView(R.id.switch_notif)
+    Switch notif;
+
 
     //FOR DATA
+    private static final int UPDATE_Notif = 5;
+    private static final int UPDATE_Notif2 = 8;
     private static final int SIGN_OUT_TASK = 10;
     private static final int DELETE_USER_TASK = 20;
     private static final int UPDATE_USERNAME = 30;
@@ -51,6 +61,38 @@ public class ProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.updateUIWhenCreating();
+        resto.setText(getUserCurrent().getResto().getName());
+
+        if (getUserCurrent().getNotification() == false){
+            notif.setChecked(false);
+        }
+        notif.setOnClickListener(new View.OnClickListener() {
+
+
+            @Override
+
+            public void onClick(View v) {
+
+
+                if (notif.isChecked()) {
+
+                    if (getCurrentUser() != null){
+                            UserHelper.updateNotif(true, getCurrentUser().getUid()).addOnFailureListener(onFailureListener()).addOnSuccessListener(updateUIAfterRESTRequestsCompleted(UPDATE_Notif));
+                    }
+
+
+                } else {
+
+                    if (getCurrentUser() != null){
+                        UserHelper.updateNotif(false, getCurrentUser().getUid()).addOnFailureListener(onFailureListener()).addOnSuccessListener(updateUIAfterRESTRequestsCompleted(UPDATE_Notif2));
+                    }
+
+
+                }
+
+            }
+        });
+
     }
 
     @Override
@@ -167,6 +209,12 @@ public class ProfileActivity extends BaseActivity {
                         break;
                     case DELETE_USER_TASK:
                         finish();
+                        break;
+                    case UPDATE_Notif:
+                        Toast.makeText(ProfileActivity.this, "Vous recevrez des notifications chaque midi !", Toast.LENGTH_SHORT).show();
+                        break;
+                    case UPDATE_Notif2:
+                        Toast.makeText(ProfileActivity.this, "Vous ne recevrez plus de notification.", Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;

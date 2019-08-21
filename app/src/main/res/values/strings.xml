@@ -3,6 +3,9 @@
 
     <string name="main_activity_description">Discute avec tes mentors, tout simplement.</string>
 
+    <string name="facebook_app_id">1299204710257094</string> <string name="fb_login_protocol_scheme">fb1299204710257094</string>
+
+
     <string name="login">Connexion</string>
     <string name="chat_with_mentor">I\'m hungry !</string>
 
