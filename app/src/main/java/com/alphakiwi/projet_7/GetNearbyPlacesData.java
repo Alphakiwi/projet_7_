@@ -1,17 +1,24 @@
 package com.alphakiwi.projet_7;
 import android.content.Intent;
+import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
+
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.maps.GeoApiContext;
+import com.google.maps.GeocodingApi;
+import com.google.maps.errors.ApiException;
+import com.google.maps.model.GeocodingResult;
+import com.google.android.gms.maps.model.LatLng;
 
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 
@@ -70,11 +77,29 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
             String placeName = googlePlace.get("place_name");
             String vicinity = googlePlace.get("vicinity");
+            String id =  googlePlace.get("place_id");
+
+            /*GeoApiContext context = new GeoApiContext.Builder()
+                    .apiKey("AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4")
+                    .build();
+            try {
+                GeocodingResult[] results =  GeocodingApi.newRequest(context)
+                        .latlng(new com.google.maps.model.LatLng(52.2641, 76.9597)).await();
+                id = results[0].placeId;
+
+            } catch (ApiException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }*/
+
 
 
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
-            markerOptions.snippet(vicinity);
+            markerOptions.snippet(" " + id);
             markerOptions.title(placeName);
 
 

@@ -230,13 +230,17 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
 
-        StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        /*StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesUrl.append("location=" + latitude + "," + longitude);
         googlePlacesUrl.append("&radius=" + 10000);
         googlePlacesUrl.append("&type=" + "meal_takeaway");
         googlePlacesUrl.append("&sensor=true");
-        googlePlacesUrl.append("&key=" + "AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
+        googlePlacesUrl.append("&fields=photos,formatted_address,name,place_id,opening_hours");
+        googlePlacesUrl.append("&key=" + "AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");*/
+        StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&fields=place_id&key=AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
         return (googlePlacesUrl.toString());
     }
-
+//https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
+//https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=%2B61293744000&inputtype=phonenumber&fields=place_id&key=YOUR_API_KEY
+//https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&key=YOUR_API_KEY
 }

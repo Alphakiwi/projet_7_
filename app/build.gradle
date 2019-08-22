@@ -62,7 +62,7 @@ dependencies {
 
 
 
-
+    implementation 'com.google.maps:google-maps-services:0.9.3'
 
     // FACEBOOK LOGIN SUPPORT
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
