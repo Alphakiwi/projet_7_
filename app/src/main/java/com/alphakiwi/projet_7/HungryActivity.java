@@ -1,11 +1,18 @@
 package com.alphakiwi.projet_7;
 
+import android.Manifest;
 import android.app.AlarmManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
+
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -33,12 +40,16 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.RectangularBounds;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 
@@ -58,18 +69,25 @@ import static com.alphakiwi.projet_7.api.UserHelper.getAllUserListResto;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUserWithoutMyself;
 import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 import static com.alphakiwi.projet_7.api.UserHelper.getUsersCollection;
+import static com.google.android.libraries.places.api.model.TypeFilter.ESTABLISHMENT;
 
-public class HungryActivity extends  BaseActivity  implements NavigationView.OnNavigationItemSelectedListener{
+public class HungryActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     ImageView imageViewProfile;
 
     @BindView(R.id.content_frame)
-    FrameLayout frame ;
+    FrameLayout frame;
 
     //FOR DESIGN
 
     TextView textUsername;
     TextView textViewEmail;
+
+    private View mLayout;
+    private static final int PERMISSION_REQUEST_LOCATION = 0;
+
+    FragmentManager fragmentManager = null;
+
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -77,8 +95,7 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
 
-            FragmentManager fragmentManager = getSupportFragmentManager();
-
+            fragmentManager = getSupportFragmentManager();
 
 
             switch (item.getItemId()) {
@@ -111,11 +128,17 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        mLayout = findViewById(R.id.mlayout);
+
+
         getAllUser();
         getAllUserListResto();
         getAllUserWithoutMyself();
 
         sharedpref();
+
+        showRestaurants();
+
 
 
         BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
@@ -142,23 +165,53 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
         textUsername = (TextView) header.findViewById(R.id.profile_activity_edit_text_username2);
         textViewEmail = (TextView) header.findViewById(R.id.profile_activity_text_view_email2);
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.content_frame
                         , new FirstFragment())
                 .commit();
 
 
-
         updateUIWhenCreating();
 
+        Places.initialize(getApplicationContext(), "AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
 
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
                 getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
+
 // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment.setHint("Search restaurants");
+        autocompleteFragment.setTypeFilter(ESTABLISHMENT);
+
+        LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
+            return;
+        }
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        double longitude = 0;
+        double latitude = 0;
+
+        if (location != null) {
+             longitude = location.getLongitude();
+             latitude = location.getLatitude();
+        }
+
+
+        autocompleteFragment.setLocationRestriction(RectangularBounds.newInstance(
+                new LatLng(longitude - 0.2, latitude-0.2),
+                new LatLng(longitude + 0.2, latitude+0.2)));
+
 
 // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -322,6 +375,72 @@ public class HungryActivity extends  BaseActivity  implements NavigationView.OnN
             SharedPreferences.Editor editor = prefs.edit();
             editor.putBoolean("FirstTime", true);
             editor.apply();
+        }
+    }
+
+
+    public void showRestaurants(){
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            // Permission is already available, show restaurants
+            Snackbar.make(mLayout,
+                    "Location permission available. Show restaurants.",
+                    Snackbar.LENGTH_SHORT).show();
+        } else {
+            // Permission is missing and must be requested.
+            requestLocationPermission();
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                                           int[] grantResults) {
+        if (requestCode == PERMISSION_REQUEST_LOCATION) {
+            // Request for location permission.
+            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Permission has been granted. Start preview Activity.
+                fragmentManager.beginTransaction()
+                        .replace(R.id.content_frame
+                                , new FirstFragment())
+                        .commit();
+
+                Snackbar.make(mLayout, "Location permission granted. Showing restaurants.",
+                        Snackbar.LENGTH_SHORT)
+                        .show();
+            } else {
+                // Permission request was denied.
+                Snackbar.make(mLayout, "Location permission request was denied.",
+                        Snackbar.LENGTH_SHORT)
+                        .show();
+            }
+        }
+    }
+
+    private void requestLocationPermission() {
+        // Permission has not been granted and must be requested.
+        if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)) {
+            // Provide an additional rationale to the user if the permission was not granted
+            // and the user would benefit from additional context for the use of the permission.
+            // Display a SnackBar with a button to request the missing permission.
+            Snackbar.make(mLayout, "Location access is required to display restaurants near you.",
+                    Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // Request the permission
+                    ActivityCompat.requestPermissions(HungryActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            PERMISSION_REQUEST_LOCATION);
+                }
+            }).show();
+
+        } else {
+            Snackbar.make(mLayout,
+                    "Permission is not available. Requesting location permission.",
+                    Snackbar.LENGTH_SHORT).show();
+            // Request the permission. The result will be received in onRequestPermissionResult().
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    PERMISSION_REQUEST_LOCATION);
         }
     }
 

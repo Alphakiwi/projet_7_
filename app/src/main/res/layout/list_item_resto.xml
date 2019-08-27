@@ -23,9 +23,48 @@
         app:layout_constraintTop_toTopOf="parent"
         />
 
+    <TextView
+        android:id="@+id/list_distance"
+        android:layout_width="83dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="75dp"
+        android:textSize="15sp"
+        android:layout_marginTop="4dp"
+        android:text="" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="86dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="10dp"
+        android:src="@drawable/ic_bonhomme"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/list_number_workmate"
+        android:layout_width="32dp"
+        android:layout_height="22dp"
+        android:layout_marginLeft="115dp"
+        android:layout_marginTop="24dp"
+        android:textSize="20sp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/list_note"
+        android:layout_width="86dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="75dp"
+        android:textSize="15sp"
+        android:layout_marginTop="54dp"
+        android:text=""
+       />
+
     <LinearLayout
         android:id="@+id/list_root"
-
+        android:layout_marginLeft="70dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clickable="true"
@@ -49,6 +88,16 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="65dp"
             android:layout_marginTop="4dp"
+            android:text="" />
+
+
+        <TextView
+            android:id="@+id/list_ouverture"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="65dp"
+            android:layout_marginTop="4dp"
+            android:textStyle="italic"
             android:text="" />
 
 

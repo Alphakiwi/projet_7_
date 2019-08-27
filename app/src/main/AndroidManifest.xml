@@ -88,7 +88,9 @@
         </service>
 
         <receiver android:name=".NotificationReceiver">
+
             <intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
 

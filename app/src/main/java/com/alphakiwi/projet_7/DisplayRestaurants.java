@@ -46,7 +46,7 @@ public class DisplayRestaurants extends AppCompatActivity {
 
         Double lng = Double.parseDouble(longitude);
         Double lat = Double.parseDouble(latitude);
-        int radius = 1000;
+        int radius = 10000;
 
         ArrayList<Place> list = search(lat, lng, radius);
 
@@ -68,7 +68,7 @@ public class DisplayRestaurants extends AppCompatActivity {
             sb.append(OUT_JSON);
             sb.append("location=" + String.valueOf(lat) + "," + String.valueOf(lng));
             sb.append("&radius=" + String.valueOf(radius));
-            sb.append("&type=restaurant");
+            sb.append("&type=meal_takeaway");
             sb.append("&key=" + API_KEY);
 
             URL url = new URL(sb.toString());

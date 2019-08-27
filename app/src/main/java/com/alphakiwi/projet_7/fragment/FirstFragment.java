@@ -1,6 +1,7 @@
 package com.alphakiwi.projet_7.fragment;
 
 
+import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -37,6 +38,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
 
 import butterknife.OnClick;
 
@@ -60,6 +62,12 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
     private Context mContext;
 
+    private View mView;
+
+
+    private static final int PERMISSION_REQUEST_LOCATION = 0;
+
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -72,8 +80,10 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.first_layout, container, false);
-        FloatingActionButton button = (FloatingActionButton ) view.findViewById(R.id.recentrer);
+        mView = inflater.inflate(R.layout.first_layout, container, false);
+
+
+        FloatingActionButton button = (FloatingActionButton ) mView.findViewById(R.id.recentrer);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,7 +106,7 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
 
 
-        return view;
+        return mView;
     }
 
 
@@ -204,7 +214,7 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
         Object[] DataTransfer = new Object[2];
         DataTransfer[0] = mMap;
         DataTransfer[1] = url;
-        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData( getAllUserListResto());
+        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData( getAllUserListResto(), mContext);
         getNearbyPlacesData.execute(DataTransfer);
 
 
@@ -230,17 +240,21 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
 
-        /*StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
+        StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesUrl.append("location=" + latitude + "," + longitude);
         googlePlacesUrl.append("&radius=" + 10000);
         googlePlacesUrl.append("&type=" + "meal_takeaway");
         googlePlacesUrl.append("&sensor=true");
         googlePlacesUrl.append("&fields=photos,formatted_address,name,place_id,opening_hours");
-        googlePlacesUrl.append("&key=" + "AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");*/
-        StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&fields=place_id&key=AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
+        googlePlacesUrl.append("&key=" + "AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
+        //StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&fields=place_id&key=AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
         return (googlePlacesUrl.toString());
     }
 //https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
 //https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=%2B61293744000&inputtype=phonenumber&fields=place_id&key=YOUR_API_KEY
 //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&key=YOUR_API_KEY
+
+
+
+
 }

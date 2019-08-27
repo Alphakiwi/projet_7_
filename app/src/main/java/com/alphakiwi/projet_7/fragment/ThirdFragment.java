@@ -21,6 +21,7 @@ import com.alphakiwi.projet_7.R;
 
 import com.alphakiwi.projet_7.mentor_chat.MentorChatActivity;
 import com.alphakiwi.projet_7.model.User;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -37,6 +38,7 @@ public class ThirdFragment extends Fragment {
     View myView;
     MyAdapter adapter;
     ArrayList<User> listUser;
+
 
     public static ThirdFragment newInstance() {
         ThirdFragment fragment = new ThirdFragment();
@@ -55,7 +57,10 @@ public class ThirdFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.user_recycler, container, false);
 
+
         FloatingActionButton button = (FloatingActionButton ) myView.findViewById(R.id.fab);
+        button.setImageResource(R.drawable.ic_baseline_message_24px);
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

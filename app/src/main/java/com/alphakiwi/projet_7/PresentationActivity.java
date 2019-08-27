@@ -3,7 +3,9 @@ package com.alphakiwi.projet_7;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
@@ -26,6 +28,18 @@ import com.bumptech.glide.Glide;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.PhotoMetadata;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.net.FetchPhotoRequest;
+import com.google.android.libraries.places.api.net.FetchPhotoResponse;
+import com.google.android.libraries.places.api.net.FetchPlaceRequest;
+import com.google.android.libraries.places.api.net.FetchPlaceResponse;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
+import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
+import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
+import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 
@@ -57,6 +71,7 @@ public class PresentationActivity extends BaseActivity {
     private static final int UPDATE_RESTO_LIKE2 = 70;
 
 
+
     Restaurant resto = new Restaurant();
 
 
@@ -76,79 +91,50 @@ public class PresentationActivity extends BaseActivity {
         resto = (Restaurant) i.getSerializableExtra("resto");
 
 
-        text.setText(resto.getName());
-        lieuTel.setText(resto.getName());
-        loca.setText(resto.getAddress());
-
-        telephone.setText("");
-        facebook.setText("");
-
-
-
-        /*
-
-        Intent i = getIntent();
-        String id = i.getStringExtra("id");
-
-        PlacesClient placesClient = new PlacesClient() {
-            @NonNull
-            @Override
-            public Task<FindAutocompletePredictionsResponse> findAutocompletePredictions(@NonNull FindAutocompletePredictionsRequest findAutocompletePredictionsRequest) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<FetchPhotoResponse> fetchPhoto(@NonNull FetchPhotoRequest fetchPhotoRequest) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<FetchPlaceResponse> fetchPlace(@NonNull FetchPlaceRequest fetchPlaceRequest) {
-                return null;
-            }
-
-            @NonNull
-            @Override
-            public Task<FindCurrentPlaceResponse> findCurrentPlace(@NonNull FindCurrentPlaceRequest findCurrentPlaceRequest) {
-                if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    Activity#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for Activity#requestPermissions for more details.
-                    return null;
-                }
-                return null;
-            }
-        };
-
-
         // Define a Place ID.
-        String placeId = id;
+        String placeId = "ChIJz3kEPbrXwkcRGr5hiPD8568";
 
 // Specify the fields to return.
-        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME);
+        List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS,Place.Field.PHONE_NUMBER, Place.Field.WEBSITE_URI, Place.Field.PHOTO_METADATAS, Place.Field.RATING, Place.Field.OPENING_HOURS);
 
 // Construct a request object, passing the place ID and fields array.
         FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeId, placeFields);
 
+
+// Initialize Places.
+        Places.initialize(getApplicationContext(), "AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
+
+// Create a new Places client instance.
+        PlacesClient placesClient = Places.createClient(this);
+
         placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
             Place place = response.getPlace();
+            //Log.i(TAG, "Place found: " + place.getName());
 
 
-            text.setText(place.getName());
-            lieuTel.setText(place.getName() );
-            presentation.setText(place.getUserRatingsTotal());
+
+            text.setText(place.getName() );
+            lieuTel.setText(place.getName() + " (" + place.getRating() + "/5)"  );
             loca.setText(place.getAddress());
-            telephone.setText(place.getPhoneNumber() );
+
+            telephone.setText(place.getPhoneNumber());
             facebook.setText(place.getWebsiteUri().toString());
 
+            configureCall("tel:" + place.getPhoneNumber());
+            configureWebsite(place.getWebsiteUri());
+
+            PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
+            String attributions = photoMetadata.getAttributions();
+            FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).setMaxHeight(200).build();
+            placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
+                Bitmap bitmap = fetchPhotoResponse.getBitmap();
+                Glide.with(this)
+                        .load(bitmap)
+                        .centerCrop()
+                        .into(image);
 
 
+            });
 
 
 
@@ -157,15 +143,25 @@ public class PresentationActivity extends BaseActivity {
             if (exception instanceof ApiException) {
                 ApiException apiException = (ApiException) exception;
                 int statusCode = apiException.getStatusCode();
+                Toast.makeText(this, "Problème pour récupérer les informations du restaurant.", Toast.LENGTH_SHORT).show();
+                finish();
                 // Handle error with given status code.
+              //  Log.e(TAG, "Place not found: " + exception.getMessage());
             }
         });
 
 
-*/
+
+
+
+
+
+
+
         configureFab();
         configureLike();
         configureBack();
+
 
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listCoworkers);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
@@ -213,6 +209,37 @@ public class PresentationActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+
+    }
+
+
+    private void configureCall(String num) {
+        Button call = findViewById(R.id.call);
+
+
+        call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent appel = new Intent(Intent.ACTION_DIAL, Uri.parse(num));
+                startActivity(appel);
+
+            }
+        });
+
+    }
+
+    private void configureWebsite(Uri url) {
+        Button website = findViewById(R.id.website);
+
+
+        website.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent( Intent.ACTION_VIEW,  url  );
+                startActivity(intent);
+
             }
         });
 

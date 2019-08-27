@@ -1,8 +1,10 @@
 package com.alphakiwi.projet_7;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,9 +36,11 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     GoogleMap mMap;
     String url;
     List<String> name;
+    Context context;
 
-    public GetNearbyPlacesData ( List<String> name ) {
+    public GetNearbyPlacesData ( List<String> name, Context c ) {
         this.name = name;
+        this.context = c;
 
 
     }
@@ -52,6 +56,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             Log.d("GooglePlacesReadTask", "doInBackground Exit");
         } catch (Exception e) {
             Log.d("GooglePlacesReadTask", e.toString());
+            Toast.makeText(context, "Echec de la requête.", Toast.LENGTH_SHORT).show();
         }
         return googlePlacesData;
     }
@@ -67,6 +72,11 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     }
 
     private void ShowNearbyPlaces(List<HashMap<String, String>> nearbyPlacesList) {
+
+        if (nearbyPlacesList.size() == 0){
+            Toast.makeText(context, "Echec de la requête. Ré-essayer", Toast.LENGTH_SHORT).show();
+        }
+
         for (int i = 0; i < nearbyPlacesList.size(); i++) {
             Log.d("onPostExecute","Entered into showing locations");
             MarkerOptions markerOptions = new MarkerOptions();
@@ -99,7 +109,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
-            markerOptions.snippet(" " + id);
+            markerOptions.snippet(vicinity);
             markerOptions.title(placeName);
 
 
