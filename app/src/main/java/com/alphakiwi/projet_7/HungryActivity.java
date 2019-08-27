@@ -149,6 +149,8 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
         setSupportActionBar(toolbar);
 
 
+
+
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.button_update_account, R.string.app_name);
@@ -198,14 +200,8 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
             return;
         }
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-
-        double longitude = 0;
-        double latitude = 0;
-
-        if (location != null) {
-             longitude = location.getLongitude();
-             latitude = location.getLatitude();
-        }
+        double longitude = location.getLongitude();
+        double latitude = location.getLatitude();
 
 
         autocompleteFragment.setLocationRestriction(RectangularBounds.newInstance(
@@ -337,8 +333,9 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
             //Get email & username from Firebase
             String email = TextUtils.isEmpty( getCurrentUser().getEmail()) ? getString(R.string.info_no_email_found) :  getCurrentUser().getEmail();
 
+
             //Update views with data
-            this.textViewEmail.setText(email);
+            this.textViewEmail.setText(email );
 
 
 

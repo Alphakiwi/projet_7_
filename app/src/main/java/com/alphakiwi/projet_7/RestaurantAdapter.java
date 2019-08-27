@@ -31,8 +31,10 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 
+import static android.view.View.GONE;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUserWithoutMyself;
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
@@ -78,13 +80,41 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             Place place = response.getPlace();
             //Log.i(TAG, "Place found: " + place.getName());
 
+            double notation = place.getRating();
+
+
             //holder.opening.setText(place.getOpeningHours().toString());
-            holder.note.setText(" (" + place.getRating() + "/5)" );
+
+
+            if (notation<4){
+                holder.star3.setVisibility(GONE);
+            }
+
+            if (notation<3){
+                holder.star2.setVisibility(GONE);
+            }
+
+            if (notation<2){
+                holder.star1.setVisibility(GONE);
+            }
+
+
+
+
             double dist = CalculationByDistance(here,place.getLatLng())/10 + CalculationByDistance(here,place.getLatLng())%10;
             BigDecimal bd = new BigDecimal(dist);
             bd= bd.setScale(2,BigDecimal.ROUND_DOWN);
             dist = bd.doubleValue();
             holder.distance.setText(dist + " km");
+
+
+            Calendar cal = Calendar.getInstance();
+// De Sunday = 1 à Saturday = 7
+            int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 2;
+
+
+
+            holder.opening.setText(place.getOpeningHours().getWeekdayText().get(dayOfWeek));
 
 
 
@@ -168,8 +198,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {
-        TextView name, descript, note, distance, nbWorkmate, opening ;
-        ImageView image;
+        TextView name, descript, distance, nbWorkmate, opening ;
+        ImageView image, star1, star2, star3;
 
 
         public MyViewHolder(@NonNull View itemView) {
@@ -177,10 +207,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             name = itemView.findViewById(R.id.list_title);
             descript =  itemView.findViewById(R.id.list_desc);
             image = itemView.findViewById(R.id.list_image);
-            note = itemView.findViewById(R.id.list_note);
             distance =  itemView.findViewById(R.id.list_distance);
             nbWorkmate = itemView.findViewById(R.id.list_number_workmate);
             opening =  itemView.findViewById(R.id.list_ouverture);
+            star1 = itemView.findViewById(R.id.star1);
+            star2 = itemView.findViewById(R.id.star2);
+            star3 = itemView.findViewById(R.id.star3);
+
         }
     }
 
@@ -208,5 +241,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
                 + " Meter   " + meterInDec);
 
         return Radius * c;
+
+
+
     }
+
+
 }
