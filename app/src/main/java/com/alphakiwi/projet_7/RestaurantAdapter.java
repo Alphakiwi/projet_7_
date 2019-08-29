@@ -118,20 +118,23 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             holder.opening.setText(place.getOpeningHours().getWeekdayText().get(dayOfWeek));
 
 
+            if (place.getPhotoMetadatas()!=null) {
 
 
-            PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
-            String attributions = photoMetadata.getAttributions();
-            FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).setMaxHeight(200).build();
-            placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
-                Bitmap bitmap = fetchPhotoResponse.getBitmap();
-                Glide.with(context)
-                        .load(bitmap)
-                        .centerCrop()
-                        .into(holder.image);
+                PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
+                String attributions = photoMetadata.getAttributions();
+                FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).setMaxHeight(200).build();
+                placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
+                    Bitmap bitmap = fetchPhotoResponse.getBitmap();
+                    Glide.with(context)
+                            .load(bitmap)
+                            .centerCrop()
+                            .into(holder.image);
 
 
-            });
+                });
+
+            }
 
 
 

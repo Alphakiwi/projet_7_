@@ -61,10 +61,13 @@ public class ProfileActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.updateUIWhenCreating();
-        resto.setText(getUserCurrent().getResto().getName());
 
-        if (getUserCurrent().getNotification() == false){
-            notif.setChecked(false);
+        if (getUserCurrent()!= null) {
+            resto.setText(getUserCurrent().getResto().getName());
+
+            if (getUserCurrent().getNotification() == false) {
+                notif.setChecked(false);
+            }
         }
         notif.setOnClickListener(new View.OnClickListener() {
 
