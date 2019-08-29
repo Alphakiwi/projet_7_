@@ -89,6 +89,11 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
     FragmentManager fragmentManager = null;
 
 
+
+    private static final String API_KEY = BuildConfig.API_KEY;
+
+
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -176,7 +181,7 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
 
         updateUIWhenCreating();
 
-        Places.initialize(getApplicationContext(), "AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
+        Places.initialize(getApplicationContext(), API_KEY);
 
         // Initialize the AutocompleteSupportFragment.
         AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
@@ -359,8 +364,8 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean("FirstTime", false)) {
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY,16);
-            calendar.set(Calendar.MINUTE,50);
+            calendar.set(Calendar.HOUR_OF_DAY,10);
+            calendar.set(Calendar.MINUTE,30);
             if (calendar.getTime().compareTo(new Date()) < 0) calendar.add(Calendar.DAY_OF_MONTH, 1);
             Intent intent = new Intent(getApplicationContext(),NotificationReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);

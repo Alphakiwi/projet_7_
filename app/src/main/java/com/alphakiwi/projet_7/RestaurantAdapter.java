@@ -35,6 +35,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import static android.view.View.GONE;
+import static com.alphakiwi.projet_7.BuildConfig.API_KEY;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUserWithoutMyself;
 import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
@@ -71,7 +72,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
 
 // Initialize Places.
-        Places.initialize(context, "AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
+        Places.initialize(context, API_KEY);
 
 // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(context);

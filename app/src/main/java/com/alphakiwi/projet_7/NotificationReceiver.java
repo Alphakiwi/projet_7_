@@ -14,19 +14,13 @@ public class NotificationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        if (intent.getAction().equalsIgnoreCase(
-                Intent.ACTION_BOOT_COMPLETED)) {
+        if (Intent.ACTION_BOOT_COMPLETED.equals(intent.getAction())) {
+            MyService.enqueueWork(context, new Intent());
+        }
+        /*if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
 
-        //if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
 
-            NotificationHelper notificationHelper = new NotificationHelper(context);
-            if (getUserCurrent().getNotification() == true) {
-                int comparaison = getUserCurrent().getResto().name.compareTo("Pas encore choisit");
-                if (comparaison != 0) {
-                    notificationHelper.createNotification();
-                }
-            }
         }
 
-    }
+    */}
 }

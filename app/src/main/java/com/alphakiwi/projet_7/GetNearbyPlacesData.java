@@ -87,30 +87,15 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
             String placeName = googlePlace.get("place_name");
             String vicinity = googlePlace.get("vicinity");
-            String id =  googlePlace.get("place_id");
 
-            /*GeoApiContext context = new GeoApiContext.Builder()
-                    .apiKey("AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4")
-                    .build();
-            try {
-                GeocodingResult[] results =  GeocodingApi.newRequest(context)
-                        .latlng(new com.google.maps.model.LatLng(52.2641, 76.9597)).await();
-                id = results[0].placeId;
-
-            } catch (ApiException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }*/
+            String id =  googlePlace.get("reference");
 
 
 
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
-            markerOptions.snippet(vicinity);
-            markerOptions.title(placeName);
+            markerOptions.snippet(vicinity + " \n :" + id);
+            markerOptions.title(placeName );
 
 
 

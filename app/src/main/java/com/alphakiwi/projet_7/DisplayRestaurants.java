@@ -20,10 +20,11 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.alphakiwi.projet_7.BuildConfig.API_KEY;
+
 public class DisplayRestaurants extends AppCompatActivity {
 
     private ListView mListView;
-    private static final String API_KEY = "AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4";
 
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
 

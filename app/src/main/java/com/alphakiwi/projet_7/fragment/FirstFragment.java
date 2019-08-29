@@ -1,7 +1,6 @@
 package com.alphakiwi.projet_7.fragment;
 
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -10,7 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,31 +17,23 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.alphakiwi.projet_7.GetNearbyPlacesData;
-import com.alphakiwi.projet_7.HungryActivity;
 import com.alphakiwi.projet_7.PresentationActivity;
 import com.alphakiwi.projet_7.R;
-import com.alphakiwi.projet_7.ToLauchRestaurant;
 import com.alphakiwi.projet_7.model.Restaurant;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 
-import butterknife.OnClick;
-
-import static androidx.core.content.ContextCompat.startActivity;
+import static com.alphakiwi.projet_7.BuildConfig.API_KEY;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUserListResto;
 
 public class FirstFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -83,7 +74,7 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
         mView = inflater.inflate(R.layout.first_layout, container, false);
 
 
-        FloatingActionButton button = (FloatingActionButton ) mView.findViewById(R.id.recentrer);
+        FloatingActionButton button = (FloatingActionButton) mView.findViewById(R.id.recentrer);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,19 +89,12 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(here, 14));
 
 
-
             }
         });
 
 
-
-
-
         return mView;
     }
-
-
-
 
 
     @Override
@@ -155,7 +139,7 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
                 String lieu = marker.getSnippet();
                 String nom = marker.getTitle();
-                Restaurant resto = new Restaurant(nom,lieu);
+                Restaurant resto = new Restaurant(nom, lieu);
 
                /* String actionId = markerMap.get(marker.getId());
 
@@ -169,14 +153,14 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
             */
 
-               int comp = nom.compareTo("YOU ARE HERE");
+                int comp = nom.compareTo("YOU ARE HERE");
 
-               if (comp != 0) {
-                   Intent i = new Intent(getActivity(), PresentationActivity.class);
-                   i.putExtra("resto", resto);
+                if (comp != 0) {
+                    Intent i = new Intent(getActivity(), PresentationActivity.class);
+                    i.putExtra("resto", resto);
 
-                   startActivity(i);
-               }
+                    startActivity(i);
+                }
 
             }
         });
@@ -214,17 +198,11 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
         Object[] DataTransfer = new Object[2];
         DataTransfer[0] = mMap;
         DataTransfer[1] = url;
-        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData( getAllUserListResto(), mContext);
+        GetNearbyPlacesData getNearbyPlacesData = new GetNearbyPlacesData(getAllUserListResto(), mContext);
         getNearbyPlacesData.execute(DataTransfer);
 
 
-
     }
-
-
-
-
-
 
 
     @Override
@@ -245,16 +223,15 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
         googlePlacesUrl.append("&radius=" + 10000);
         googlePlacesUrl.append("&type=" + "meal_takeaway");
         googlePlacesUrl.append("&sensor=true");
-        googlePlacesUrl.append("&fields=photos,formatted_address,name,place_id,opening_hours");
-        googlePlacesUrl.append("&key=" + "AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
+        //googlePlacesUrl.append("&fields=photos,formatted_address,name,place_id,opening_hours");
+        googlePlacesUrl.append("&key=" + API_KEY);
         //StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&fields=place_id&key=AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
         return (googlePlacesUrl.toString());
     }
 //https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
 //https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=%2B61293744000&inputtype=phonenumber&fields=place_id&key=YOUR_API_KEY
 //https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&key=YOUR_API_KEY
-
-
+//https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=10000&types=meal_takeaway&sensor=true&key=
 
 
 }

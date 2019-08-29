@@ -49,6 +49,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.alphakiwi.projet_7.BuildConfig.API_KEY;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
 import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 
@@ -102,7 +103,7 @@ public class PresentationActivity extends BaseActivity {
 
 
 // Initialize Places.
-        Places.initialize(getApplicationContext(), "AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
+        Places.initialize(getApplicationContext(), API_KEY);
 
 // Create a new Places client instance.
         PlacesClient placesClient = Places.createClient(this);
