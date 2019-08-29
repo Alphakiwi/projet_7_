@@ -33,16 +33,16 @@ public class NotificationHelper {
 
     public void createNotification()
     {
-        String restoName = getUserCurrent().getResto().getName();
+        String restoID = getUserCurrent().getResto().getId();
 
         ArrayList<User> listUser = new ArrayList<User>();
 
         for(int j = 0; j < getAllUserWithoutMyself().size(); j++){
 
-            String restoUser = getAllUserWithoutMyself().get(j).getResto().getName();
+            String restoUser = getAllUserWithoutMyself().get(j).getResto().getId();
 
 
-            int comparaison = restoUser.compareTo(restoName);
+            int comparaison = restoUser.compareTo(restoID);
 
 
 
@@ -84,7 +84,7 @@ public class NotificationHelper {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
-        mBuilder.setContentTitle("Vous avez choisi de manger à " + restoName)
+        mBuilder.setContentTitle("Vous avez choisi de manger à " + getUserCurrent().getResto().getName())
                 .setContentText(coworkers)
                 .setAutoCancel(true)
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)

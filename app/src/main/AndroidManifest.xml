@@ -30,8 +30,6 @@
         android:supportsRtl="true"
         android:theme="@style/NoTitle"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".ToLauchRestaurant"></activity>
-        <activity android:name=".DisplayRestaurants" />
 
         <uses-library android:name="com.google.android.maps" />
 

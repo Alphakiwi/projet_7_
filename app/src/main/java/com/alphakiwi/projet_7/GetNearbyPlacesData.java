@@ -35,11 +35,11 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     String googlePlacesData;
     GoogleMap mMap;
     String url;
-    List<String> name;
+    List<String> id;
     Context context;
 
-    public GetNearbyPlacesData ( List<String> name, Context c ) {
-        this.name = name;
+    public GetNearbyPlacesData ( List<String> id, Context c ) {
+        this.id = id;
         this.context = c;
 
 
@@ -88,23 +88,23 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             String placeName = googlePlace.get("place_name");
             String vicinity = googlePlace.get("vicinity");
 
-            String id =  googlePlace.get("reference");
+            String id_place =  googlePlace.get("reference");
 
 
 
             LatLng latLng = new LatLng(lat, lng);
             markerOptions.position(latLng);
-            markerOptions.snippet(vicinity + " \n :" + id);
+            markerOptions.snippet(vicinity + " \n :" + id_place);
             markerOptions.title(placeName );
 
 
 
 
-            if (name.contains(placeName)) {
+            if (id.contains(id_place)) {
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             }else{
 
-                if (getUserCurrent().getRestoLike().contains(placeName)){
+                if (getUserCurrent().getRestoLike().contains(id_place)){
                     markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ROSE));
 
                  }else {

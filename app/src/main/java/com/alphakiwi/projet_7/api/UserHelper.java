@@ -178,7 +178,7 @@ public class  UserHelper {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                restoList.add(document.toObject(User.class).getResto().getName());
+                                restoList.add(document.toObject(User.class).getResto().getId());
 
 
                             }

@@ -96,20 +96,20 @@ public class MainActivity extends BaseActivity {
 
         if (this.getCurrentUser() != null){
 
-            //if (!getAllUser().contains(getUserCurrent())) {
+            if (!getAllUser().contains(getUserCurrent())) {
 
                 String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
                 String username = this.getCurrentUser().getDisplayName();
                 String uid = this.getCurrentUser().getUid();
 
-                Restaurant resto = new Restaurant("Pas encore choisit", "?");
+                Restaurant resto = new Restaurant("Pas encore choisit", "?", "?");
                 boolean notification = true;
 
                 ArrayList<String> restoLike = new ArrayList<String>();
 
 
                 UserHelper.createUser(uid, username, urlPicture, resto, notification, restoLike ).addOnFailureListener(this.onFailureListener());
-         //   }
+            }
 
         }
     }

@@ -62,7 +62,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
 
         // Define a Place ID.
-        String placeId = "ChIJz3kEPbrXwkcRGr5hiPD8568";
+        String placeId = list.get(position).getId();
 
 // Specify the fields to return.
         List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.RATING, Place.Field.OPENING_HOURS, Place.Field.PHOTO_METADATAS, Place.Field.LAT_LNG);
@@ -155,10 +155,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
         for(int j = 0; j < getAllUserWithoutMyself().size(); j++){
 
-            String restoUser = getAllUserWithoutMyself().get(j).getResto().getName();
+            String restoUser = getAllUserWithoutMyself().get(j).getResto().getId();
 
 
-            int comparaison = restoUser.compareTo(list.get(position).getName());
+            int comparaison = restoUser.compareTo(list.get(position).getId());
 
 
 

@@ -93,7 +93,7 @@ public class PresentationActivity extends BaseActivity {
 
 
         // Define a Place ID.
-        String placeId = "ChIJz3kEPbrXwkcRGr5hiPD8568";
+        String placeId = resto.getId();
 
 // Specify the fields to return.
         List<Place.Field> placeFields = Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.ADDRESS,Place.Field.PHONE_NUMBER, Place.Field.WEBSITE_URI, Place.Field.PHOTO_METADATAS, Place.Field.RATING, Place.Field.OPENING_HOURS);
@@ -124,18 +124,22 @@ public class PresentationActivity extends BaseActivity {
             configureCall("tel:" + place.getPhoneNumber());
             configureWebsite(place.getWebsiteUri());
 
-            PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
-            String attributions = photoMetadata.getAttributions();
-            FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).setMaxHeight(200).build();
-            placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
-                Bitmap bitmap = fetchPhotoResponse.getBitmap();
-                Glide.with(this)
-                        .load(bitmap)
-                        .centerCrop()
-                        .into(image);
+            if (place.getPhotoMetadatas()!= null) {
+
+                PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
+                String attributions = photoMetadata.getAttributions();
+                FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).setMaxHeight(200).build();
+                placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
+                    Bitmap bitmap = fetchPhotoResponse.getBitmap();
+                    Glide.with(this)
+                            .load(bitmap)
+                            .centerCrop()
+                            .into(image);
 
 
-            });
+                });
+
+            }
 
 
 
@@ -172,10 +176,11 @@ public class PresentationActivity extends BaseActivity {
 
         for(int j = 0; j < getAllUser().size(); j++){
 
-            String restoUser = getAllUser().get(j).getResto().getName();
+            String restoUser = getAllUser().get(j).getResto().getId();
 
 
-            int comparaison = restoUser.compareTo(resto.getName());
+            int comparaison = restoUser.compareTo(resto.getId()
+            );
 
 
 
@@ -250,7 +255,7 @@ public class PresentationActivity extends BaseActivity {
         like = findViewById(R.id.like);
 
 
-        if(getUserCurrent().getRestoLike().contains(resto.getName())){
+        if(getUserCurrent().getRestoLike().contains(resto.getId())){
             like.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_baseline_star_24px, 0, 0);
         }
 
@@ -261,10 +266,10 @@ public class PresentationActivity extends BaseActivity {
 
                 ArrayList<String> newRestoLike = getUserCurrent().getRestoLike();
 
-                if(getUserCurrent().getRestoLike().contains(resto.getName())){
+                if(getUserCurrent().getRestoLike().contains(resto.getId())){
 
                     like.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_baseline_star_border_24px,0,0);
-                    newRestoLike.remove(resto.getName());
+                    newRestoLike.remove(resto.getId());
                     Map<String, Object> updateMap = new HashMap();
                     updateMap.put("restoLike", newRestoLike);
 
@@ -276,7 +281,7 @@ public class PresentationActivity extends BaseActivity {
 
 
                     like.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_baseline_star_24px, 0, 0);
-                    newRestoLike.add(resto.getName());
+                    newRestoLike.add(resto.getId());
                     Map<String, Object> updateMap = new HashMap();
                     updateMap.put("restoLike", newRestoLike);
 
@@ -294,7 +299,7 @@ public class PresentationActivity extends BaseActivity {
     private void configureFab() {
         fab = findViewById(R.id.fab);
 
-        final int[] comp = {getUserCurrent().getResto().getName().compareTo(resto.getName())};
+        final int[] comp = {getUserCurrent().getResto().getId().compareTo(resto.getId())};
 
 
         if (comp[0] == 0) {
@@ -308,7 +313,7 @@ public class PresentationActivity extends BaseActivity {
             @Override
             public void onClick(View v) {
 
-                comp[0] = getUserCurrent().getResto().getName().compareTo(resto.getName());
+                comp[0] = getUserCurrent().getResto().getId().compareTo(resto.getId());
 
 
                 if (comp[0] != 0) {
@@ -317,6 +322,7 @@ public class PresentationActivity extends BaseActivity {
                     Map<String, Object> updateMap = new HashMap();
                     updateMap.put("address", resto.address);
                     updateMap.put("name", resto.name);
+                    updateMap.put("id", resto.id);
 
 
                     fab.setImageResource(R.drawable.ic_baseline_done_24px);
@@ -330,6 +336,7 @@ public class PresentationActivity extends BaseActivity {
                     Map<String, Object> updateMap = new HashMap();
                     updateMap.put("address", "?");
                     updateMap.put("name", "Pas encore choisit");
+                    updateMap.put("id", "?");
 
 
                     fab.setImageResource(R.drawable.ic_baseline_done_outline_24px);

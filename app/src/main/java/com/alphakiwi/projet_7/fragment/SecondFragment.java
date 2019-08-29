@@ -18,11 +18,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 import android.widget.Toast;
 
-import com.alphakiwi.projet_7.DisplayRestaurants;
 import com.alphakiwi.projet_7.R;
 import com.alphakiwi.projet_7.RestaurantAdapter;
 import com.alphakiwi.projet_7.mentor_chat.MentorChatActivity;
@@ -185,7 +182,7 @@ public class SecondFragment extends Fragment {
             resultList = new ArrayList<Restaurant>(predsJsonArray.length());
             for (int i = 0; i < predsJsonArray.length(); i++) {
 
-                Restaurant place = new Restaurant(predsJsonArray.getJSONObject(i).getString("name"), predsJsonArray.getJSONObject(i).getString("vicinity"));
+                Restaurant place = new Restaurant(predsJsonArray.getJSONObject(i).getString("name"), predsJsonArray.getJSONObject(i).getString("vicinity"), predsJsonArray.getJSONObject(i).getString("reference"));
                 //place.reference = predsJsonArray.getJSONObject(i).getString("reference");
                 //place.name = predsJsonArray.getJSONObject(i).getString("name");
                 resultList.add(place);

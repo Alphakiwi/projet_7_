@@ -137,9 +137,12 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
             public void onInfoWindowClick(Marker marker) {
 
 
-                String lieu = marker.getSnippet();
+                String snippet = marker.getSnippet();
                 String nom = marker.getTitle();
-                Restaurant resto = new Restaurant(nom, lieu);
+                String[] separated = snippet.split(":");
+
+
+                Restaurant resto = new Restaurant(nom, separated[0], separated[1]);
 
                /* String actionId = markerMap.get(marker.getId());
 
