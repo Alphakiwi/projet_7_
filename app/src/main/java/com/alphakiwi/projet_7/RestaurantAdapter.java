@@ -44,6 +44,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
     Context context;
     ArrayList<Restaurant> list;
     LatLng here;
+    double notation;
 
     public RestaurantAdapter(Context c, ArrayList<Restaurant> l, LatLng h){
         context = c;
@@ -81,7 +82,11 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             Place place = response.getPlace();
             //Log.i(TAG, "Place found: " + place.getName());
 
-            double notation = place.getRating();
+            if (place.getRating()!= null) {
+
+                notation = place.getRating();
+
+            }
 
 
             //holder.opening.setText(place.getOpeningHours().toString());
@@ -114,7 +119,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 2;
 
 
-
+            if (place.getOpeningHours()!= null)
             holder.opening.setText(place.getOpeningHours().getWeekdayText().get(dayOfWeek));
 
 

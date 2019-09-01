@@ -40,6 +40,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.api.Status;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
@@ -62,6 +63,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
+import butterknife.OnClick;
 
 import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
@@ -88,6 +90,8 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
 
     FragmentManager fragmentManager = null;
 
+    FirstFragment firstFragment = new FirstFragment();
+
 
 
     private static final String API_KEY = BuildConfig.API_KEY;
@@ -107,8 +111,9 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
                 case R.id.navigation_mapView:
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
-                                    , new FirstFragment())
+                                    ,firstFragment )
                             .commit();
+
                     return true;
                 case R.id.navigation_listView:
                     fragmentManager.beginTransaction()
@@ -193,6 +198,7 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
         autocompleteFragment.setHint("Search restaurants");
         autocompleteFragment.setTypeFilter(ESTABLISHMENT);
 
+
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -202,16 +208,17 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
             //                                          int[] grantResults)
             // to handle the case where the user grants the permission. See the documentation
             // for Activity#requestPermissions for more details.
+
             return;
         }
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        /*Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
 
 
         autocompleteFragment.setLocationRestriction(RectangularBounds.newInstance(
-                new LatLng(longitude - 0.2, latitude-0.2),
-                new LatLng(longitude + 0.2, latitude+0.2)));
+                new LatLng(longitude - 1, latitude+1),
+                new LatLng(longitude -1, latitude+1)));*/
 
 
 // Set up a PlaceSelectionListener to handle the response.
@@ -219,7 +226,33 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
             @Override
             public void onPlaceSelected(Place place) {
                 // TODO: Get info about the selected place.
-               // Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+
+                if (place.getTypes()!= null) {
+
+                    if (place.getTypes().contains(Place.Type.RESTAURANT)) {
+
+                        Intent i = new Intent(HungryActivity.this, PresentationActivity.class);
+
+                        i.putExtra("resto", new Restaurant(place.getName(), place.getAddress(), place.getId()));
+
+                        startActivity(i);
+
+                    } else {
+
+                        Toast.makeText(HungryActivity.this, "Ce n'est pas un restaurant", Toast.LENGTH_SHORT).show();
+                    }
+
+                }else{
+
+                    Intent i = new Intent(HungryActivity.this, PresentationActivity.class);
+
+                    i.putExtra("resto", new Restaurant(place.getName(), place.getAddress(), place.getId()));
+
+                    startActivity(i);
+
+                }
+
+
             }
 
             @Override
@@ -236,6 +269,8 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
     public int getFragmentLayout() {
         return R.layout.activity_hungry_menu;
     }
+
+
 
 
     @Override
@@ -364,8 +399,8 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         if (!prefs.getBoolean("FirstTime", false)) {
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY,10);
-            calendar.set(Calendar.MINUTE,30);
+            calendar.set(Calendar.HOUR_OF_DAY,12);
+            calendar.set(Calendar.MINUTE,00);
             if (calendar.getTime().compareTo(new Date()) < 0) calendar.add(Calendar.DAY_OF_MONTH, 1);
             Intent intent = new Intent(getApplicationContext(),NotificationReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
