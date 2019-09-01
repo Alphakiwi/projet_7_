@@ -46,9 +46,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             holder.name.setText(profiles.get(position).getUsername());
             holder.descript.setText(profiles.get(position).getResto().getName());
 
-            int comparaison =  profiles.get(position).getResto().getName().compareTo("Pas encore choisit");
+            int comparison =  profiles.get(position).getResto().getName().compareTo("Pas encore choisit");
 
-            if (comparaison != 0 ) {
+            if (comparison != 0 ) {
 
 
                 holder.descript.setOnClickListener(new View.OnClickListener() {

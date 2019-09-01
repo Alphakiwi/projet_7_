@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.alphakiwi.projet_7.R;
@@ -37,12 +38,10 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import static com.alphakiwi.projet_7.BuildConfig.API_KEY;
 
-/**
- * Created by user on 12/31/15.
- */
 public class SecondFragment extends Fragment {
 
     View myView;
@@ -52,11 +51,14 @@ public class SecondFragment extends Fragment {
     private RecyclerView mListView;
 
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
-
-    private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
-    private static final String TYPE_DETAILS = "/details";
     private static final String TYPE_SEARCH = "/nearbysearch";
     private static final String OUT_JSON = "/json?";
+    int compteur = 0;
+
+    static ArrayList<Restaurant> resultList = null;
+
+    RestaurantAdapter adapter = new RestaurantAdapter();
+
 
     Double lng;
     Double lat;
@@ -67,12 +69,6 @@ public class SecondFragment extends Fragment {
         super.onAttach(context);
 
         this.mContext = context;
-    }
-
-
-    public static SecondFragment newInstance() {
-        SecondFragment fragment = new SecondFragment();
-        return fragment;
     }
 
 
@@ -88,13 +84,46 @@ public class SecondFragment extends Fragment {
         FloatingActionButton button = (FloatingActionButton ) myView.findViewById(R.id.fab);
         button.setImageResource(R.drawable.ic_filter_list);
 
+
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                Intent i = new Intent(getActivity(), MentorChatActivity.class);
+                if (resultList != null) {
 
-                startActivity(i);
+                    switch(compteur){
+                        case 0:
+                            Collections.sort(resultList, new Restaurant.RestaurantDistanceComparator());
+                            Toast.makeText(mContext, "Trie par distance", Toast.LENGTH_SHORT).show(); break;
+                        case 1:
+                            Collections.sort(resultList, new Restaurant.RestaurantMarksComparator());
+                            Toast.makeText(mContext, "Trie par note", Toast.LENGTH_SHORT).show();        break;
+                        case 2:
+                            Collections.sort(resultList, new Restaurant.RestaurantAZComparator());
+                            Toast.makeText(mContext, "Trie par ordre alphabétique", Toast.LENGTH_SHORT).show(); break;
+                        case 3:
+                            Collections.sort(resultList, new Restaurant.RestaurantZAComparator());
+                            Toast.makeText(mContext, "Trie par ordre alphabétique inversé", Toast.LENGTH_SHORT).show(); break;
+
+                        default: //For all other cases, do this        break;
+                    }
+
+
+
+
+                }
+
+
+
+                adapter.updateRestaurants();
+                mListView.smoothScrollToPosition(0);
+
+                if (compteur>=3){
+                    compteur = 0;
+                }else {
+                    compteur += 1;
+                }
 
 
             }
@@ -131,15 +160,18 @@ public class SecondFragment extends Fragment {
         mListView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
 
-        RestaurantAdapter adapter = new RestaurantAdapter(getContext(), list, new LatLng(lat,lng) );
+        adapter = new RestaurantAdapter(getContext(), list, new LatLng(lat,lng) );
 
         mListView.setAdapter(adapter);
+
+        mListView.smoothScrollToPosition(mListView.getAdapter().getItemCount() - 1);
+
+
 
         return myView;
     }
 
     public static ArrayList<Restaurant> search(double lat, double lng, int radius) {
-        ArrayList<Restaurant> resultList = null;
 
         HttpURLConnection conn = null;
         StringBuilder jsonResults = new StringBuilder();

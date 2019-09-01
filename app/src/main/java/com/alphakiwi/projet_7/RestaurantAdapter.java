@@ -32,6 +32,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.List;
 
 import static android.view.View.GONE;
@@ -52,6 +53,16 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
         here=h;
 
     }
+
+    public RestaurantAdapter(){
+
+    }
+
+    public void updateRestaurants() {
+        notifyDataSetChanged();
+    }
+
+
 
     @NonNull
     @Override
@@ -85,23 +96,29 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             if (place.getRating()!= null) {
 
                 notation = place.getRating();
+                list.get(position).setNote((int)Math.round(notation*100));
 
             }
 
 
             //holder.opening.setText(place.getOpeningHours().toString());
 
-
-            if (notation<4){
+            if (notation>=4){
+                holder.star1.setVisibility(View.VISIBLE);
+                holder.star2.setVisibility(View.VISIBLE);
+                holder.star3.setVisibility(View.VISIBLE);
+            }else if (notation>=3 && notation <4){
+                holder.star1.setVisibility(View.VISIBLE);
+                holder.star2.setVisibility(View.VISIBLE);
                 holder.star3.setVisibility(GONE);
-            }
-
-            if (notation<3){
+            } else if (notation>=2 && notation <3){
+                holder.star1.setVisibility(View.VISIBLE);
                 holder.star2.setVisibility(GONE);
-            }
-
-            if (notation<2){
+                holder.star3.setVisibility(GONE);
+            }else if (notation<2){
                 holder.star1.setVisibility(GONE);
+                holder.star2.setVisibility(GONE);
+                holder.star3.setVisibility(GONE);
             }
 
 
@@ -112,11 +129,16 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             bd= bd.setScale(2,BigDecimal.ROUND_DOWN);
             dist = bd.doubleValue();
             holder.distance.setText(dist + " km");
+            list.get(position).setDistance((int)Math.round(dist*1000));
 
 
             Calendar cal = Calendar.getInstance();
 // De Sunday = 1 à Saturday = 7
             int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK) - 2;
+
+            if (dayOfWeek == -1){
+                dayOfWeek = 6;
+            }
 
 
             if (place.getOpeningHours()!= null)
@@ -182,7 +204,21 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
 
 
-            holder.descript.setOnClickListener(new View.OnClickListener() {
+        holder.descript.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                Intent i = new Intent(context, PresentationActivity.class);
+                i.putExtra("resto", list.get(position));
+
+                context.startActivity(i);
+
+
+            }
+        });
+
+        holder.name.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 

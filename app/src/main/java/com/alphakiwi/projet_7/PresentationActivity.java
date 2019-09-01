@@ -118,8 +118,13 @@ public class PresentationActivity extends BaseActivity {
             lieuTel.setText(place.getName() + " (" + place.getRating() + "/5)"  );
             loca.setText(place.getAddress());
 
-            telephone.setText(place.getPhoneNumber());
-            facebook.setText(place.getWebsiteUri().toString());
+            if (place.getPhoneNumber()!= null) {
+                telephone.setText(place.getPhoneNumber());
+            }
+
+            if (place.getWebsiteUri()!= null) {
+                facebook.setText(place.getWebsiteUri().toString());
+            }
 
             configureCall("tel:" + place.getPhoneNumber());
             configureWebsite(place.getWebsiteUri());

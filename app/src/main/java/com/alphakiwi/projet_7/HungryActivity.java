@@ -211,14 +211,14 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
 
             return;
         }
-        /*Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
 
 
         autocompleteFragment.setLocationRestriction(RectangularBounds.newInstance(
-                new LatLng(longitude - 1, latitude+1),
-                new LatLng(longitude -1, latitude+1)));*/
+                new LatLng(latitude - 0.05 ,longitude - 0.05),
+                new LatLng(latitude + 0.05, longitude + 0.05)));
 
 
 // Set up a PlaceSelectionListener to handle the response.
