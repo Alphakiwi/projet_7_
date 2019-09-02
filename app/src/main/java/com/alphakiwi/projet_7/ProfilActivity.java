@@ -19,7 +19,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnSuccessListener;
-//import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 
@@ -32,7 +31,7 @@ import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
  * Created by Philippe on 25/01/2018.
  */
 
-public class ProfileActivity extends BaseActivity {
+public class ProfilActivity extends BaseActivity {
 
     //FOR DESIGN
     @BindView(R.id.profile_activity_imageview_profile)
@@ -204,7 +203,7 @@ public class ProfileActivity extends BaseActivity {
                 switch (origin){
                     case UPDATE_USERNAME:
                         progressBar.setVisibility(View.INVISIBLE);
-                        Toast.makeText(ProfileActivity.this, "Vous avez bien été renommé", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfilActivity.this, getString(R.string.new_name) , Toast.LENGTH_SHORT).show();
                         break;
                     case SIGN_OUT_TASK:
                         finish();
@@ -214,10 +213,10 @@ public class ProfileActivity extends BaseActivity {
                         finish();
                         break;
                     case UPDATE_Notif:
-                        Toast.makeText(ProfileActivity.this, "Vous recevrez des notifications chaque midi !", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfilActivity.this, getString(R.string.notif), Toast.LENGTH_SHORT).show();
                         break;
                     case UPDATE_Notif2:
-                        Toast.makeText(ProfileActivity.this, "Vous ne recevrez plus de notification.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ProfilActivity.this, getString(R.string.no_notif) , Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;

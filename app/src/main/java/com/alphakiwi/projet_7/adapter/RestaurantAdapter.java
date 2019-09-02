@@ -1,23 +1,22 @@
-package com.alphakiwi.projet_7;
+package com.alphakiwi.projet_7.adapter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alphakiwi.projet_7.DetailRestaurantActivity;
+import com.alphakiwi.projet_7.R;
 import com.alphakiwi.projet_7.model.Restaurant;
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.RequestOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.libraries.places.api.Places;
@@ -32,13 +31,12 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Comparator;
 import java.util.List;
 
 import static android.view.View.GONE;
 import static com.alphakiwi.projet_7.BuildConfig.API_KEY;
+import static com.alphakiwi.projet_7.HungryActivity.RESTAURANT;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUserWithoutMyself;
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.MyViewHolder> {
 
@@ -168,9 +166,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
-                ApiException apiException = (ApiException) exception;
-                int statusCode = apiException.getStatusCode();
-               // Toast.makeText(context, "Problème pour récupérer les informations d'au moins un restaurant.", Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -209,8 +204,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             public void onClick(View v) {
 
 
-                Intent i = new Intent(context, PresentationActivity.class);
-                i.putExtra("resto", list.get(position));
+                Intent i = new Intent(context, DetailRestaurantActivity.class);
+                i.putExtra(RESTAURANT, list.get(position));
 
                 context.startActivity(i);
 
@@ -223,8 +218,8 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             public void onClick(View v) {
 
 
-                Intent i = new Intent(context, PresentationActivity.class);
-                i.putExtra("resto", list.get(position));
+                Intent i = new Intent(context, DetailRestaurantActivity.class);
+                i.putExtra(RESTAURANT, list.get(position));
 
                 context.startActivity(i);
 

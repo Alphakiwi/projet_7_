@@ -1,4 +1,4 @@
-package com.alphakiwi.projet_7.mentor_chat;
+package com.alphakiwi.projet_7.chat;
 
 import android.graphics.drawable.GradientDrawable;
 import android.view.View;

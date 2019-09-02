@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context="com.alphakiwi.projet_7.ProfileActivity"
+    tools:context="com.alphakiwi.projet_7.ProfilActivity"
     android:orientation="vertical"
     android:gravity="center_horizontal">
 
@@ -95,7 +95,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Resto choisit :"
+            android:text="@string/chosen_restaurant"
             android:textSize="@dimen/default_text_size"
             android:textStyle="bold" />
 
@@ -104,7 +104,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingLeft="@dimen/default_margin"
-            android:text="Pas de resto choisit pour l'instant"
+            android:text="@string/no_chosen_restaurant"
             android:textSize="@dimen/default_text_size" />
 
 

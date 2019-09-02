@@ -1,0 +1,132 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <string name="app_name">Go4Lunch</string>
+
+
+
+
+    <string name="login">Connection</string>
+    <string name="chat_with_mentor">I\'m hungry !</string>
+
+    <!-- NOTIFICATION SERVICE / NOTIFICATION HELPER -->
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="notification_title">"You received a notification"</string>
+    <string name="firebase_message">"Message from Firebase"</string>
+
+    <string name="where_do_you_eat">You chose to go to </string>
+    <string name="nobody">Nobody else eat here.</string>
+    <string name="who_eat_with_you">You eat with : </string>
+
+
+    <!-- MAIN ACTIVITY -->
+    <string name="error_not_connected">You have to be connected !</string>
+    <string name="error_authentication_canceled">Authentification cancelled&#8230;</string>
+    <string name="error_no_internet">No internet connexion !</string>
+    <string name="error_unknown_error">An unknown error happened&#8230;</string>
+    <string name="connection_succeed">Authentification succeed !</string>
+    <string name="button_login_text_logged">Show the profile</string>
+    <string name="button_login_text_not_logged">Connection</string>
+
+    <!-- LOGIN ACTIVITY -->
+    <string name="toolbar_title_login_activity">Your Profile</string>
+    <string name="text_input_username">User Name</string>
+    <string name="text_view_email">Email address :</string>
+    <string name="button_update_account">Update user name</string>
+    <string name="button_delete_account">Delete my account</string>
+    <string name="button_sign_out_account">Logout</string>
+    <string name="info_no_email_found">No email address</string>
+    <string name="info_no_username_found">No user name</string>
+    <string name="popup_message_confirmation_delete_account">Are you sure to delete your account ?</string>
+    <string name="popup_message_choice_yes">Yes !</string>
+    <string name="popup_message_choice_no">No</string>
+    <string name="no_choice">has not yet chosen.</string>
+
+
+    <!-- CHAT ACTIVITY -->
+    <string name="toolbar_title_mentor_chat_activity">Chatrooms</string>
+    <string name="text_input_title_mentor_chat_activity">Write your message</string>
+    <string name="button_title_mentor_chat_activity">SEND</string>
+    <string name="text_view_mentor_chat_error">There are no messages yet&#8230;</string>
+    <string name="popup_title_permission_files_access">This application need permissions to work.</string>
+    <string name="toast_title_no_image_chosen">no immage selected&#8230;</string>
+
+    <!-- PROFIL ACTIVITY -->
+
+    <string name="new_name">You have been renowned</string>
+    <string name="notif">Every day you receive a notification at noon !</string>
+    <string name="no_notif">You don\'t receive notification any more.</string>
+
+    <!-- HUNGRY ACTIVITY -->
+
+    <string name="title_activity_hungry">I\'m Hungry!</string>
+    <string name="title_listView">List View</string>
+    <string name="title_workmates">Workmates</string>
+    <string name="title_mapView">Map View</string>
+
+
+    <string name="search">Search restaurants</string>
+    <string name="not_a_resto">It\'s not a restaurant</string>
+    <string name="no_choice_resto">Vous n\'avez pas encore choisit de restaurant.</string>
+    <string name="location_permission">Location permission available. Show restaurants.</string>
+    <string name="location_permission_granted">Location permission granted. Showing restaurants.</string>
+    <string name="location_permission_denied">Location permission request was denied.</string>
+    <string name="location_permission_required">Location access is required to display restaurants near you.</string>
+    <string name="location_permission_request">Permission is not available. Requesting location permission.</string>
+
+    <!-- DETAIL RESTAURANT ACTIVITY -->
+
+    <string name="error_get_resto">Error to get the information\'s restaurant.</string>
+    <string name="choice_eat">You want to eat to : </string>
+    <string name="choice_not_eat">You don\'t want to eat any more to : </string>
+    <string name="like">You like </string>
+    <string name="like_not">You don\'t like anymore </string>
+
+    <!-- GET NEARBY PLACE DATA -->
+
+    <string name="error_get_data">Echec de la requête. Ré-essayer</string>
+
+    <!-- FIRST FRAGMENT -->
+
+    <string name="here">YOU ARE HERE</string>
+
+    <!-- SECOND FRAGMENT -->
+
+    <string name="sort_distance">Sorted by distance</string>
+    <string name="sort_marks">Sorted by marks</string>
+    <string name="sort_AZ"> Sorted alphabetically A-Z </string>
+    <string name="sort_ZA"> Sorted alphabetically Z-A</string>
+
+
+    <!-- FACEBOOK PURPOSE -->
+
+    <string name="facebook_application_id" translatable="false">420763051691337</string>
+    <string name="facebook_login_protocol_scheme" translatable="false" tools:ignore="UnusedResources">fb420763051691337</string>
+    <string name="facebook_app_id">1299204710257094</string>
+    <string name="fb_login_protocol_scheme">fb1299204710257094</string>
+
+    <!-- MY ADAPTER -->
+
+    <string name="he_eat_here"> eats here !</string>
+    <string name="i_eat_here">I eat here !</string>
+
+
+    <!-- XML PROFIL -->
+
+
+    <string name="chosen_restaurant"> You chose :</string>
+    <string name="no_chosen_restaurant">No restaurant chosen for now</string>
+
+
+    <!-- Menu -->
+
+    <string name="settings">Settings </string>
+    <string name="your_lunch">Your lunch</string>
+    <string name="logout">Logout </string>
+
+
+
+
+
+
+
+</resources>

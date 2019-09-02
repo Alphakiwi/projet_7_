@@ -2,7 +2,6 @@ package com.alphakiwi.projet_7.fragment;
 
 import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -18,12 +17,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
 import android.widget.Toast;
 
 import com.alphakiwi.projet_7.R;
-import com.alphakiwi.projet_7.RestaurantAdapter;
-import com.alphakiwi.projet_7.mentor_chat.MentorChatActivity;
+import com.alphakiwi.projet_7.adapter.RestaurantAdapter;
 import com.alphakiwi.projet_7.model.Restaurant;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -95,16 +92,16 @@ public class SecondFragment extends Fragment {
                     switch(compteur){
                         case 0:
                             Collections.sort(resultList, new Restaurant.RestaurantDistanceComparator());
-                            Toast.makeText(mContext, "Trie par distance", Toast.LENGTH_SHORT).show(); break;
+                            Toast.makeText(mContext, getString(R.string.sort_distance), Toast.LENGTH_SHORT).show(); break;
                         case 1:
                             Collections.sort(resultList, new Restaurant.RestaurantMarksComparator());
-                            Toast.makeText(mContext, "Trie par note", Toast.LENGTH_SHORT).show();        break;
+                            Toast.makeText(mContext, getString(R.string.sort_marks), Toast.LENGTH_SHORT).show();        break;
                         case 2:
                             Collections.sort(resultList, new Restaurant.RestaurantAZComparator());
-                            Toast.makeText(mContext, "Trie par ordre alphabétique", Toast.LENGTH_SHORT).show(); break;
+                            Toast.makeText(mContext, getString(R.string.sort_AZ), Toast.LENGTH_SHORT).show(); break;
                         case 3:
                             Collections.sort(resultList, new Restaurant.RestaurantZAComparator());
-                            Toast.makeText(mContext, "Trie par ordre alphabétique inversé", Toast.LENGTH_SHORT).show(); break;
+                            Toast.makeText(mContext, getString(R.string.sort_ZA), Toast.LENGTH_SHORT).show(); break;
 
                         default: //For all other cases, do this        break;
                     }
@@ -152,7 +149,7 @@ public class SecondFragment extends Fragment {
         ArrayList<Restaurant> list = search(lat, lng, radius);
 
         if (list.size() == 0){
-            Toast.makeText(mContext, "Echec", Toast.LENGTH_SHORT).show();
+            Toast.makeText(mContext, getString(R.string.error_get_data), Toast.LENGTH_SHORT).show();
         }
 
 
@@ -215,8 +212,7 @@ public class SecondFragment extends Fragment {
             for (int i = 0; i < predsJsonArray.length(); i++) {
 
                 Restaurant place = new Restaurant(predsJsonArray.getJSONObject(i).getString("name"), predsJsonArray.getJSONObject(i).getString("vicinity"), predsJsonArray.getJSONObject(i).getString("reference"));
-                //place.reference = predsJsonArray.getJSONObject(i).getString("reference");
-                //place.name = predsJsonArray.getJSONObject(i).getString("name");
+
                 resultList.add(place);
 
             }

@@ -1,4 +1,4 @@
-package com.alphakiwi.projet_7.mentor_chat;
+package com.alphakiwi.projet_7.chat;
 
 import android.Manifest;
 import android.content.Intent;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -44,7 +43,7 @@ import pub.devrel.easypermissions.EasyPermissions;
  * Created by Philippe on 31/01/2018.
  */
 
-public class MentorChatActivity extends BaseActivity implements MentorChatAdapter.Listener {
+public class ChatActivity extends BaseActivity implements ChatAdapter.Listener {
 
     // FOR DESIGN
     @BindView(R.id.activity_mentor_chat_recycler_view)
@@ -57,7 +56,7 @@ public class MentorChatActivity extends BaseActivity implements MentorChatAdapte
     ImageView imageViewPreview;
 
     // FOR DATA
-    private MentorChatAdapter mentorChatAdapter;
+    private ChatAdapter mentorChatAdapter;
     @Nullable
     private User modelCurrentUser;
     private String currentChatName;
@@ -65,8 +64,6 @@ public class MentorChatActivity extends BaseActivity implements MentorChatAdapte
 
     // STATIC DATA FOR CHAT
     private static final String CHAT_NAME_ANDROID = "android";
-    private static final String CHAT_NAME_BUG = "bug";
-    private static final String CHAT_NAME_FIREBASE = "firebase";
 
     // STATIC DATA FOR PICTURE
     private static final String PERMS = Manifest.permission.READ_EXTERNAL_STORAGE;
@@ -154,10 +151,7 @@ public class MentorChatActivity extends BaseActivity implements MentorChatAdapte
 
                             }
                         });
-                       // String pathImageSavedInFirebase = taskSnapshot.getMetadata().getDownloadUrl().toString();
-                        // B - SAVE MESSAGE IN FIRESTORE
-                      //  MessageHelper.createMessageWithImageForChat(pathImageSavedInFirebase, message, currentChatName, modelCurrentUser).addOnFailureListener(onFailureListener());
-                    }
+                       }
                 })
                 .addOnFailureListener(this.onFailureListener());
     }
@@ -203,7 +197,7 @@ public class MentorChatActivity extends BaseActivity implements MentorChatAdapte
         //Track current chat name
         this.currentChatName = chatName;
         //Configure Adapter & RecyclerView
-        this.mentorChatAdapter = new MentorChatAdapter(generateOptionsForAdapter(MessageHelper.getAllMessageForChat(this.currentChatName)), Glide.with(this), this, this.getCurrentUser().getUid());
+        this.mentorChatAdapter = new ChatAdapter(generateOptionsForAdapter(MessageHelper.getAllMessageForChat(this.currentChatName)), Glide.with(this), this, this.getCurrentUser().getUid());
         mentorChatAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {

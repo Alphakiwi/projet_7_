@@ -1,4 +1,4 @@
-package com.alphakiwi.projet_7.mentor_chat;
+package com.alphakiwi.projet_7.chat;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -15,7 +15,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
  * Created by Philippe on 31/01/2018.
  */
 
-public class MentorChatAdapter extends FirestoreRecyclerAdapter<Message, MessageViewHolder> {
+public class ChatAdapter extends FirestoreRecyclerAdapter<Message, MessageViewHolder> {
 
     public interface Listener {
         void onDataChanged();
@@ -28,7 +28,7 @@ public class MentorChatAdapter extends FirestoreRecyclerAdapter<Message, Message
     //FOR COMMUNICATION
     private Listener callback;
 
-    public MentorChatAdapter(@NonNull FirestoreRecyclerOptions<Message> options, RequestManager glide, Listener callback, String idCurrentUser) {
+    public ChatAdapter(@NonNull FirestoreRecyclerOptions<Message> options, RequestManager glide, Listener callback, String idCurrentUser) {
         super(options);
         this.glide = glide;
         this.callback = callback;

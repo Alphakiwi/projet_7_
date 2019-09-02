@@ -1,9 +1,10 @@
-package com.alphakiwi.projet_7;
+package com.alphakiwi.projet_7.notification;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
+import com.alphakiwi.projet_7.R;
 import com.alphakiwi.projet_7.api.NotificationHelper;
 
 import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
@@ -21,7 +22,7 @@ public class NotificationReceiver extends BroadcastReceiver {
 
 
         if (getUserCurrent().getNotification() == true) {
-            int comparaison = getUserCurrent().getResto().name.compareTo("Pas encore choisit");
+            int comparaison = getUserCurrent().getResto().name.compareTo(context.getString(R.string.no_choice));
             if (comparaison != 0) {
                 notificationHelper.createNotification();
             }

@@ -1,4 +1,4 @@
-package com.alphakiwi.projet_7;
+package com.alphakiwi.projet_7.get_nearby_place_data;
 import android.util.Log;
 
 import java.io.BufferedReader;

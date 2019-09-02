@@ -53,12 +53,6 @@ public class Restaurant implements Serializable {
 
 
 
-
-
-
-
-
-
     public static class RestaurantAZComparator implements Comparator< Restaurant> {
         @Override
         public int compare( Restaurant left,  Restaurant right) {

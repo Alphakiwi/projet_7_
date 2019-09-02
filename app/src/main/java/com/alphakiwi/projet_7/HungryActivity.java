@@ -21,7 +21,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -36,11 +35,11 @@ import com.alphakiwi.projet_7.fragment.SecondFragment;
 import com.alphakiwi.projet_7.fragment.ThirdFragment;
 import com.alphakiwi.projet_7.model.Restaurant;
 import com.alphakiwi.projet_7.model.User;
+import com.alphakiwi.projet_7.notification.NotificationReceiver;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.libraries.places.api.Places;
@@ -51,26 +50,19 @@ import com.google.android.libraries.places.widget.listener.PlaceSelectionListene
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
-
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-
 
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
-import butterknife.OnClick;
 
 import static android.app.AlarmManager.INTERVAL_FIFTEEN_MINUTES;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUserListResto;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUserWithoutMyself;
 import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
-import static com.alphakiwi.projet_7.api.UserHelper.getUsersCollection;
 import static com.google.android.libraries.places.api.model.TypeFilter.ESTABLISHMENT;
 
 public class HungryActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -87,10 +79,14 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
 
     private View mLayout;
     private static final int PERMISSION_REQUEST_LOCATION = 0;
+    public static final String RESTAURANT = "resto";
+    private static final String FIRST = "FirstTime";
 
     FragmentManager fragmentManager = null;
 
     FirstFragment firstFragment = new FirstFragment();
+    SecondFragment secondFragment = new SecondFragment();
+    ThirdFragment thirdFragment = new ThirdFragment();
 
 
 
@@ -118,14 +114,14 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
                 case R.id.navigation_listView:
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
-                                    , new SecondFragment())
+                                    , secondFragment)
                             .commit();
 
                     return true;
                 case R.id.navigation_workmates:
                     fragmentManager.beginTransaction()
                             .replace(R.id.content_frame
-                                    , new ThirdFragment())
+                                    , thirdFragment)
                             .commit();
                     return true;
 
@@ -195,19 +191,12 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
 
 // Specify the types of place data to return.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-        autocompleteFragment.setHint("Search restaurants");
+        autocompleteFragment.setHint(getString(R.string.search));
         autocompleteFragment.setTypeFilter(ESTABLISHMENT);
 
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
 
             return;
         }
@@ -231,35 +220,30 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
 
                     if (place.getTypes().contains(Place.Type.RESTAURANT)) {
 
-                        Intent i = new Intent(HungryActivity.this, PresentationActivity.class);
+                        Intent i = new Intent(HungryActivity.this, DetailRestaurantActivity.class);
 
-                        i.putExtra("resto", new Restaurant(place.getName(), place.getAddress(), place.getId()));
+                        i.putExtra(RESTAURANT, new Restaurant(place.getName(), place.getAddress(), place.getId()));
 
                         startActivity(i);
 
                     } else {
 
-                        Toast.makeText(HungryActivity.this, "Ce n'est pas un restaurant", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(HungryActivity.this, getString(R.string.not_a_resto), Toast.LENGTH_SHORT).show();
                     }
 
                 }else{
 
-                    Intent i = new Intent(HungryActivity.this, PresentationActivity.class);
+                    Intent i = new Intent(HungryActivity.this, DetailRestaurantActivity.class);
 
-                    i.putExtra("resto", new Restaurant(place.getName(), place.getAddress(), place.getId()));
+                    i.putExtra(RESTAURANT, new Restaurant(place.getName(), place.getAddress(), place.getId()));
 
                     startActivity(i);
 
                 }
-
-
             }
 
             @Override
-            public void onError(Status status) {
-                // TODO: Handle the error.
-               // Log.i(TAG, "An error occurred: " + status);
-            }
+            public void onError(Status status) { }
         });
 
 
@@ -269,8 +253,6 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
     public int getFragmentLayout() {
         return R.layout.activity_hungry_menu;
     }
-
-
 
 
     @Override
@@ -283,27 +265,6 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -315,23 +276,23 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
         if (id == R.id.nav_first_layout) {
 
 
-            int comp = getUserCurrent().getResto().getName().compareTo("Pas encore choisit");
+            int comp = getUserCurrent().getResto().getName().compareTo(getString(R.string.no_choice));
 
             if (comp== 0) {
 
-                Toast.makeText(this, "Vous n'avez pas encore choisit de restaurant.", Toast.LENGTH_SHORT).show();;
+                Toast.makeText(this, getString(R.string.no_choice_resto), Toast.LENGTH_SHORT).show();;
 
             }else {
-                Intent i = new Intent(this, PresentationActivity.class);
+                Intent i = new Intent(this, DetailRestaurantActivity.class);
 
-                i.putExtra("resto", getUserCurrent().getResto());
+                i.putExtra(RESTAURANT, getUserCurrent().getResto());
 
                 startActivity(i);
 
             }
         } else if (id == R.id.nav_second_layout) {
             Intent newPage = new Intent(this
-                    , ProfileActivity.class);
+                    , ProfilActivity.class);
             startActivity(newPage);
 
             this.finish();
@@ -397,12 +358,12 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
 
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean("FirstTime", false)) {
+        if (!prefs.getBoolean(FIRST, false)) {
             Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY,12);
+            calendar.set(Calendar.HOUR_OF_DAY,17);
             calendar.set(Calendar.MINUTE,00);
             if (calendar.getTime().compareTo(new Date()) < 0) calendar.add(Calendar.DAY_OF_MONTH, 1);
-            Intent intent = new Intent(getApplicationContext(),NotificationReceiver.class);
+            Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
             PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
             AlarmManager alarmManager = (AlarmManager)getSystemService(this.ALARM_SERVICE);
             if (alarmManager != null) {
@@ -410,7 +371,7 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
             }
 
             SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("FirstTime", true);
+            editor.putBoolean(FIRST, true);
             editor.apply();
         }
     }
@@ -421,7 +382,7 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
                 == PackageManager.PERMISSION_GRANTED) {
             // Permission is already available, show restaurants
             Snackbar.make(mLayout,
-                    "Location permission available. Show restaurants.",
+                    getString(R.string.location_permission),
                     Snackbar.LENGTH_SHORT).show();
         } else {
             // Permission is missing and must be requested.
@@ -441,12 +402,12 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
                                 , new FirstFragment())
                         .commit();
 
-                Snackbar.make(mLayout, "Location permission granted. Showing restaurants.",
+                Snackbar.make(mLayout, getString(R.string.location_permission_granted),
                         Snackbar.LENGTH_SHORT)
                         .show();
             } else {
                 // Permission request was denied.
-                Snackbar.make(mLayout, "Location permission request was denied.",
+                Snackbar.make(mLayout, getString(R.string.location_permission_denied),
                         Snackbar.LENGTH_SHORT)
                         .show();
             }
@@ -460,7 +421,7 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
             // Provide an additional rationale to the user if the permission was not granted
             // and the user would benefit from additional context for the use of the permission.
             // Display a SnackBar with a button to request the missing permission.
-            Snackbar.make(mLayout, "Location access is required to display restaurants near you.",
+            Snackbar.make(mLayout, getString(R.string.location_permission_required),
                     Snackbar.LENGTH_INDEFINITE).setAction("OK", new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -473,7 +434,7 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
 
         } else {
             Snackbar.make(mLayout,
-                    "Permission is not available. Requesting location permission.",
+                    getString(R.string.location_permission_request),
                     Snackbar.LENGTH_SHORT).show();
             // Request the permission. The result will be received in onRequestPermissionResult().
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},

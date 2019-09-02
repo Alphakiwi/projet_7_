@@ -9,15 +9,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
-import com.alphakiwi.projet_7.GetNearbyPlacesData;
-import com.alphakiwi.projet_7.PresentationActivity;
+import com.alphakiwi.projet_7.get_nearby_place_data.GetNearbyPlacesData;
+import com.alphakiwi.projet_7.DetailRestaurantActivity;
 import com.alphakiwi.projet_7.R;
 import com.alphakiwi.projet_7.model.Restaurant;
 import com.google.android.gms.common.ConnectionResult;
@@ -34,18 +33,12 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import static com.alphakiwi.projet_7.BuildConfig.API_KEY;
+import static com.alphakiwi.projet_7.HungryActivity.RESTAURANT;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUserListResto;
 
 public class FirstFragment extends Fragment implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
-    public static FirstFragment newInstance() {
 
-        Bundle args = new Bundle();
-
-        FirstFragment fragment = new FirstFragment();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     private GoogleMap mMap;
 
@@ -55,8 +48,6 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
     private View mView;
 
-
-    private static final int PERMISSION_REQUEST_LOCATION = 0;
 
 
     @Override
@@ -138,29 +129,18 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
 
                 String snippet = marker.getSnippet();
-                String nom = marker.getTitle();
+                String name = marker.getTitle();
                 String[] separated = snippet.split(":");
 
 
-                Restaurant resto = new Restaurant(nom, separated[0], separated[1]);
+                Restaurant resto = new Restaurant(name, separated[0], separated[1]);
 
-               /* String actionId = markerMap.get(marker.getId());
 
-                if (actionId.equals("action_one")) {
-                    Intent i = new Intent(MainActivity.this, ActivityOne.class);
-                    startActivity(i);
-                } else if (actionId.equals("action_two")) {
-                    Intent i = new Intent(MainActivity.this, ActivityTwo.class);
-                    startActivity(i);
-                }
-
-            */
-
-                int comp = nom.compareTo("YOU ARE HERE");
+                int comp = name.compareTo(getString(R.string.here));
 
                 if (comp != 0) {
-                    Intent i = new Intent(getActivity(), PresentationActivity.class);
-                    i.putExtra("resto", resto);
+                    Intent i = new Intent(getActivity(), DetailRestaurantActivity.class);
+                    i.putExtra(RESTAURANT, resto);
 
                     startActivity(i);
                 }
@@ -194,14 +174,13 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         LatLng here = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(here).title("YOU ARE HERE").icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        mMap.addMarker(new MarkerOptions().position(here).title(getString(R.string.here)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(here, 14));
 
         double latitude = mLastLocation.getLatitude();
         double longitude = mLastLocation.getLongitude();
-        String Restaurant = "restaurant";
 
-        String url = getUrl(latitude, longitude, Restaurant);
+        String url = getUrl(latitude, longitude);
         Object[] DataTransfer = new Object[2];
         DataTransfer[0] = mMap;
         DataTransfer[1] = url;
@@ -223,22 +202,15 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
     }
 
 
-    private String getUrl(double latitude, double longitude, String nearbyPlace) {
+    private String getUrl(double latitude, double longitude) {
 
         StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?");
         googlePlacesUrl.append("location=" + latitude + "," + longitude);
         googlePlacesUrl.append("&radius=" + 10000);
         googlePlacesUrl.append("&type=" + "meal_takeaway");
         googlePlacesUrl.append("&sensor=true");
-        //googlePlacesUrl.append("&fields=photos,formatted_address,name,place_id,opening_hours");
         googlePlacesUrl.append("&key=" + API_KEY);
-        //StringBuilder googlePlacesUrl = new StringBuilder("https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&fields=place_id&key=AIzaSyBO7_U7r1oST2upR26wkjwLQfYSMbAogQ4");
         return (googlePlacesUrl.toString());
     }
-//https://maps.googleapis.com/maps/api/place/nearbysearch/output?parameters
-//https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=%2B61293744000&inputtype=phonenumber&fields=place_id&key=YOUR_API_KEY
-//https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=500&types=food&name=cruise&key=YOUR_API_KEY
-//https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=-33.8670522,151.1957362&radius=10000&types=meal_takeaway&sensor=true&key=
-
 
 }

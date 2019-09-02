@@ -16,6 +16,9 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.ArrayList;
 import java.util.Map;
 
+import static com.alphakiwi.projet_7.DetailRestaurantActivity.RESTOLIKE;
+import static com.alphakiwi.projet_7.HungryActivity.RESTAURANT;
+
 /**
  * Created by Philippe on 30/01/2018.
  */
@@ -23,6 +26,9 @@ import java.util.Map;
 public class  UserHelper {
 
     public static final String COLLECTION_NAME = "users";
+    public static final String NOTIFICATION = "notification";
+    public static final String USERNAME = "username";
+
     static ArrayList<User> userListWithoutMyself = new ArrayList<User>();
     static ArrayList<User> userList = new ArrayList<User>();
     static ArrayList<String> restoList = new ArrayList<String>();
@@ -52,19 +58,19 @@ public class  UserHelper {
     // --- UPDATE ---
 
     public static Task<Void> updateUsername(String username, String uid) {
-        return UserHelper.getUsersCollection().document(uid).update("username", username);
+        return UserHelper.getUsersCollection().document(uid).update(USERNAME, username);
     }
 
     public static Task<Void> updateResto(Map<String, Object> resto, String uid) {
-        return UserHelper.getUsersCollection().document(uid).update("resto", resto);
+        return UserHelper.getUsersCollection().document(uid).update(RESTAURANT, resto);
     }
 
     public static Task<Void> updateNotif(boolean bool, String uid) {
-        return UserHelper.getUsersCollection().document(uid).update("notification", bool);
+        return UserHelper.getUsersCollection().document(uid).update(NOTIFICATION, bool);
     }
 
     public static Task<Void> updateRestoLike(ArrayList<String> restoLike, String uid) {
-        return UserHelper.getUsersCollection().document(uid).update("restoLike", restoLike);
+        return UserHelper.getUsersCollection().document(uid).update(RESTOLIKE, restoLike);
     }
 
 

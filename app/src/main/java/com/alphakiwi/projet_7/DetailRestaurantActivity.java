@@ -1,25 +1,19 @@
 package com.alphakiwi.projet_7;
 
-import android.Manifest;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.alphakiwi.projet_7.adapter.MyAdapter;
 import com.alphakiwi.projet_7.api.UserHelper;
 import com.alphakiwi.projet_7.base.BaseActivity;
 import com.alphakiwi.projet_7.model.Restaurant;
@@ -27,18 +21,11 @@ import com.alphakiwi.projet_7.model.User;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.libraries.places.api.Places;
 import com.google.android.libraries.places.api.model.PhotoMetadata;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.api.net.FetchPhotoRequest;
-import com.google.android.libraries.places.api.net.FetchPhotoResponse;
 import com.google.android.libraries.places.api.net.FetchPlaceRequest;
-import com.google.android.libraries.places.api.net.FetchPlaceResponse;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsRequest;
-import com.google.android.libraries.places.api.net.FindAutocompletePredictionsResponse;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest;
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -50,11 +37,12 @@ import java.util.List;
 import java.util.Map;
 
 import static com.alphakiwi.projet_7.BuildConfig.API_KEY;
+import static com.alphakiwi.projet_7.HungryActivity.RESTAURANT;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
 import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 
 
-public class PresentationActivity extends BaseActivity {
+public class DetailRestaurantActivity extends BaseActivity {
 
     private TextView text = null;
     private TextView lieuTel = null;
@@ -70,6 +58,11 @@ public class PresentationActivity extends BaseActivity {
     private static final int UPDATE_RESTO2 = 50;
     private static final int UPDATE_RESTO_LIKE = 60;
     private static final int UPDATE_RESTO_LIKE2 = 70;
+
+    public static final String RESTOLIKE = "restoLike";
+    private static final String ID = "id";
+    private static final String ADDRESS = "address";
+    private static final String NAME = "name";
 
 
 
@@ -89,7 +82,7 @@ public class PresentationActivity extends BaseActivity {
         image = (ImageView) findViewById(R.id.imageAvatar);
 
         Intent i = getIntent();
-        resto = (Restaurant) i.getSerializableExtra("resto");
+        resto = (Restaurant) i.getSerializableExtra(RESTAURANT);
 
 
         // Define a Place ID.
@@ -110,9 +103,6 @@ public class PresentationActivity extends BaseActivity {
 
         placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
             Place place = response.getPlace();
-            //Log.i(TAG, "Place found: " + place.getName());
-
-
 
             text.setText(place.getName() );
             lieuTel.setText(place.getName() + " (" + place.getRating() + "/5)"  );
@@ -148,23 +138,13 @@ public class PresentationActivity extends BaseActivity {
 
 
 
-
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
                 ApiException apiException = (ApiException) exception;
-                int statusCode = apiException.getStatusCode();
-                Toast.makeText(this, "Problème pour récupérer les informations du restaurant.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, getString(R.string.error_get_resto), Toast.LENGTH_SHORT).show();
                 finish();
-                // Handle error with given status code.
-              //  Log.e(TAG, "Place not found: " + exception.getMessage());
             }
         });
-
-
-
-
-
-
 
 
 
@@ -276,7 +256,7 @@ public class PresentationActivity extends BaseActivity {
                     like.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_baseline_star_border_24px,0,0);
                     newRestoLike.remove(resto.getId());
                     Map<String, Object> updateMap = new HashMap();
-                    updateMap.put("restoLike", newRestoLike);
+                    updateMap.put(RESTOLIKE, newRestoLike);
 
                     if (getCurrentUser() != null) {
                         UserHelper.updateRestoLike(newRestoLike, getCurrentUser().getUid()).addOnFailureListener(onFailureListener()).addOnSuccessListener(updateUIAfterRESTRequestsCompleted(UPDATE_RESTO_LIKE2));
@@ -288,7 +268,7 @@ public class PresentationActivity extends BaseActivity {
                     like.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_baseline_star_24px, 0, 0);
                     newRestoLike.add(resto.getId());
                     Map<String, Object> updateMap = new HashMap();
-                    updateMap.put("restoLike", newRestoLike);
+                    updateMap.put(RESTOLIKE, newRestoLike);
 
                     if (getCurrentUser() != null) {
                         UserHelper.updateRestoLike(newRestoLike, getCurrentUser().getUid()).addOnFailureListener(onFailureListener()).addOnSuccessListener(updateUIAfterRESTRequestsCompleted(UPDATE_RESTO_LIKE));
@@ -325,9 +305,9 @@ public class PresentationActivity extends BaseActivity {
 
 
                     Map<String, Object> updateMap = new HashMap();
-                    updateMap.put("address", resto.address);
-                    updateMap.put("name", resto.name);
-                    updateMap.put("id", resto.id);
+                    updateMap.put(ADDRESS, resto.address);
+                    updateMap.put(NAME, resto.name);
+                    updateMap.put(ID, resto.id);
 
 
                     fab.setImageResource(R.drawable.ic_baseline_done_24px);
@@ -339,9 +319,9 @@ public class PresentationActivity extends BaseActivity {
 
 
                     Map<String, Object> updateMap = new HashMap();
-                    updateMap.put("address", "?");
-                    updateMap.put("name", "Pas encore choisit");
-                    updateMap.put("id", "?");
+                    updateMap.put(ADDRESS, "?");
+                    updateMap.put(NAME, getString(R.string.no_choice));
+                    updateMap.put(ID, "?");
 
 
                     fab.setImageResource(R.drawable.ic_baseline_done_outline_24px);
@@ -361,16 +341,16 @@ public class PresentationActivity extends BaseActivity {
             public void onSuccess(Void aVoid) {
                 switch (origin){
                     case UPDATE_RESTO:
-                        Toast.makeText(PresentationActivity.this, "Vous avez choisi de manger à : " + resto.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailRestaurantActivity.this, getString(R.string.choice_eat) + resto.getName(), Toast.LENGTH_SHORT).show();
                         break;
                     case UPDATE_RESTO2:
-                        Toast.makeText(PresentationActivity.this, "Vous avez choisi de ne plus manger à : " + resto.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailRestaurantActivity.this, getString(R.string.choice_not_eat) + resto.getName(), Toast.LENGTH_SHORT).show();
                         break;
                     case UPDATE_RESTO_LIKE:
-                        Toast.makeText(PresentationActivity.this, "Vous aimez " + resto.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailRestaurantActivity.this, getString(R.string.like) + resto.getName(), Toast.LENGTH_SHORT).show();
                         break;
                     case UPDATE_RESTO_LIKE2:
-                        Toast.makeText(PresentationActivity.this, "Vous n'aimez plus " + resto.getName(), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(DetailRestaurantActivity.this, getString(R.string.like_not) + resto.getName(), Toast.LENGTH_SHORT).show();
                         break;
                     default:
                         break;

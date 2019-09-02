@@ -51,7 +51,7 @@
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
 
-        <activity android:name=".MainActivity">
+        <activity android:name=".LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
@@ -60,32 +60,32 @@
             </intent-filter>
         </activity> <!-- PROFILE ACTIVITY -->
         <activity
-            android:name=".ProfileActivity"
+            android:name=".ProfilActivity"
             android:label="@string/toolbar_title_login_activity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".LoginActivity" />
         <activity
             android:name=".HungryActivity"
             android:label="@string/title_activity_hungry" />
 
         <activity
-            android:name=".PresentationActivity"
+            android:name=".DetailRestaurantActivity"
             android:label="@string/title_activity_hungry" />
 
         <activity
-            android:name=".mentor_chat.MentorChatActivity"
+            android:name=".chat.ChatActivity"
             android:label="@string/title_activity_hungry" >
 
         </activity>
 
         <!-- NOTIFICATION SERVICE -->
         <service
-            android:name=".NotificationsService">
+            android:name=".notification.NotificationsService">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
 
-        <receiver android:name=".NotificationReceiver">
+        <receiver android:name=".notification.NotificationReceiver">
 
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -43,10 +43,6 @@ public class User {
 
 
     // --- SETTERS ---
-    public void setUsername(String username) { this.username = username; }
-    public void setUid(String uid) { this.uid = uid; }
-    public void setUrlPicture(String urlPicture) { this.urlPicture = urlPicture; }
     public void setResto(Restaurant resto) { this.resto = resto; }
-    public void setNotification(boolean notification) { this.notification = notification; }
 
 }

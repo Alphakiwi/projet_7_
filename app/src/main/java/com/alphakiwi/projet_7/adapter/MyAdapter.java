@@ -1,4 +1,4 @@
-package com.alphakiwi.projet_7;
+package com.alphakiwi.projet_7.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,12 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.alphakiwi.projet_7.model.Restaurant;
+import com.alphakiwi.projet_7.DetailRestaurantActivity;
+import com.alphakiwi.projet_7.R;
 import com.alphakiwi.projet_7.model.User;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
+
+import static com.alphakiwi.projet_7.HungryActivity.RESTAURANT;
 
 public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
@@ -46,7 +49,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             holder.name.setText(profiles.get(position).getUsername());
             holder.descript.setText(profiles.get(position).getResto().getName());
 
-            int comparison =  profiles.get(position).getResto().getName().compareTo("Pas encore choisit");
+            int comparison =  profiles.get(position).getResto().getName().compareTo(context.getString(R.string.no_choice));
 
             if (comparison != 0 ) {
 
@@ -56,8 +59,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     public void onClick(View v) {
 
 
-                        Intent i = new Intent(context, PresentationActivity.class);
-                        i.putExtra("resto", profiles.get(position).getResto());
+                        Intent i = new Intent(context, DetailRestaurantActivity.class);
+                        i.putExtra(RESTAURANT, profiles.get(position).getResto());
 
                         context.startActivity(i);
 
@@ -73,9 +76,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         }else{
 
             if (profiles.get(position) != currentUser) {
-                holder.name.setText(profiles.get(position).getUsername() + " mange ici !");
+                holder.name.setText(profiles.get(position).getUsername() + ' ' + context.getString(R.string.he_eat_here));
             }else{
-                holder.name.setText("Je mange ici !");
+                holder.name.setText(context.getString(R.string.i_eat_here));
             }
         }
 
