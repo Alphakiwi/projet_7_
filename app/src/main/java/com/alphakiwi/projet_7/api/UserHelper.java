@@ -155,9 +155,6 @@ public class  UserHelper {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                int comparateur = document.toObject(User.class).getUid().compareTo( FirebaseAuth.getInstance().getCurrentUser().getUid());
-
-
                                 userList.add(document.toObject(User.class));
 
 

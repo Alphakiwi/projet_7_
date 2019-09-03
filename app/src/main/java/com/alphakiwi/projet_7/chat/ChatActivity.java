@@ -81,7 +81,7 @@ public class ChatActivity extends BaseActivity implements ChatAdapter.Listener {
     }
 
     @Override
-    public int getFragmentLayout() { return R.layout.activity_mentor_chat; }
+    public int getFragmentLayout() { return R.layout.activity_chat; }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {

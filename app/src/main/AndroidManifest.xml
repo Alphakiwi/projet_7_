@@ -85,7 +85,7 @@
             </intent-filter>
         </service>
 
-        <receiver android:name=".notification.NotificationReceiver">
+        <receiver android:name=".notification.NotificationReceiver" android:enabled="true">
 
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />

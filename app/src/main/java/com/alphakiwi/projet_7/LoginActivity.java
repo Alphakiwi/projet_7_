@@ -36,7 +36,7 @@ public class LoginActivity extends BaseActivity {
     private static final int RC_SIGN_IN = 123;
 
     @Override
-    public int getFragmentLayout() { return R.layout.activity_main; }
+    public int getFragmentLayout() { return R.layout.activity_login; }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

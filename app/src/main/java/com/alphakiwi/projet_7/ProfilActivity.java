@@ -61,7 +61,7 @@ public class ProfilActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         this.updateUIWhenCreating();
 
-        if (getUserCurrent()!= null) {
+        if (getUserCurrent().getResto()!= null) {
             resto.setText(getUserCurrent().getResto().getName());
 
             if (getUserCurrent().getNotification() == false) {
@@ -98,7 +98,7 @@ public class ProfilActivity extends BaseActivity {
     }
 
     @Override
-    public int getFragmentLayout() { return R.layout.activity_profile; }
+    public int getFragmentLayout() { return R.layout.activity_profil; }
 
     // --------------------
     // ACTIONS

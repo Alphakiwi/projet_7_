@@ -187,7 +187,7 @@ public class DetailRestaurantActivity extends BaseActivity {
 
     @Override
     public int getFragmentLayout() {
-        return R.layout.activity_presentation;
+        return R.layout.activity_detail_restaurant;
 
     }
 

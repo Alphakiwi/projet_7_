@@ -49,9 +49,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             holder.name.setText(profiles.get(position).getUsername());
             holder.descript.setText(profiles.get(position).getResto().getName());
 
-            int comparison =  profiles.get(position).getResto().getName().compareTo(context.getString(R.string.no_choice));
+            //an english device can have french coworkers so...
+            int comparison =  profiles.get(position).getResto().getName().compareTo("has not yet chosen.");
+            int comparison2 =  profiles.get(position).getResto().getName().compareTo("Pas encore choisit");
 
-            if (comparison != 0 ) {
+            if (comparison != 0 && comparison2 != 0 ) {
 
 
                 holder.descript.setOnClickListener(new View.OnClickListener() {
@@ -71,6 +73,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             }else{
                 holder.name.setTextColor(Color.rgb(160,160,160));
                 holder.descript.setTextColor(Color.rgb(200,200,200));
+                holder.descript.setText(R.string.no_choice);
+
             }
 
         }else{
