@@ -41,9 +41,19 @@ public class Restaurant implements Serializable {
     public String getId() { return id; }
     public String getName() { return name; }
     public String getAddress() { return address ; }
+    public int getDistance() { return distance; }
+    public int getNote() { return note ; }
 
 
+    // --- SETTERS ---
 
+    public void setId(String id) {
+        this.id = id;
+    }
+    public void setName(String name) {
+        this.name = name;
+    }
+    public void setAddress(String address) { this.address = address; }
     public void setDistance(int distance) {
         this.distance = distance;
     }

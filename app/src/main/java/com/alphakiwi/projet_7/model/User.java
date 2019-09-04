@@ -44,5 +44,7 @@ public class User {
 
     // --- SETTERS ---
     public void setResto(Restaurant resto) { this.resto = resto; }
+    public void setUsername(String username) { this.username = username; }
+
 
 }
