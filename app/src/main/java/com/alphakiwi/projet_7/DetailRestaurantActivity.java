@@ -29,7 +29,6 @@ import com.google.android.libraries.places.api.net.FetchPlaceRequest;
 import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -41,14 +40,13 @@ import static com.alphakiwi.projet_7.HungryActivity.RESTAURANT;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
 import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 
-
 public class DetailRestaurantActivity extends BaseActivity {
 
     private TextView text = null;
     private TextView lieuTel = null;
     private TextView loca = null;
     private TextView telephone = null;
-    private TextView facebook = null;
+    private TextView web = null;
     private ImageView image = null;
     private Button back = null;
     private Button like = null;
@@ -64,26 +62,21 @@ public class DetailRestaurantActivity extends BaseActivity {
     private static final String ADDRESS = "address";
     private static final String NAME = "name";
 
-
-
-    Restaurant resto = new Restaurant();
-
+    private Restaurant resto = new Restaurant();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
         text = (TextView) findViewById(R.id.text);
         lieuTel = (TextView) findViewById(R.id.lieuTel);
         loca = (TextView) findViewById(R.id.loca);
         telephone = (TextView) findViewById(R.id.tel);
-        facebook = (TextView) findViewById(R.id.facebook);
+        web = (TextView) findViewById(R.id.web);
         image = (ImageView) findViewById(R.id.imageAvatar);
 
         Intent i = getIntent();
         resto = (Restaurant) i.getSerializableExtra(RESTAURANT);
-
 
         // Define a Place ID.
         String placeId = resto.getId();
@@ -93,7 +86,6 @@ public class DetailRestaurantActivity extends BaseActivity {
 
 // Construct a request object, passing the place ID and fields array.
         FetchPlaceRequest request = FetchPlaceRequest.newInstance(placeId, placeFields);
-
 
 // Initialize Places.
         Places.initialize(getApplicationContext(), API_KEY);
@@ -108,13 +100,8 @@ public class DetailRestaurantActivity extends BaseActivity {
             lieuTel.setText(place.getName() + " (" + place.getRating() + "/5)"  );
             loca.setText(place.getAddress());
 
-            if (place.getPhoneNumber()!= null) {
-                telephone.setText(place.getPhoneNumber());
-            }
-
-            if (place.getWebsiteUri()!= null) {
-                facebook.setText(place.getWebsiteUri().toString());
-            }
+            if (place.getPhoneNumber()!= null) { telephone.setText(place.getPhoneNumber()); }
+            if (place.getWebsiteUri()!= null) { web.setText(place.getWebsiteUri().toString()); }
 
             configureCall("tel:" + place.getPhoneNumber());
             configureWebsite(place.getWebsiteUri());
@@ -131,13 +118,8 @@ public class DetailRestaurantActivity extends BaseActivity {
                             .centerCrop()
                             .into(image);
 
-
                 });
-
             }
-
-
-
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
                 ApiException apiException = (ApiException) exception;
@@ -146,39 +128,26 @@ public class DetailRestaurantActivity extends BaseActivity {
             }
         });
 
-
-
         configureFab();
         configureLike();
         configureBack();
 
-
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.listCoworkers);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         ArrayList<User>  listUser = new ArrayList<User>();
 
         for(int j = 0; j < getAllUser().size(); j++){
 
             String restoUser = getAllUser().get(j).getResto().getId();
-
-
-            int comparaison = restoUser.compareTo(resto.getId()
+            int comparison = restoUser.compareTo(resto.getId()
             );
 
-
-
-            if (comparaison == 0){
-
-                listUser.add(getAllUser().get(j));
-            }
-
+            if (comparison == 0){ listUser.add(getAllUser().get(j)); }
         }
 
         MyAdapter adapter = new MyAdapter(this, listUser, getUserCurrent(), false);
 
-        //recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
 
@@ -186,16 +155,10 @@ public class DetailRestaurantActivity extends BaseActivity {
     }
 
     @Override
-    public int getFragmentLayout() {
-        return R.layout.activity_detail_restaurant;
-
-    }
-
+    public int getFragmentLayout() { return R.layout.activity_detail_restaurant; }
 
     private void configureBack() {
         back = findViewById(R.id.back);
-
-
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,11 +168,8 @@ public class DetailRestaurantActivity extends BaseActivity {
 
     }
 
-
     private void configureCall(String num) {
         Button call = findViewById(R.id.call);
-
-
         call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -224,7 +184,6 @@ public class DetailRestaurantActivity extends BaseActivity {
     private void configureWebsite(Uri url) {
         Button website = findViewById(R.id.website);
 
-
         website.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -233,7 +192,6 @@ public class DetailRestaurantActivity extends BaseActivity {
 
             }
         });
-
     }
 
     private void configureLike() {
@@ -243,7 +201,6 @@ public class DetailRestaurantActivity extends BaseActivity {
         if(getUserCurrent().getRestoLike().contains(resto.getId())){
             like.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_baseline_star_24px, 0, 0);
         }
-
 
         like.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -255,6 +212,7 @@ public class DetailRestaurantActivity extends BaseActivity {
 
                     like.setCompoundDrawablesWithIntrinsicBounds(0,R.drawable.ic_baseline_star_border_24px,0,0);
                     newRestoLike.remove(resto.getId());
+                    @SuppressWarnings("unchecked")
                     Map<String, Object> updateMap = new HashMap();
                     updateMap.put(RESTOLIKE, newRestoLike);
 
@@ -264,51 +222,37 @@ public class DetailRestaurantActivity extends BaseActivity {
 
                 }else {
 
-
                     like.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_baseline_star_24px, 0, 0);
                     newRestoLike.add(resto.getId());
+                    @SuppressWarnings("unchecked")
                     Map<String, Object> updateMap = new HashMap();
                     updateMap.put(RESTOLIKE, newRestoLike);
 
                     if (getCurrentUser() != null) {
                         UserHelper.updateRestoLike(newRestoLike, getCurrentUser().getUid()).addOnFailureListener(onFailureListener()).addOnSuccessListener(updateUIAfterRESTRequestsCompleted(UPDATE_RESTO_LIKE));
                     }
-
                 }
-
             }
         });
-
     }
 
     private void configureFab() {
         fab = findViewById(R.id.fab);
 
         final int[] comp = {getUserCurrent().getResto().getId().compareTo(resto.getId())};
-
-
-        if (comp[0] == 0) {
-
-            fab.setImageResource(R.drawable.ic_baseline_done_24px);
-
-        }
-
+        if (comp[0] == 0) { fab.setImageResource(R.drawable.ic_baseline_done_24px); }
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 comp[0] = getUserCurrent().getResto().getId().compareTo(resto.getId());
-
-
                 if (comp[0] != 0) {
-
-
+                    @SuppressWarnings("unchecked")
                     Map<String, Object> updateMap = new HashMap();
                     updateMap.put(ADDRESS, resto.address);
                     updateMap.put(NAME, resto.name);
                     updateMap.put(ID, resto.id);
-
 
                     fab.setImageResource(R.drawable.ic_baseline_done_24px);
                     if (getCurrentUser() != null) {
@@ -316,21 +260,17 @@ public class DetailRestaurantActivity extends BaseActivity {
                     }
 
                 }else{
-
-
+                    @SuppressWarnings("unchecked")
                     Map<String, Object> updateMap = new HashMap();
                     updateMap.put(ADDRESS, "?");
                     updateMap.put(NAME, getString(R.string.no_choice));
                     updateMap.put(ID, "?");
 
-
                     fab.setImageResource(R.drawable.ic_baseline_done_outline_24px);
                     if (getCurrentUser() != null) {
                         UserHelper.updateResto(updateMap, getCurrentUser().getUid()).addOnFailureListener(onFailureListener()).addOnSuccessListener(updateUIAfterRESTRequestsCompleted(UPDATE_RESTO2));
                     }
-
                 }
-
             }
         });
     }
@@ -340,25 +280,13 @@ public class DetailRestaurantActivity extends BaseActivity {
             @Override
             public void onSuccess(Void aVoid) {
                 switch (origin){
-                    case UPDATE_RESTO:
-                        Toast.makeText(DetailRestaurantActivity.this, getString(R.string.choice_eat) + resto.getName(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case UPDATE_RESTO2:
-                        Toast.makeText(DetailRestaurantActivity.this, getString(R.string.choice_not_eat) + resto.getName(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case UPDATE_RESTO_LIKE:
-                        Toast.makeText(DetailRestaurantActivity.this, getString(R.string.like) + resto.getName(), Toast.LENGTH_SHORT).show();
-                        break;
-                    case UPDATE_RESTO_LIKE2:
-                        Toast.makeText(DetailRestaurantActivity.this, getString(R.string.like_not) + resto.getName(), Toast.LENGTH_SHORT).show();
-                        break;
-                    default:
-                        break;
+                    case UPDATE_RESTO: Toast.makeText(DetailRestaurantActivity.this, getString(R.string.choice_eat) + " " + resto.getName(), Toast.LENGTH_SHORT).show();break;
+                    case UPDATE_RESTO2: Toast.makeText(DetailRestaurantActivity.this, getString(R.string.choice_not_eat) + " " + resto.getName(), Toast.LENGTH_SHORT).show();break;
+                    case UPDATE_RESTO_LIKE:Toast.makeText(DetailRestaurantActivity.this, getString(R.string.like) + " " + resto.getName(), Toast.LENGTH_SHORT).show();break;
+                    case UPDATE_RESTO_LIKE2: Toast.makeText(DetailRestaurantActivity.this, getString(R.string.like_not) + " " + resto.getName(), Toast.LENGTH_SHORT).show();break;
+                    default: break;
                 }
             }
         };
     }
-
-
-
 }

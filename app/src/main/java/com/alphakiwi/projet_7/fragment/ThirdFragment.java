@@ -51,9 +51,7 @@ public class ThirdFragment extends Fragment {
             public void onClick(View view) {
 
                 Intent i = new Intent(getActivity(), ChatActivity.class);
-
                 startActivity(i);
-
 
             }
         });
@@ -64,21 +62,11 @@ public class ThirdFragment extends Fragment {
 
 
         adapter = new MyAdapter(getContext(), getAllUserWithoutMyself(), getUserCurrent(), true);
-
-        //recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-
-
 
         return myView;
 
 
     }
-
-
-
-
-
-
 
 }

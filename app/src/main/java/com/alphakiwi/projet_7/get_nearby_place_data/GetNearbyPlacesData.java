@@ -31,8 +31,6 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
     public GetNearbyPlacesData ( List<String> id, Context c ) {
         this.id = id;
         this.context = c;
-
-
     }
 
     @Override
@@ -110,10 +108,6 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             //move map camera
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-
-
-
-
 
 
         }

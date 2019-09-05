@@ -5,7 +5,7 @@
 
 
     <string name="login">Connexion</string>
-    <string name="chat_with_mentor">J\'ai faim !</string>
+    <string name="chat">J\'ai faim !</string>
 
     <!-- NOTIFICATION SERVICE / NOTIFICATION HELPER -->
 
@@ -43,10 +43,10 @@
 
 
     <!-- CHAT ACTIVITY -->
-    <string name="toolbar_title_mentor_chat_activity">Chats de discussions</string>
-    <string name="text_input_title_mentor_chat_activity">Composer votre message</string>
-    <string name="button_title_mentor_chat_activity">ENVOYER</string>
-    <string name="text_view_mentor_chat_error">Ce fil de discussion ne contient pour le moment aucun message&#8230;</string>
+    <string name="toolbar_title_chat_activity">Chats de discussions</string>
+    <string name="text_input_title_chat_activity">Composer votre message</string>
+    <string name="button_title_chat_activity">ENVOYER</string>
+    <string name="text_view_chat_error">Ce fil de discussion ne contient pour le moment aucun message&#8230;</string>
     <string name="popup_title_permission_files_access">Cette application a besoin de permission pour fonctionner.</string>
     <string name="toast_title_no_image_chosen">Aucune image choisie&#8230;</string>
 

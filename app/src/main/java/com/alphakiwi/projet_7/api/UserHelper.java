@@ -19,9 +19,6 @@ import java.util.Map;
 import static com.alphakiwi.projet_7.DetailRestaurantActivity.RESTOLIKE;
 import static com.alphakiwi.projet_7.HungryActivity.RESTAURANT;
 
-/**
- * Created by Philippe on 30/01/2018.
- */
 
 public class  UserHelper {
 

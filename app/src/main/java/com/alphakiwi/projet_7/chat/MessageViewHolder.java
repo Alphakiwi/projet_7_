@@ -23,39 +23,36 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by Philippe on 31/01/2018.
- */
 
 public class MessageViewHolder extends RecyclerView.ViewHolder {
 
     //ROOT VIEW
-    @BindView(R.id.activity_mentor_chat_item_root_view)
+    @BindView(R.id.activity_chat_item_root_view)
     RelativeLayout rootView;
 
     //PROFILE CONTAINER
-    @BindView(R.id.activity_mentor_chat_item_profile_container)
+    @BindView(R.id.activity_chat_item_profile_container)
     LinearLayout profileContainer;
-    @BindView(R.id.activity_mentor_chat_item_profile_container_profile_image)
+    @BindView(R.id.activity_chat_item_profile_container_profile_image)
     ImageView imageViewProfile;
-    @BindView(R.id.activity_mentor_chat_item_profile_container_is_mentor_image)
+    @BindView(R.id.activity_chat_item_profile_container_is_image)
     ImageView imageViewIsMentor;
 
     //MESSAGE CONTAINER
-    @BindView(R.id.activity_mentor_chat_item_message_container)
+    @BindView(R.id.activity_chat_item_message_container)
     RelativeLayout messageContainer;
     //IMAGE SENDED CONTAINER
-    @BindView(R.id.activity_mentor_chat_item_message_container_image_sent_cardview)
+    @BindView(R.id.activity_chat_item_message_container_image_sent_cardview)
     CardView cardViewImageSent;
-    @BindView(R.id.activity_mentor_chat_item_message_container_image_sent_cardview_image)
+    @BindView(R.id.activity_chat_item_message_container_image_sent_cardview_image)
     ImageView imageViewSent;
     //TEXT MESSAGE CONTAINER
-    @BindView(R.id.activity_mentor_chat_item_message_container_text_message_container)
+    @BindView(R.id.activity_chat_item_message_container_text_message_container)
     LinearLayout textMessageContainer;
-    @BindView(R.id.activity_mentor_chat_item_message_container_text_message_container_text_view)
+    @BindView(R.id.activity_chat_item_message_container_text_message_container_text_view)
     TextView textViewMessage;
     //DATE TEXT
-    @BindView(R.id.activity_mentor_chat_item_message_container_text_view_date)
+    @BindView(R.id.activity_chat_item_message_container_text_view_date)
     TextView textViewDate;
 
 
@@ -114,12 +111,12 @@ public class MessageViewHolder extends RecyclerView.ViewHolder {
 
         // MESSAGE CONTAINER
         RelativeLayout.LayoutParams paramsLayoutContent = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        paramsLayoutContent.addRule(isSender ? RelativeLayout.LEFT_OF : RelativeLayout.RIGHT_OF, R.id.activity_mentor_chat_item_profile_container);
+        paramsLayoutContent.addRule(isSender ? RelativeLayout.LEFT_OF : RelativeLayout.RIGHT_OF, R.id.activity_chat_item_profile_container);
         this.messageContainer.setLayoutParams(paramsLayoutContent);
 
         // CARDVIEW IMAGE SEND
         RelativeLayout.LayoutParams paramsImageView = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
-        paramsImageView.addRule(isSender ? RelativeLayout.ALIGN_LEFT : RelativeLayout.ALIGN_RIGHT, R.id.activity_mentor_chat_item_message_container_text_message_container);
+        paramsImageView.addRule(isSender ? RelativeLayout.ALIGN_LEFT : RelativeLayout.ALIGN_RIGHT, R.id.activity_chat_item_message_container_text_message_container);
         this.cardViewImageSent.setLayoutParams(paramsImageView);
 
         this.rootView.requestLayout();

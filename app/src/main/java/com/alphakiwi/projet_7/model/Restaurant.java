@@ -70,9 +70,7 @@ public class Restaurant implements Serializable {
         }
     }
 
-    /**
-     * Comparator to sort task from Z to A
-     */
+
     public static class  RestaurantZAComparator implements Comparator< Restaurant> {
         @Override
         public int compare( Restaurant left,  Restaurant right) {

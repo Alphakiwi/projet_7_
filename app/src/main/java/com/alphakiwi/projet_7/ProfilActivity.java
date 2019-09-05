@@ -68,13 +68,11 @@ public class ProfilActivity extends BaseActivity {
                 notif.setChecked(false);
             }
         }
+
         notif.setOnClickListener(new View.OnClickListener() {
-
-
             @Override
 
             public void onClick(View v) {
-
 
                 if (notif.isChecked()) {
 
@@ -88,10 +86,7 @@ public class ProfilActivity extends BaseActivity {
                     if (getCurrentUser() != null){
                         UserHelper.updateNotif(false, getCurrentUser().getUid()).addOnFailureListener(onFailureListener()).addOnSuccessListener(updateUIAfterRESTRequestsCompleted(UPDATE_Notif2));
                     }
-
-
                 }
-
             }
         });
 
@@ -100,9 +95,6 @@ public class ProfilActivity extends BaseActivity {
     @Override
     public int getFragmentLayout() { return R.layout.activity_profil; }
 
-    // --------------------
-    // ACTIONS
-    // --------------------
 
     @OnClick(R.id.profile_activity_button_update)
     public void onClickUpdateButton() { this.updateUsernameInFirebase(); }
@@ -126,9 +118,7 @@ public class ProfilActivity extends BaseActivity {
             .setNegativeButton(R.string.popup_message_choice_no, null)
             .show();
     }
-    // --------------------
-    // REST REQUESTS
-    // --------------------
+
 
     private void signOutUserFromFirebase(){
         AuthUI.getInstance()
@@ -161,10 +151,6 @@ public class ProfilActivity extends BaseActivity {
         }
     }
 
-
-    // --------------------
-    // UI
-    // --------------------
 
     private void updateUIWhenCreating(){
 

@@ -55,7 +55,7 @@ public class NotificationHelper {
         String coworkers = mContext.getString(R.string.nobody);
 
         if (listUser.size()>0) {
-            coworkers = mContext.getString(R.string.who_eat_with_you);
+            coworkers = mContext.getString(R.string.who_eat_with_you) + " ";
         }
 
         for(int j = 0; j < listUser.size(); j++){
@@ -83,7 +83,7 @@ public class NotificationHelper {
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(mContext);
         mBuilder.setSmallIcon(R.mipmap.ic_launcher);
-        mBuilder.setContentTitle(mContext.getString(R.string.where_do_you_eat) + getUserCurrent().getResto().getName())
+        mBuilder.setContentTitle(mContext.getString(R.string.where_do_you_eat) + " " + getUserCurrent().getResto().getName())
                 .setContentText(coworkers)
                 .setAutoCancel(true)
                 .setSound(Settings.System.DEFAULT_NOTIFICATION_URI)

@@ -46,17 +46,17 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class ChatActivity extends BaseActivity implements ChatAdapter.Listener {
 
     // FOR DESIGN
-    @BindView(R.id.activity_mentor_chat_recycler_view)
+    @BindView(R.id.activity_chat_recycler_view)
     RecyclerView recyclerView;
-    @BindView(R.id.activity_mentor_chat_text_view_recycler_view_empty)
+    @BindView(R.id.activity_chat_text_view_recycler_view_empty)
     TextView textViewRecyclerViewEmpty;
-    @BindView(R.id.activity_mentor_chat_message_edit_text)
+    @BindView(R.id.activity_chat_message_edit_text)
     TextInputEditText editTextMessage;
-    @BindView(R.id.activity_mentor_chat_image_chosen_preview)
+    @BindView(R.id.activity_chat_image_chosen_preview)
     ImageView imageViewPreview;
 
     // FOR DATA
-    private ChatAdapter mentorChatAdapter;
+    private ChatAdapter chatAdapter;
     @Nullable
     private User modelCurrentUser;
     private String currentChatName;
@@ -99,7 +99,7 @@ public class ChatActivity extends BaseActivity implements ChatAdapter.Listener {
     // ACTIONS
     // --------------------
 
-    @OnClick(R.id.activity_mentor_chat_send_button)
+    @OnClick(R.id.activity_chat_send_button)
     public void onClickSendMessage() {
         if (!TextUtils.isEmpty(editTextMessage.getText()) && modelCurrentUser != null){
             // Check if the ImageView is set
@@ -117,7 +117,7 @@ public class ChatActivity extends BaseActivity implements ChatAdapter.Listener {
     }
 
 
-    @OnClick(R.id.activity_mentor_chat_add_file_button)
+    @OnClick(R.id.activity_chat_add_file_button)
     @AfterPermissionGranted(RC_IMAGE_PERMS)
     public void onClickAddFile() { this.chooseImageFromPhone(); }
 
@@ -197,15 +197,15 @@ public class ChatActivity extends BaseActivity implements ChatAdapter.Listener {
         //Track current chat name
         this.currentChatName = chatName;
         //Configure Adapter & RecyclerView
-        this.mentorChatAdapter = new ChatAdapter(generateOptionsForAdapter(MessageHelper.getAllMessageForChat(this.currentChatName)), Glide.with(this), this, this.getCurrentUser().getUid());
-        mentorChatAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+        this.chatAdapter = new ChatAdapter(generateOptionsForAdapter(MessageHelper.getAllMessageForChat(this.currentChatName)), Glide.with(this), this, this.getCurrentUser().getUid());
+        chatAdapter.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
             @Override
             public void onItemRangeInserted(int positionStart, int itemCount) {
-                recyclerView.smoothScrollToPosition(mentorChatAdapter.getItemCount()); // Scroll to bottom on new messages
+                recyclerView.smoothScrollToPosition(chatAdapter.getItemCount()); // Scroll to bottom on new messages
             }
         });
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(this.mentorChatAdapter);
+        recyclerView.setAdapter(this.chatAdapter);
     }
 
     private FirestoreRecyclerOptions<Message> generateOptionsForAdapter(Query query){
@@ -221,7 +221,7 @@ public class ChatActivity extends BaseActivity implements ChatAdapter.Listener {
 
     @Override
     public void onDataChanged() {
-        textViewRecyclerViewEmpty.setVisibility(this.mentorChatAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
+        textViewRecyclerViewEmpty.setVisibility(this.chatAdapter.getItemCount() == 0 ? View.VISIBLE : View.GONE);
     }
 }
 

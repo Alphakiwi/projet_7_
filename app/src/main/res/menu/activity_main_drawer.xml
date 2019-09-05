@@ -7,15 +7,15 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_first_layout"
+            android:id="@+id/nav_my_resto"
             android:icon="@drawable/ic_baseline_restaurant_menu_24px"
             android:title="@string/your_lunch" />
         <item
-            android:id="@+id/nav_second_layout"
+            android:id="@+id/nav_profil"
             android:icon="@drawable/ic_baseline_settings_20px"
             android:title="@string/settings" />
         <item
-            android:id="@+id/nav_third_layout"
+            android:id="@+id/nav_logout"
             android:icon="@drawable/ic_baseline_power_settings_new_24px"
             android:title="@string/logout" />
     </group>

@@ -5,7 +5,7 @@
 
 
     <string name="login">Connection</string>
-    <string name="chat_with_mentor">I\'m hungry !</string>
+    <string name="chat">I\'m hungry !</string>
 
     <!-- NOTIFICATION SERVICE / NOTIFICATION HELPER -->
 
@@ -43,10 +43,10 @@
 
 
     <!-- CHAT ACTIVITY -->
-    <string name="toolbar_title_mentor_chat_activity">Chatrooms</string>
-    <string name="text_input_title_mentor_chat_activity">Write your message</string>
-    <string name="button_title_mentor_chat_activity">SEND</string>
-    <string name="text_view_mentor_chat_error">There are no messages yet&#8230;</string>
+    <string name="toolbar_title_chat_activity">Chatrooms</string>
+    <string name="text_input_title_chat_activity">Write your message</string>
+    <string name="button_title_chat_activity">SEND</string>
+    <string name="text_view_chat_error">There are no messages yet&#8230;</string>
     <string name="popup_title_permission_files_access">This application need permissions to work.</string>
     <string name="toast_title_no_image_chosen">no immage selected&#8230;</string>
 

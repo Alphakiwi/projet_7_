@@ -89,7 +89,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
         placesClient.fetchPlace(request).addOnSuccessListener((response) -> {
             Place place = response.getPlace();
-            //Log.i(TAG, "Place found: " + place.getName());
 
             if (place.getRating()!= null) {
 
@@ -98,8 +97,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
             }
 
-
-            //holder.opening.setText(place.getOpeningHours().toString());
 
             if (notation>=4){
                 holder.star1.setVisibility(View.VISIBLE);
@@ -147,7 +144,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
 
                 PhotoMetadata photoMetadata = place.getPhotoMetadatas().get(0);
-                String attributions = photoMetadata.getAttributions();
                 FetchPhotoRequest photoRequest = FetchPhotoRequest.builder(photoMetadata).setMaxHeight(200).build();
                 placesClient.fetchPhoto(photoRequest).addOnSuccessListener((fetchPhotoResponse) -> {
                     Bitmap bitmap = fetchPhotoResponse.getBitmap();
@@ -176,25 +172,22 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
         holder.name.setText(list.get(position).getName());
         holder.descript.setText(list.get(position).getAddress());
 
-        int compteur = 0;
+        int nb = 0;
 
         for(int j = 0; j < getAllUserWithoutMyself().size(); j++){
 
             String restoUser = getAllUserWithoutMyself().get(j).getResto().getId();
 
+            int comparison3 = restoUser.compareTo(list.get(position).getId());
 
-            int comparaison = restoUser.compareTo(list.get(position).getId());
+            if (comparison3 == 0){
 
-
-
-            if (comparaison == 0){
-
-                compteur += 1;
+                nb += 1;
             }
 
         }
 
-        holder.nbWorkmate.setText(" " + compteur);
+        holder.nbWorkmate.setText(" " + nb);
 
 
 

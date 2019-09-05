@@ -8,7 +8,6 @@ import com.alphakiwi.projet_7.R;
 import com.alphakiwi.projet_7.api.NotificationHelper;
 
 import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
-import static com.firebase.ui.auth.AuthUI.getApplicationContext;
 
 
 public class NotificationReceiver extends BroadcastReceiver {
@@ -22,8 +21,8 @@ public class NotificationReceiver extends BroadcastReceiver {
 
 
         if (getUserCurrent().getNotification() == true) {
-            int comparaison = getUserCurrent().getResto().name.compareTo(context.getString(R.string.no_choice));
-            if (comparaison != 0) {
+            int comparison = getUserCurrent().getResto().name.compareTo(context.getString(R.string.no_choice));
+            if (comparison != 0) {
                 notificationHelper.createNotification();
             }
         }

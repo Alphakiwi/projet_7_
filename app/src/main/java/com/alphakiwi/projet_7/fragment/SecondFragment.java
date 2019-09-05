@@ -41,24 +41,18 @@ import static com.alphakiwi.projet_7.BuildConfig.API_KEY;
 
 public class SecondFragment extends Fragment {
 
-    View myView;
 
     private static final String LOG_TAG = "ListRest";
-
-    private RecyclerView mListView;
-
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_SEARCH = "/nearbysearch";
     private static final String OUT_JSON = "/json?";
-    int compteur = 0;
-
-    static ArrayList<Restaurant> resultList = null;
-
-    RestaurantAdapter adapter = new RestaurantAdapter();
-
-
-    Double lng;
-    Double lat;
+    private RecyclerView mListView;
+    private View myView;
+    private int counter = 0;
+    private static ArrayList<Restaurant> resultList = null;
+    private RestaurantAdapter adapter = new RestaurantAdapter();
+    private Double lng;
+    private Double lat;
     private Context mContext;
 
     @Override
@@ -75,13 +69,8 @@ public class SecondFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         myView = inflater.inflate(R.layout.user_recycler, container, false);
 
-
-
-
         FloatingActionButton button = (FloatingActionButton ) myView.findViewById(R.id.fab);
         button.setImageResource(R.drawable.ic_filter_list);
-
-
 
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -89,7 +78,7 @@ public class SecondFragment extends Fragment {
 
                 if (resultList != null) {
 
-                    switch(compteur){
+                    switch(counter){
                         case 0:
                             Collections.sort(resultList, new Restaurant.RestaurantDistanceComparator());
                             Toast.makeText(mContext, getString(R.string.sort_distance), Toast.LENGTH_SHORT).show(); break;
@@ -106,37 +95,24 @@ public class SecondFragment extends Fragment {
                         default: //For all other cases, do this        break;
                     }
 
-
-
-
                 }
-
-
 
                 adapter.updateRestaurants();
                 mListView.smoothScrollToPosition(0);
 
-                if (compteur>=3){
-                    compteur = 0;
+                if (counter>=3){
+                    counter = 0;
                 }else {
-                    compteur += 1;
+                    counter += 1;
                 }
-
-
             }
         });
-
-
-
-
 
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
         if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-
-
         }
 
         LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
@@ -152,18 +128,14 @@ public class SecondFragment extends Fragment {
             Toast.makeText(mContext, getString(R.string.error_get_data), Toast.LENGTH_SHORT).show();
         }
 
-
         mListView = (RecyclerView) myView.findViewById(R.id.list);
         mListView.setLayoutManager(new LinearLayoutManager(getActivity()));
-
 
         adapter = new RestaurantAdapter(getContext(), list, new LatLng(lat,lng) );
 
         mListView.setAdapter(adapter);
 
         mListView.smoothScrollToPosition(mListView.getAdapter().getItemCount() - 1);
-
-
 
         return myView;
     }
@@ -211,7 +183,9 @@ public class SecondFragment extends Fragment {
             resultList = new ArrayList<Restaurant>(predsJsonArray.length());
             for (int i = 0; i < predsJsonArray.length(); i++) {
 
-                Restaurant place = new Restaurant(predsJsonArray.getJSONObject(i).getString("name"), predsJsonArray.getJSONObject(i).getString("vicinity"), predsJsonArray.getJSONObject(i).getString("reference"));
+                Restaurant place = new Restaurant(predsJsonArray.getJSONObject(i).getString("name"),
+                        predsJsonArray.getJSONObject(i).getString("vicinity"), predsJsonArray.getJSONObject(i).
+                        getString("reference"));
 
                 resultList.add(place);
 

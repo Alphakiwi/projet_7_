@@ -11,9 +11,6 @@ import com.bumptech.glide.RequestManager;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
-/**
- * Created by Philippe on 31/01/2018.
- */
 
 public class ChatAdapter extends FirestoreRecyclerAdapter<Message, MessageViewHolder> {
 

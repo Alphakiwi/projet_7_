@@ -1,18 +1,9 @@
 package com.alphakiwi.projet_7;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.alphakiwi.projet_7.fragment.FirstFragment;
 import com.alphakiwi.projet_7.model.Restaurant;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.model.InitializationError;
-import org.robolectric.util.FragmentTestUtil;
 
 import java.util.Arrays;
 import java.util.Calendar;
