@@ -24,18 +24,14 @@ import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 
 public class ThirdFragment extends Fragment {
 
-
     View myView;
     MyAdapter adapter;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
     }
-
 
     @Nullable
     @Override
@@ -56,7 +52,6 @@ public class ThirdFragment extends Fragment {
             }
         });
 
-
         RecyclerView  recyclerView = (RecyclerView) myView.findViewById(R.id.list);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -65,7 +60,6 @@ public class ThirdFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         return myView;
-
 
     }
 

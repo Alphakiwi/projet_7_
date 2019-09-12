@@ -56,9 +56,11 @@ import static com.google.android.libraries.places.api.model.TypeFilter.ESTABLISH
 
 public class HungryActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+
     private ImageView imageViewProfile;
     private TextView textUsername;
     private TextView textViewEmail;
+
     private View mLayout;
 
     private static final int PERMISSION_REQUEST_LOCATION = 0;
@@ -110,17 +112,19 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
+
+        fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
+
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         View header = navigationView.getHeaderView(0);
-
+        //no bindview because of the header
         imageViewProfile = (ImageView) header.findViewById(R.id.profile_activity_imageview_profile2);
         textUsername = (TextView) header.findViewById(R.id.profile_activity_edit_text_username2);
         textViewEmail = (TextView) header.findViewById(R.id.profile_activity_text_view_email2);
 
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
 
         updateUIWhenCreating();
 
@@ -136,7 +140,9 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
         autocompleteFragment.setTypeFilter(ESTABLISHMENT);
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat
+                .checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);

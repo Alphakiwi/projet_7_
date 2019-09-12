@@ -60,13 +60,10 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                     @Override
                     public void onClick(View v) {
 
-
                         Intent i = new Intent(context, DetailRestaurantActivity.class);
                         i.putExtra(RESTAURANT, profiles.get(position).getResto());
 
                         context.startActivity(i);
-
-
                     }
                 });
 
@@ -74,9 +71,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
                 holder.name.setTextColor(Color.rgb(160,160,160));
                 holder.descript.setTextColor(Color.rgb(200,200,200));
                 holder.descript.setText(R.string.no_choice);
-
             }
-
         }else{
 
             if (profiles.get(position) != currentUser) {
@@ -86,17 +81,11 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
             }
         }
 
-
-
-
         Glide.with(holder.avatar.getContext())
                 .load(profiles.get(position).getUrlPicture())
                 .apply(RequestOptions.circleCropTransform())
                 .into(holder.avatar);
-
-
     }
-
 
     @Override
     public int getItemCount() {

@@ -27,9 +27,6 @@ import butterknife.OnClick;
 
 import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 
-/**
- * Created by Philippe on 25/01/2018.
- */
 
 public class ProfilActivity extends BaseActivity {
 

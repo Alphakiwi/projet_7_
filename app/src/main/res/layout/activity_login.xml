@@ -52,7 +52,7 @@
 
         <!-- BUTTON CHAT -->
         <Button
-            android:id="@+id/main_activity_button_chat"
+            android:id="@+id/main_activity_button_hungry"
             style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

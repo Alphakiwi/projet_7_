@@ -61,7 +61,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
     }
 
 
-
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -97,7 +96,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
             }
 
-
             if (notation>=4){
                 holder.star1.setVisibility(View.VISIBLE);
                 holder.star2.setVisibility(View.VISIBLE);
@@ -115,8 +113,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
                 holder.star2.setVisibility(GONE);
                 holder.star3.setVisibility(GONE);
             }
-
-
 
 
             double dist = CalculationByDistance(here,place.getLatLng())/10 + CalculationByDistance(here,place.getLatLng())%10;
@@ -154,11 +150,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
 
 
                 });
-
             }
-
-
-
 
         }).addOnFailureListener((exception) -> {
             if (exception instanceof ApiException) {
@@ -166,42 +158,26 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             }
         });
 
-
-
-
         holder.name.setText(list.get(position).getName());
         holder.descript.setText(list.get(position).getAddress());
 
         int nb = 0;
-
         for(int j = 0; j < getAllUserWithoutMyself().size(); j++){
 
             String restoUser = getAllUserWithoutMyself().get(j).getResto().getId();
-
             int comparison3 = restoUser.compareTo(list.get(position).getId());
-
-            if (comparison3 == 0){
-
-                nb += 1;
-            }
-
+            if (comparison3 == 0){ nb += 1; }
         }
 
         holder.nbWorkmate.setText(" " + nb);
-
-
-
 
         holder.descript.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-
                 Intent i = new Intent(context, DetailRestaurantActivity.class);
                 i.putExtra(RESTAURANT, list.get(position));
-
                 context.startActivity(i);
-
 
             }
         });
@@ -210,17 +186,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.My
             @Override
             public void onClick(View v) {
 
-
                 Intent i = new Intent(context, DetailRestaurantActivity.class);
                 i.putExtra(RESTAURANT, list.get(position));
 
                 context.startActivity(i);
 
-
             }
         });
-
-
 
     }
 

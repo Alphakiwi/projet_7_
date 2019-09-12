@@ -17,19 +17,17 @@ import java.util.List;
 
 import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 
-/**
- * Created by navneet on 23/7/16.
- */
+
 public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
     String googlePlacesData;
     GoogleMap mMap;
     String url;
-    List<String> id;
+    List<String> coworkersResto;
     Context context;
 
-    public GetNearbyPlacesData ( List<String> id, Context c ) {
-        this.id = id;
+    public GetNearbyPlacesData ( List<String> coworkersResto, Context c ) {
+        this.coworkersResto = coworkersResto;
         this.context = c;
     }
 
@@ -86,9 +84,7 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
             markerOptions.title(placeName );
 
 
-
-
-            if (id.contains(id_place)) {
+            if (coworkersResto.contains(id_place)) {
                 markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             }else{
 
@@ -103,12 +99,8 @@ public class GetNearbyPlacesData extends AsyncTask<Object, String, String> {
 
             mMap.addMarker(markerOptions);
 
-
-
-            //move map camera
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
             mMap.animateCamera(CameraUpdateFactory.zoomTo(11));
-
 
         }
     }

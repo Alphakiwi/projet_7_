@@ -35,6 +35,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import butterknife.BindView;
+
 import static com.alphakiwi.projet_7.BuildConfig.API_KEY;
 import static com.alphakiwi.projet_7.HungryActivity.RESTAURANT;
 import static com.alphakiwi.projet_7.api.UserHelper.getAllUser;
@@ -42,16 +44,24 @@ import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 
 public class DetailRestaurantActivity extends BaseActivity {
 
-    private TextView text = null;
-    private TextView lieuTel = null;
-    private TextView loca = null;
-    private TextView telephone = null;
-    private TextView web = null;
-    private ImageView image = null;
-    private Button back = null;
-    private Button like = null;
-
-    private FloatingActionButton fab;
+    @BindView(R.id.text)
+    TextView text = null;
+    @BindView(R.id.lieuTel)
+    TextView lieuTel = null;
+    @BindView(R.id.loca)
+    TextView loca = null;
+    @BindView(R.id.tel)
+    TextView telephone = null;
+    @BindView(R.id.web)
+    TextView web = null;
+    @BindView(R.id.imageAvatar)
+    ImageView image = null;
+    @BindView(R.id.back)
+    Button back = null;
+    @BindView(R.id.like)
+    Button like = null;
+    @BindView(R.id.fab)
+    FloatingActionButton fab;
     private static final int UPDATE_RESTO = 40;
     private static final int UPDATE_RESTO2 = 50;
     private static final int UPDATE_RESTO_LIKE = 60;
@@ -67,13 +77,6 @@ public class DetailRestaurantActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        text = (TextView) findViewById(R.id.text);
-        lieuTel = (TextView) findViewById(R.id.lieuTel);
-        loca = (TextView) findViewById(R.id.loca);
-        telephone = (TextView) findViewById(R.id.tel);
-        web = (TextView) findViewById(R.id.web);
-        image = (ImageView) findViewById(R.id.imageAvatar);
 
         Intent i = getIntent();
         resto = (Restaurant) i.getSerializableExtra(RESTAURANT);
@@ -158,7 +161,6 @@ public class DetailRestaurantActivity extends BaseActivity {
     public int getFragmentLayout() { return R.layout.activity_detail_restaurant; }
 
     private void configureBack() {
-        back = findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -183,7 +185,6 @@ public class DetailRestaurantActivity extends BaseActivity {
 
     private void configureWebsite(Uri url) {
         Button website = findViewById(R.id.website);
-
         website.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -195,9 +196,6 @@ public class DetailRestaurantActivity extends BaseActivity {
     }
 
     private void configureLike() {
-        like = findViewById(R.id.like);
-
-
         if(getUserCurrent().getRestoLike().contains(resto.getId())){
             like.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_baseline_star_24px, 0, 0);
         }
@@ -237,7 +235,6 @@ public class DetailRestaurantActivity extends BaseActivity {
     }
 
     private void configureFab() {
-        fab = findViewById(R.id.fab);
 
         final int[] comp = {getUserCurrent().getResto().getId().compareTo(resto.getId())};
         if (comp[0] == 0) { fab.setImageResource(R.drawable.ic_baseline_done_24px); }

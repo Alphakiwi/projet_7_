@@ -38,8 +38,6 @@ public class LoginActivity extends BaseActivity {
     @BindView(R.id.main_activity_button_login)
     Button buttonLogin;
 
-    //CallbackManager callbackManager;
-
     //FOR DATA
     private static final int RC_SIGN_IN = 123;
     private static final String FIRST = "FirstTime";
@@ -51,7 +49,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-       // callbackManager.onActivityResult(requestCode, resultCode, data);
 
         this.handleResponseAfterSignIn(requestCode, resultCode, data);
     }
@@ -71,7 +68,7 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
-    @OnClick(R.id.main_activity_button_chat)
+    @OnClick(R.id.main_activity_button_hungry)
     public void onClickChatButton() {
         if (this.isCurrentUserLogged()){
             sharedpref();
@@ -87,7 +84,8 @@ public class LoginActivity extends BaseActivity {
 
             if (!getAllUser().contains(getUserCurrent())) {
 
-                String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser().getPhotoUrl().toString() : null;
+                String urlPicture = (this.getCurrentUser().getPhotoUrl() != null) ? this.getCurrentUser()
+                        .getPhotoUrl().toString() : null;
                 String username = this.getCurrentUser().getDisplayName();
                 String uid = this.getCurrentUser().getUid();
 
@@ -97,15 +95,13 @@ public class LoginActivity extends BaseActivity {
                 ArrayList<String> restoLike = new ArrayList<String>();
 
 
-                UserHelper.createUser(uid, username, urlPicture, resto, notification, restoLike ).addOnFailureListener(this.onFailureListener());
+                UserHelper.createUser(uid, username, urlPicture, resto, notification, restoLike ).
+                        addOnFailureListener(this.onFailureListener());
             }
 
         }
     }
 
-    // --------------------
-    // NAVIGATION
-    // --------------------
 
     private void startSignInActivity(){
         startActivityForResult(
@@ -120,12 +116,6 @@ public class LoginActivity extends BaseActivity {
                         .setLogo(R.drawable.logo)
                         .build(),
                 RC_SIGN_IN);
-    }
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
     }
 
 

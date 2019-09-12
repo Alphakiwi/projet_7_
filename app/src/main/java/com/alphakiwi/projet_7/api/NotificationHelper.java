@@ -40,16 +40,12 @@ public class NotificationHelper {
 
             String restoUser = getAllUserWithoutMyself().get(j).getResto().getId();
 
+            int comparison = restoUser.compareTo(restoID);
 
-            int comparaison = restoUser.compareTo(restoID);
-
-
-
-            if (comparaison == 0){
+            if (comparison == 0){
 
                 listUser.add(getAllUserWithoutMyself().get(j));
             }
-
         }
 
         String coworkers = mContext.getString(R.string.nobody);
@@ -66,11 +62,6 @@ public class NotificationHelper {
             coworkers += listUser.get(j).getUsername();
 
         }
-
-
-
-
-
 
         Intent intent = new Intent(mContext , LoginActivity.class);
 

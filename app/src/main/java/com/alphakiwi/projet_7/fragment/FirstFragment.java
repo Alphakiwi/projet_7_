@@ -64,25 +64,23 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.map_layout, container, false);
 
-
         FloatingActionButton button = (FloatingActionButton) mView.findViewById(R.id.recentrer);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-                if (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                        != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext,
+                        android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                     return;
                 }
                 Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
                 LatLng here = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
 
-
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(here, 14));
-
 
             }
         });
-
 
         return mView;
     }
@@ -168,13 +166,16 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (ActivityCompat.checkSelfPermission(mContext, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED && ActivityCompat
+                .checkSelfPermission(mContext, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
 
         Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         LatLng here = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(here).title(getString(R.string.here)).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
+        mMap.addMarker(new MarkerOptions().position(here).title(getString(R.string.here)).icon(BitmapDescriptorFactory.
+                defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(here, 14));
 
         double latitude = mLastLocation.getLatitude();
@@ -191,16 +192,6 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
     }
 
 
-    @Override
-    public void onConnectionSuspended(int i) {
-
-    }
-
-    @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
-
 
     private String getUrl(double latitude, double longitude) {
 
@@ -211,6 +202,17 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
         googlePlacesUrl.append("&sensor=true");
         googlePlacesUrl.append("&key=" + API_KEY);
         return (googlePlacesUrl.toString());
+    }
+
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
     }
 
 }
