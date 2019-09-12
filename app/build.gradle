@@ -5,8 +5,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 29
-
-
+    
     defaultConfig {
         applicationId "com.alphakiwi.projet_7"
         minSdkVersion 19
@@ -33,7 +32,10 @@ android {
     }
     buildToolsVersion = '28.0.3'
 
-
+    lintOptions {
+        checkReleaseBuilds false
+        abortOnError false
+    }
 
 }
 
