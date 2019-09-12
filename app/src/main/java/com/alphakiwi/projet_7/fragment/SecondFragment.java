@@ -135,7 +135,8 @@ public class SecondFragment extends Fragment {
 
         mListView.setAdapter(adapter);
 
-        mListView.smoothScrollToPosition(mListView.getAdapter().getItemCount() - 1);
+
+        //mListView.smoothScrollToPosition(mListView.getAdapter().getItemCount() - 1);
 
         return myView;
     }

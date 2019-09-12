@@ -247,9 +247,10 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User currentUser = documentSnapshot.toObject(User.class);
-                    String username = TextUtils.isEmpty(currentUser.getUsername()) ? getString(R.string.info_no_username_found) : currentUser.getUsername();
-                   textUsername.setText(username);
-                }
+                    if (currentUser!=null) {
+                        String username = TextUtils.isEmpty(currentUser.getUsername()) ? getString(R.string.info_no_username_found) : currentUser.getUsername();
+                        textUsername.setText(username);
+                }   }
             });
         }
     }
