@@ -111,14 +111,20 @@ public class SecondFragment extends Fragment {
         StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder().permitAll().build();
         StrictMode.setThreadPolicy(policy);
 
-        if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
+        /*if (ActivityCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
         }
 
         LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         lng = location.getLongitude();
-        lat = location.getLatitude();
+        lat = location.getLatitude();*/
+
+        Bundle args = getArguments();
+        lat = args.getDouble("lat");
+        lng = args.getDouble("long");
+
+
 
         int radius = 10000;
 
@@ -136,7 +142,7 @@ public class SecondFragment extends Fragment {
         mListView.setAdapter(adapter);
 
 
-        //mListView.smoothScrollToPosition(mListView.getAdapter().getItemCount() - 1);
+        mListView.smoothScrollToPosition(mListView.getAdapter().getItemCount() - 1);
 
         return myView;
     }
@@ -149,8 +155,8 @@ public class SecondFragment extends Fragment {
             StringBuilder sb = new StringBuilder(PLACES_API_BASE);
             sb.append(TYPE_SEARCH);
             sb.append(OUT_JSON);
-            sb.append("location=" + String.valueOf(lat) + "," + String.valueOf(lng));
-            sb.append("&radius=" + String.valueOf(radius));
+            sb.append("location=" + lat + "," + lng);
+            sb.append("&radius=" + radius);
             sb.append("&type=meal_takeaway");
             sb.append("&key=" + API_KEY);
 

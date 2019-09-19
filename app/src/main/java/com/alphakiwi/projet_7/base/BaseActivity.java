@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.widget.Toast;
 
 import com.alphakiwi.projet_7.R;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -23,6 +24,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
 
         this.setContentView(this.getFragmentLayout());

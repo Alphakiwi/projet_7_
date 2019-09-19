@@ -4,7 +4,10 @@ package com.alphakiwi.projet_7.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,6 +51,11 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
 
     private View mView;
 
+    private Double lng;
+    private Double lat;
+
+
+
 
 
     @Override
@@ -64,6 +72,12 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
         // Inflate the layout for this fragment
         mView = inflater.inflate(R.layout.map_layout, container, false);
 
+        Bundle args = getArguments();
+        lat = args.getDouble("lat");
+        lng = args.getDouble("long");
+
+
+
         FloatingActionButton button = (FloatingActionButton) mView.findViewById(R.id.recentrer);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -75,7 +89,8 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
                     return;
                 }
                 Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-                LatLng here = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+               // LatLng here = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                LatLng here = new LatLng(lat, lng);
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(here, 14));
 
@@ -172,16 +187,25 @@ public class FirstFragment extends Fragment implements OnMapReadyCallback, Googl
             return;
         }
 
-        Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        LatLng here = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        LocationManager locationManager = (LocationManager)  mContext.getSystemService(Context.LOCATION_SERVICE);
+       /* Criteria criteria = new Criteria();
+        String bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+        locationManager.requestLocationUpdates(bestProvider, 1000, 0, (LocationListener) mContext);*/
+
+
+       // Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+       // LatLng here = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        LatLng here = new LatLng(lat, lng);
+
+
         mMap.addMarker(new MarkerOptions().position(here).title(getString(R.string.here)).icon(BitmapDescriptorFactory.
                 defaultMarker(BitmapDescriptorFactory.HUE_BLUE)));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(here, 14));
 
-        double latitude = mLastLocation.getLatitude();
-        double longitude = mLastLocation.getLongitude();
+        //double latitude = mLastLocation.getLatitude();
+        //double longitude = mLastLocation.getLongitude();
 
-        String url = getUrl(latitude, longitude);
+        String url = getUrl(lat, lng);
         Object[] DataTransfer = new Object[2];
         DataTransfer[0] = mMap;
         DataTransfer[1] = url;

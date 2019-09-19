@@ -4,7 +4,9 @@ import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 
@@ -54,7 +56,7 @@ import static com.alphakiwi.projet_7.api.UserHelper.getAllUserWithoutMyself;
 import static com.alphakiwi.projet_7.api.UserHelper.getUserCurrent;
 import static com.google.android.libraries.places.api.model.TypeFilter.ESTABLISHMENT;
 
-public class HungryActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HungryActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, LocationListener {
 
 
     private ImageView imageViewProfile;
@@ -72,17 +74,36 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
     private SecondFragment secondFragment = new SecondFragment();
     private ThirdFragment thirdFragment = new ThirdFragment();
 
+    public double latitude = 0;
+    public double longitude = 0;
+    public LocationManager locationManager;
+    public Criteria criteria;
+    public String bestProvider;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             fragmentManager = getSupportFragmentManager();
 
+            Bundle args = new Bundle();
+            args.putDouble("lat", latitude);
+            args.putDouble("long", longitude);
+
             switch (item.getItemId()) {
-                case R.id.navigation_mapView: fragmentManager.beginTransaction().replace(R.id.content_frame,firstFragment ).commit();
+                case R.id.navigation_mapView:
+                    firstFragment.setArguments(args);
+                    fragmentManager.beginTransaction().replace(R.id.content_frame,firstFragment ).commit();
                     return true;
-                case R.id.navigation_listView: fragmentManager.beginTransaction().replace(R.id.content_frame, secondFragment).commit();
+                case R.id.navigation_listView:
+                    if (latitude!=0){
+                        secondFragment.setArguments(args);
+                        fragmentManager.beginTransaction().replace(R.id.content_frame, secondFragment).commit();
                     return true;
+                    }else{
+                        Toast.makeText(HungryActivity.this, "Attendez la fin du chargement de la carte", Toast.LENGTH_SHORT).show();
+                        break;
+                    }
                 case R.id.navigation_workmates: fragmentManager.beginTransaction().replace(R.id.content_frame, thirdFragment).commit();
                     return true;
             }
@@ -113,9 +134,6 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
         toggle.syncState();
 
 
-        fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
-
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
@@ -130,14 +148,7 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
 
         Places.initialize(getApplicationContext(), API_KEY);
 
-        // Initialize the AutocompleteSupportFragment.
-        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
-                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
 
-// Specify the types of place data to return.
-        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
-        autocompleteFragment.setHint(getString(R.string.search));
-        autocompleteFragment.setTypeFilter(ESTABLISHMENT);
 
         LocationManager lm = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
@@ -145,36 +156,25 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
                 .checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
+
+
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
+        if(location != null) {
+            longitude = location.getLongitude();
+            latitude = location.getLatitude();
+            ResearchBar();
+            fragmentManager = getSupportFragmentManager();
+        }else{
+            locationManager = (LocationManager)  this.getSystemService(Context.LOCATION_SERVICE);
+            criteria = new Criteria();
+            bestProvider = String.valueOf(locationManager.getBestProvider(criteria, true)).toString();
+            Toast.makeText(HungryActivity.this, "Le chargement de la carte peut prendre plus ou moins de temps en fonction de votre connexion internet.", Toast.LENGTH_SHORT).show();
+            locationManager.requestLocationUpdates(bestProvider, 1000, 0, this);
+        }
 
-        autocompleteFragment.setLocationRestriction(RectangularBounds.newInstance(
-                new LatLng(latitude - 0.05 ,longitude - 0.05),
-                new LatLng(latitude + 0.05, longitude + 0.05)));
 
-// Set up a PlaceSelectionListener to handle the response.
-        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
-            @Override
-            public void onPlaceSelected(Place place) {
-                if (place.getTypes()!= null) {
-                    if (place.getTypes().contains(Place.Type.RESTAURANT)) {
 
-                        Intent i = new Intent(HungryActivity.this, DetailRestaurantActivity.class);
-                        i.putExtra(RESTAURANT, new Restaurant(place.getName(), place.getAddress(), place.getId()));
-                        startActivity(i);
 
-                    } else { Toast.makeText(HungryActivity.this, getString(R.string.not_a_resto), Toast.LENGTH_SHORT).show(); }
-
-                }else{
-                    Intent i = new Intent(HungryActivity.this, DetailRestaurantActivity.class);
-                    i.putExtra(RESTAURANT, new Restaurant(place.getName(), place.getAddress(), place.getId()));
-                    startActivity(i);
-                }
-            }
-            @Override
-            public void onError(Status status) { }
-        });
     }
 
     @Override
@@ -272,7 +272,7 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
             // Request for location permission.
             if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 // Permission has been granted. Start preview Activity.
-                fragmentManager.beginTransaction().replace(R.id.content_frame, new FirstFragment()).commit();
+                recreate();
 
                 Snackbar.make(mLayout, getString(R.string.location_permission_granted), Snackbar.LENGTH_SHORT).show();
             } else {
@@ -302,5 +302,79 @@ public class HungryActivity extends BaseActivity implements NavigationView.OnNav
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     PERMISSION_REQUEST_LOCATION);
         }
+    }
+
+    private void ResearchBar() {
+        // Initialize the AutocompleteSupportFragment.
+        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+                getSupportFragmentManager().findFragmentById(R.id.autocomplete_fragment);
+
+// Specify the types of place data to return.
+        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+        autocompleteFragment.setHint(getString(R.string.search));
+        autocompleteFragment.setTypeFilter(ESTABLISHMENT);
+
+        autocompleteFragment.setLocationRestriction(RectangularBounds.newInstance(
+                new LatLng(latitude - 0.05 ,longitude - 0.05),
+                new LatLng(latitude + 0.05, longitude + 0.05)));
+
+// Set up a PlaceSelectionListener to handle the response.
+        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                if (place.getTypes()!= null) {
+                    if (place.getTypes().contains(Place.Type.RESTAURANT)) {
+
+                        Intent i = new Intent(HungryActivity.this, DetailRestaurantActivity.class);
+                        i.putExtra(RESTAURANT, new Restaurant(place.getName(), place.getAddress(), place.getId()));
+                        startActivity(i);
+
+                    } else { Toast.makeText(HungryActivity.this, getString(R.string.not_a_resto), Toast.LENGTH_SHORT).show(); }
+
+                }else{
+                    Intent i = new Intent(HungryActivity.this, DetailRestaurantActivity.class);
+                    i.putExtra(RESTAURANT, new Restaurant(place.getName(), place.getAddress(), place.getId()));
+                    startActivity(i);
+                }
+            }
+            @Override
+            public void onError(Status status) { }
+        });
+
+        fragmentManager = getSupportFragmentManager();
+        Bundle args = new Bundle();
+        args.putDouble("lat", latitude);
+        args.putDouble("long", longitude);
+        firstFragment.setArguments(args);
+        fragmentManager.beginTransaction().replace(R.id.content_frame, firstFragment).commit();
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        //remove location callback:
+        locationManager.removeUpdates(this);
+
+        //open the map:
+        latitude = location.getLatitude();
+        longitude = location.getLongitude();
+
+        ResearchBar();
+    }
+
+    @Override
+    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String s) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String s) {
+
     }
 }

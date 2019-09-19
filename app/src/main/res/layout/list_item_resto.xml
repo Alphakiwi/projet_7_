@@ -38,7 +38,7 @@
         android:layout_marginStart="86dp"
         android:layout_marginTop="20dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/ic_bonhomme"
+        app:srcCompat="@drawable/ic_bonhomme"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -63,7 +63,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="100dp"
         android:layout_marginTop="54dp"
-        android:src="@drawable/ic_baseline_star_yellow_24px"
+        app:srcCompat="@drawable/ic_baseline_star_yellow_24px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -75,7 +75,7 @@
         android:layout_marginLeft="125dp"
         android:background="#000000"
         android:layout_marginTop="54dp"
-        android:src="@drawable/ic_baseline_star_yellow_24px"
+        app:srcCompat="@drawable/ic_baseline_star_yellow_24px"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

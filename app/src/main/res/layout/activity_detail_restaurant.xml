@@ -84,7 +84,7 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="300dp"
         android:layout_marginTop="270dp"
-        android:src="@drawable/ic_baseline_done_outline_24px"
+        app:srcCompat="@drawable/ic_baseline_done_outline_24px"
         android:clickable="true"
         app:elevation="4dp"
         app:layout_anchor="@+id/fab"

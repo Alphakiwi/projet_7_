@@ -55,6 +55,8 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
 
             if (comparison != 0 && comparison2 != 0 ) {
 
+                holder.name.setTextColor(Color.rgb(0,0,0));
+                holder.descript.setTextColor(Color.rgb(0,0,0));
 
                 holder.descript.setOnClickListener(new View.OnClickListener() {
                     @Override

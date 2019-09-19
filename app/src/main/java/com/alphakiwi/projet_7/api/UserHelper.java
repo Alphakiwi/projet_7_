@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 
 import com.alphakiwi.projet_7.model.Restaurant;
 import com.alphakiwi.projet_7.model.User;
+import com.firebase.ui.auth.AuthUI;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -120,11 +121,14 @@ public class  UserHelper {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
 
-                                int comparateur = document.toObject(User.class).getUid().compareTo( FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                if (document.toObject(User.class).getUid() != null || FirebaseAuth.getInstance().getCurrentUser().getUid()!= null )  {
 
-                                if (comparateur!=0) {
+                                    int comparateur = document.toObject(User.class).getUid().compareTo(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-                                    userListWithoutMyself.add(document.toObject(User.class));
+                                    if (comparateur != 0) {
+
+                                        userListWithoutMyself.add(document.toObject(User.class));
+                                    }
                                 }
 
 

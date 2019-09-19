@@ -153,21 +153,24 @@ public class LoginActivity extends BaseActivity {
 
     public void sharedpref(){
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
-        if (!prefs.getBoolean(FIRST, false)) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.set(Calendar.HOUR_OF_DAY,12);
-            calendar.set(Calendar.MINUTE,00);
-            if (calendar.getTime().compareTo(new Date()) < 0) calendar.add(Calendar.DAY_OF_MONTH, 1);
-            Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
-            PendingIntent pendingIntent = PendingIntent.getBroadcast(this,0,intent,0);
-            AlarmManager alarmManager = (AlarmManager)getSystemService(this.ALARM_SERVICE);
-            if (alarmManager != null) {
-                alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,System.currentTimeMillis(), INTERVAL_DAY,pendingIntent);
+        if (this.isCurrentUserLogged()) {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            if (!prefs.getBoolean(FIRST, false)) {
+                Calendar calendar = Calendar.getInstance();
+                calendar.set(Calendar.HOUR_OF_DAY, 12);
+                calendar.set(Calendar.MINUTE, 00);
+                if (calendar.getTime().compareTo(new Date()) < 0)
+                    calendar.add(Calendar.DAY_OF_MONTH, 1);
+                Intent intent = new Intent(getApplicationContext(), NotificationReceiver.class);
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+                AlarmManager alarmManager = (AlarmManager) getSystemService(this.ALARM_SERVICE);
+                if (alarmManager != null) {
+                    alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), INTERVAL_DAY, pendingIntent);
+                }
+                SharedPreferences.Editor editor = prefs.edit();
+                editor.putBoolean(FIRST, true);
+                editor.apply();
             }
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean(FIRST, true);
-            editor.apply();
         }
     }
 

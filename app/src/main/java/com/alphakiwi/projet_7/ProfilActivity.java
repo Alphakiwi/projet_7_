@@ -172,8 +172,13 @@ public class ProfilActivity extends BaseActivity {
                 @Override
                 public void onSuccess(DocumentSnapshot documentSnapshot) {
                     User currentUser = documentSnapshot.toObject(User.class);
-                    String username = TextUtils.isEmpty(currentUser.getUsername()) ? getString(R.string.info_no_username_found) : currentUser.getUsername();
-                    textInputEditTextUsername.setText(username);
+                    if (currentUser != null) {
+                        String username = TextUtils.isEmpty(currentUser.getUsername()) ? getString(R.string.info_no_username_found) : currentUser.getUsername();
+                        textInputEditTextUsername.setText(username);
+                    }else{
+                        Toast.makeText(ProfilActivity.this, "Error with your profil, please try to reconnect", Toast.LENGTH_SHORT).show();
+                        signOutUserFromFirebase();
+                    }
                 }
             });
         }
